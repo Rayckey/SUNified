@@ -1,0 +1,1 @@
+[Manipulate] Close the gripper to grasp right_door_nob_frame while keeping both the gripper position and orientation fixed.

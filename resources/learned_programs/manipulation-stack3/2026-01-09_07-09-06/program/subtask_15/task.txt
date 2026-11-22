@@ -1,0 +1,1 @@
+[Release] Retract the gripper away from cube_3 to a safe configuration with the gripper open.

@@ -1,0 +1,44 @@
+{
+    "Reasoning": "The stage success is represented by moving the grasped mug's mug_handle_hole_frame to the non-contact staging point 0.12 m along cup_hanger_branch_1_tip_frame +y with 0.01 m tolerance, while keeping the panda_fingertip orientation frozen within 0.05 rad and maintaining a true grasp on mug_rim_frame_0. The grasp requirement is encoded with object_grasped and gripper_closed metadata rather than close_gripper, because the task explicitly says mechanical closure alone is not sufficient and the API forbids emitting both close_gripper and object_grasped. The fixed start-of-stage orientation is encoded with freeze_orientation. The explicit bilateral finger contact/effort feedback, exact finger joint positions near 0.0 with effort-based exception, continuous 0.10 m separation/path avoidance from the hanger, and table collision/clearance preservation are not directly representable with the available constraint operators; the reach target itself is a non-contact 0.12 m offset from the hanger tip.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.12,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

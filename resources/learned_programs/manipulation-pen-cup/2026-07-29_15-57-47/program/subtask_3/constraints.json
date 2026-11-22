@@ -1,0 +1,54 @@
+{
+    "Reasoning": "This stage lifts the already-grasped marker upward while maintaining the grasp and preserving orientation. A +world-z directional_move on the gripped marker encodes the lift; the 0.1585 m travel is the additional height needed from the marker resting height above the table center, approximately table half-height 0.20 m plus marker radius/world-z half-extent 0.01 m, to the required 0.3685 m marker-center/table-center separation. object_grasped is used instead of close_gripper because the stage requires verified continued holding, not merely finger-position closure; the gripper_closed condition records the intended closed gripper state. freeze_orientation on the marker preserves its start-of-stage world orientation within 5 degrees. freeze_orientation on panda_fingertip helps maintain the grasped relative orientation during the lift. The exact monitored finger effort/contact feedback, explicit finger joint command near 0.0, and full 0.01 m/5 degree relative pose preservation between panda_fingertip and marker are not directly representable beyond object_grasped and the orientation freezes.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1585,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "tolerance_rad": 0.0873
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0873
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

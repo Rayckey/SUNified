@@ -1,0 +1,1 @@
+[Release] Retract the gripper away from the strawberry to a non-contact configuration with the gripper open, preserving continuity with the immediately preceding interaction.

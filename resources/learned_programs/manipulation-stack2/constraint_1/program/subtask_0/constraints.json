@@ -1,0 +1,67 @@
+{
+    "Reasoning": "Success for this subtask means the gripper is open and positioned above the center of cube_1, offset along world +z by at least 0.075 m (pre-grasp standoff); the approach must maintain the gripper\u2019s +z axis antiparallel to world +z, with the gripper\u2019s +y axis orthogonal to its +z, and the gripper must remain open throughout. The approach ends when this standoff is achieved (as verified by the measured distance along world +z between the end-effector origin and the cube center), without making contact. The distance constraint (reach_distance) encodes the standoff offset explicitly, while axis_align enforces orientation about both +z (antiparallel) and +y vs +z (orthogonal). open_gripper ensures the gripper is open throughout. All must be enforced together, so each constraint is combined using 'and'.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "distance_m": 0.075,
+                "tolerance_m": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "robot_frame",
+                "reference_origin": "panda_fingertip",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+[Manipulate] Lower cube_3 down onto the top face of cube_1 with the gripper closed.

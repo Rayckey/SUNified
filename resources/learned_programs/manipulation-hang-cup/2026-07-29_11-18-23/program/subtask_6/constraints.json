@@ -1,0 +1,44 @@
+{
+    "Diagnosis": "The failure is caused by combining `freeze_orientation` with another orientation constraint, `axis_align`, in the same controller stage. The runtime explicitly rejects that mix. The smallest repair is to remove the `axis_align` term and keep `freeze_orientation`, because this stage explicitly requires keeping `panda_fingertip` orientation fixed while lowering. The handle/branch alignment is therefore maintained only indirectly through the already-established insertion, the closed grasp, and fixed gripper orientation; the explicit bipolar axis-alignment residual is omitted because it cannot be represented together with `freeze_orientation` in this stage.",
+    "Reasoning": "The corrected stage keeps a firm closed grasp on the mug via `object_grasped`, freezes the gripper orientation in the world frame as required, and performs the lowering as a single world -z `directional_move`. The lowering term keeps both `geometry` and `manipulator_high_effort` condition labels so representable stop alternatives, geometric support/contact-change evidence or manipulator contact/effort evidence, are encoded inside the same term rather than as a top-level OR. Only one position operation is used. Finger effort magnitude, exact mug rigidity, explicit branch-origin-inside-hole containment, avoiding branch +y withdrawal, and the 0.10 m mug/table clearance are not directly expressible with the available TermAPI and remain monitored requirements outside these residual terms.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed",
+                "geometry"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.01,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

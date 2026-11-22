@@ -1,0 +1,50 @@
+{
+  "operator": "point_toward",
+  "arguments": {
+    "controlled_entity": {
+      "enum": [
+        "robot_frame",
+        "gripped_object"
+      ]
+    },
+    "controlled_target": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "reference_basis": {
+      "enum": [
+        "world",
+        "object",
+        "robot_frame"
+      ]
+    },
+    "reference_origin": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "controlled_axis": {
+      "enum": [
+        "+x",
+        "-x",
+        "+y",
+        "-y",
+        "+z",
+        "-z"
+      ]
+    },
+    "offset_from_origin_xyz": {
+      "type": "array",
+      "items": {
+        "type": "number",
+        "minimum": -1000,
+        "maximum": 1000
+      },
+      "minItems": 3,
+      "maxItems": 3
+    }
+  },
+  "source": "kuafu.skills.schema.OP_ARGS",
+  "tolerances": "Assigned by the receiver using the MPC or learning profile."
+}

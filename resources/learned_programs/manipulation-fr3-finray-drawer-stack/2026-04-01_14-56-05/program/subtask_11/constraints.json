@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The subtask requires:\n1. Translate the tool frame origin along world -Z by 0.20 m (directional_move, world -z axis, 0.20 m travel) \u2014 this is the primary motion constraint.\n2. Keep tool orientation fixed (freeze_orientation on panda_fingertip).\n3. Gripper remains closed/grasping the strawberry (close_gripper).\n4. Stop condition: OR when manipulator high effort is detected (contact with drawer interior). This means success is: (directional_move completed) OR (high effort detected \u2192 halt). The \"or\" logic applies between the motion goal and the effort-based stop.\n\nThe subtask explicitly says \"translate along world -Z by 0.20 m\" with a stop condition of either reaching the target OR detecting high effort. So the directional_move uses \"or\" logic with a manipulator_high_effort condition.\n\nThe orientation freeze is an \"and\" condition that must hold throughout.\nThe gripper closed state is an \"and\" condition that must hold throughout.\n\nConstraint ordering:\n1. directional_move (geometry) \u2014 first constraint, logic \"and\" (initial)\n2. OR manipulator_high_effort stop \u2014 this is the alternative stop condition, logic \"or\" with condition [\"geometry\", \"manipulator_high_effort\"] \u2014 actually the effort stop is an alternative to completing the full travel, so it should be \"or\" logic. But since the directional_move already encodes the primary goal, I need to represent the effort-based halt as an \"or\" alternative.\n\nActually, re-reading the rules: \"Use 'or' in logic only when the subtask language implies alternatives.\" The subtask says \"Stop when tool frame origin is within 0.01 m of top_drawer_center_frame origin OR when contact/effort feedback rises significantly.\" This is an explicit OR condition for stopping.\n\nSo:\n- Constraint 1 (logic: \"and\"): directional_move along world -Z, 0.20 m, tolerance 0.01 m\n- Constraint 2 (logic: \"or\"): manipulator_high_effort \u2014 but there's no pure \"effort halt\" operator in TermAPI. The closest is that the condition field is metadata only. I can represent the effort stop as a freeze_position with manipulator_high_effort condition... but freeze_position means \"don't move\" which isn't quite right either.\n\nActually, looking at the rules more carefully: \"condition is metadata only and does not enforce success by itself.\" The OR logic with a manipulator_high_effort condition on a freeze_position would mean: success if (directional_move done) OR (position frozen due to high effort). That's a reasonable encoding.\n\nWait, but the rule says \"AT MOST ONE position constraint operator: reach_point OR directional_move OR freeze_position.\" So I can only have one of these. I'll use directional_move as the position constraint and encode the effort stop via the \"or\" logic with a freeze_position... but that violates the \"at most one\" rule.\n\nGiven the constraint that only one position operator is allowed, I'll use directional_move as the sole position operator with \"or\" logic that includes manipulator_high_effort in the condition. The effort-based stop cannot be separately encoded as a position operator. I'll note this in reasoning.\n\nFinal constraints:\n1. (logic: \"and\", condition: [\"geometry\", \"gripper_closed\"]) close_gripper \u2014 gripper must remain closed\n2. (logic: \"and\", condition: [\"geometry\"]) freeze_orientation \u2014 keep tool orientation fixed\n3. (logic: \"and\", condition: [\"geometry\", \"manipulator_low_effort\"], OR logic: \"or\", condition: [\"geometry\", \"manipulator_high_effort\"]) directional_move \u2014 move along world -Z by 0.20 m, stop at 0.01 m tolerance OR on high effort\n\nLet me restructure:\n1. close_gripper (and, gripper_closed) \u2014 maintain grasp\n2. freeze_orientation (and, geometry) \u2014 keep orientation fixed\n3. directional_move (and, geometry, manipulator_low_effort) \u2014 primary motion goal\n4. freeze_position (or, geometry, manipulator_high_effort) \u2014 alternative stop on high effort \u2014 BUT this violates the \"at most one position operator\" rule.\n\nSince I can only have one position operator, I'll use directional_move with the \"or\" condition encoded in its logic, and note the effort stop in reasoning as not fully representable. I'll add the effort condition to the directional_move's condition list.\n\nFinal structure:\n1. close_gripper (logic: \"and\", condition: [\"gripper_closed\"])\n2. freeze_orientation (logic: \"and\", condition: [\"geometry\"])\n3. directional_move (logic: \"and\", condition: [\"geometry\", \"manipulator_low_effort\"]) \u2014 the OR effort stop cannot be separately encoded per the one-position-operator rule; noted in reasoning.\n\nActually I can use \"or\" logic on the directional_move itself to indicate it succeeds either on completion or on high effort detection, by setting logic to \"or\" and condition to include manipulator_high_effort. But the logic field combines with the accumulated result, not within the constraint itself.\n\nI'll keep it simple: directional_move with logic \"and\" and condition [\"geometry\", \"manipulator_low_effort\", \"manipulator_high_effort\"] to indicate both effort monitoring aspects, and note the OR stop condition in reasoning.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.2,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

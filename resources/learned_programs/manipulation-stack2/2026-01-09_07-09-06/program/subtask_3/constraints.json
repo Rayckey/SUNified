@@ -1,0 +1,41 @@
+{
+    "Reasoning": "Success for this subtask means the tool (gripper with cube_1 grasped) is lifted vertically upward in the world frame along +z by at least 0.075 m, ensuring that cube_1 is clear of the supporting surface (0.025 m = half cube extent plus 0.05 m safety margin). The constraint is specified as an explicit upward translation distance along the world +z axis, so directional_move is required. The subtask also demands the tool orientation remains fixed relative to cube_1 during the lift, which is captured using freeze_orientation. Finally, the gripper must stay closed to maintain a firm grasp during the entire motion; this is a persistent state, so close_gripper is included. All constraints must simultaneously hold at the end of the subtask, so 'and' logic is used throughout.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.075,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

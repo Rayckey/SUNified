@@ -1,0 +1,34 @@
+Top-level task: {task_description}
+
+Current high-level subtask: {current_subtask}
+Completed high-level subtasks: {completed}
+Pending high-level subtasks: {pending}
+
+Inputs:
+* Optional scene image including the robot
+* Robot frames / joints: {frames}
+* Observed objects: {history}
+
+Technical context:
+* robot type: {robot}
+* current state: {state}
+* control interface: {control}
+
+Ground ONLY the current subtask into exactly ONE detailed natural-language grounded stage requirement.
+
+Rules:
+- Preserve the current phase tag and intent.
+- Keep the natural-language grounding layer; do not emit TermAPI JSON here.
+- The downstream constraint stage treats the entire AtomicActions array as one controller stage, so do not use the array to describe a sequence.
+- The single grounded stage may describe simultaneous constraints, but not multiple sequential motions or sequential gripper changes.
+- If the current subtask is compound, ground only the first controller-feasible component and explain the split issue in "Reasoning".
+- Use the system instructions for frames, tool +z / tool +y, approach labels, translations, clearances, object extents, finger-vs-shape rules, stop conditions, and effort/contact feedback.
+- For [Approach] position goals: non-contact axis approach uses an axis-offset point; other non-contact approaches use positive standoff; contact approaches reach the target frame origin or object center.
+- Specify target geometry and contact/effort conditions. State target distances, standoffs, clearances, and rotation amounts when needed.
+
+Return exactly one JSON object:
+- "Reasoning": how you interpreted the current subtask and applied frame/geometric rules.
+- "AtomicActions": an array containing exactly one string formatted as:
+  first line = phase + summary;
+  second line = "Constraints:";
+  following lines = numbered constraint sentences specifying frames, axes, motions, clearances, stop conditions, gripper state, and feedback signals.

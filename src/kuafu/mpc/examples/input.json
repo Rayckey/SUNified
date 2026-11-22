@@ -1,0 +1,5 @@
+{
+  "artifact": "examples/02_program_to_rollout/input/task.json",
+  "description": "Scene state, robot model and compiled SUN Program",
+  "path_base": "repository root"
+}

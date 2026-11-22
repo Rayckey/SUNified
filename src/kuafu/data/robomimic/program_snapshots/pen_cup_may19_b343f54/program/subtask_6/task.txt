@@ -1,0 +1,1 @@
+[Manipulate] Insert marker into the opening of pen_holder in an upright orientation with the gripper closed.

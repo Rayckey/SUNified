@@ -1,0 +1,42 @@
+{
+    "Reasoning": "Success for this subtask means translating the gripped tool (with top_drawer_handle_frame) along the handle's -y axis in the handle frame until the drawer is fully open, i.e., until the -y position of the handle ceases to increase (position growth below 0.01m over 0.5s) or if significant resistance/effort increase is detected. The distance is not fixed but is described as 'continue until the drawer stops moving or resistance occurs,' so the correct position operator is not reach_point or reach_distance but directional_move with an unspecified positive distance. Since the end condition is defined as either (1) the -y position stops increasing or (2) significant effort detected (i.e., high arm pulling force), these are explicit alternatives, thus requiring 'or' logic. Additionally, the tool orientation relative to the handle must remain fixed and the gripper must maintain a closed grasp. The correct orientation constraint is 'freeze_orientation' for tool-handle orientation, and gripper state must be 'close_gripper'.",
+    "Constraints": [
+        {
+            "logic": "or",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "top_drawer_handle_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

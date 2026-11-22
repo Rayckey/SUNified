@@ -1,0 +1,44 @@
+{
+    "Reasoning": "The stage is a transport/alignment stage for the currently grasped cube_2. object_grasped with gripper_closed metadata represents maintaining the secure closed grasp without commanding opening. The reach_point term moves the gripped object cube_2 to the placement-alignment target at cube_1 origin plus 0.15 m in world +z, with the required 0.01 m stopping tolerance; this also represents the desired final non-contact vertical alignment above cube_1. freeze_orientation keeps the panda_fingertip orientation fixed to the orientation from the preceding stage within the specified 0.05 rad tolerance. The API has no explicit operator for enforcing finger joint positions, finger effort/contact feedback, preserving the exact gripper-to-object relative transform, or maintaining continuous collision-clearance/separation constraints from cube_1 and cube_3 during the path; these are therefore omitted except insofar as secure object_grasped and the final +z offset target imply rigid holding and final separation from cube_1.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

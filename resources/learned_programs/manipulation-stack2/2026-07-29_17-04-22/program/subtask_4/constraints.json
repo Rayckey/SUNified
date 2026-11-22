@@ -1,0 +1,44 @@
+{
+    "Reasoning": "Use a single geometry reach target for the held cube center above cube_2: cube_2 center plus a world +z offset of 0.16 m with 0.01 m tolerance, which achieves lateral alignment within 0.01 m while keeping at least 0.15 m vertical separation at success. The actual world +x/-x and +y/-y lateral directions are implicitly determined by the current cube positions; explicit directional_move terms are not used because the required signed axes and distances are runtime-dependent and only one position operator is allowed. object_grasped represents maintaining the firm held state of cube_1 with the gripper closed; close_gripper is not emitted because object_grasped is the appropriate held-object constraint. freeze_orientation for cube_1 helps preserve the carried cube pose/no-slip orientation during the lateral move. Unrepresented clauses: exact prevention of all unintended contacts, sustained finger-joint values/effort feedback details, one-sided 'never lower during the path' height maintenance, and full relative pose preservation between cube_1 and panda_fingertip cannot be directly encoded with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.16
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

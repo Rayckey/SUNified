@@ -1,0 +1,47 @@
+{
+    "Reasoning": "This stage lowers the already-grasped upright can until either placement/contact effort is detected or the 0.15 m downward travel limit is reached. The object_grasped term represents maintaining the existing stable closed grasp without issuing an additional close_gripper command. The directional_move term commands the grasped can_center_frame downward along world -z by up to 0.15 m with 0.01 m tolerance; its condition includes both geometry and manipulator_high_effort to encode the supported stop alternatives of reaching the travel limit or stopping on external support/contact feedback. The axis_align term maintains the can upright by keeping can_center_frame local -y codirectional with world +z within 5 degrees. Relative pose preservation between panda_fingertip and can_center_frame, exact gripper joint-value holding, detailed finger effort monitoring, end-effector pose monitoring, and unsafe-contact/loss-of-grasp abort logic are not directly expressible beyond object_grasped, the downward move, and the effort/contact condition label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "-y",
+                "reference_axis": "+z",
+                "alignment": "codirectional",
+                "tolerance_rad": 0.087266
+            }
+        }
+    ]
+}

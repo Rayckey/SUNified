@@ -1,0 +1,49 @@
+{
+    "Reasoning": "The stage succeeds when the currently grasped marker is carried to the non-contact staging point 0.2235 m along pen_holder +z from the pen_holder origin, while the marker remains upright and physically held. The reach_point term encodes the final marker-origin staging target with the required 0.01 m tolerance. The axis_align term keeps the marker local +y length axis bipolarly aligned with world +z within 0.05 rad. The object_grasped term represents maintaining the closed, firm grasp/no-slip hold rather than issuing a separate close_gripper command, because the object is already grasped and both close_gripper and object_grasped should not be emitted together. Non-contact path clearance, stable bilateral finger effort/contact details, rigid marker-to-fingertip transform verification, and continuous monitoring of feedback are not directly representable beyond the grasp and geometry terms provided.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.2235
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

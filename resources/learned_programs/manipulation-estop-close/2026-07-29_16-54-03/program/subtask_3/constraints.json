@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage retracts the panda_fingertip to the specified non-contact standoff point 0.10 m along estop_cap_tip +z, using a 0.01 m success tolerance. The reach constraint is labeled with both geometry and manipulator_low_effort to reflect stopping only once the pose target is reached and contact/effort feedback has dropped toward free-space levels. The fingertip orientation is frozen to its release-stage start orientation to preserve the pressed-contact tool +z and +y directions; the 5 degree bound is represented as 0.0873 rad. The gripper-closed requirement is represented with close_gripper. The API cannot explicitly command individual finger joint positions at 0.0 or encode a numeric contact/effort threshold, so those are represented only by the gripper_closed and manipulator_low_effort condition labels.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.1
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0873
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

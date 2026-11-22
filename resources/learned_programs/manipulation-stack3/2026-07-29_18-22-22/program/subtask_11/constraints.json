@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage keeps cube_3 physically held while lifting it vertically in the world +z direction and preserving the current fingertip orientation. The vertical motion is encoded as a directional_move of the gripped object cube_3 along world +z with 0.01 m tolerance; the 0.20 m lift distance is inferred from cube_2 being stacked on cube_1 after the completed subtasks, with 0.05 m cube size plus the required 0.15 m clearance above cube_2. object_grasped encodes maintaining the firm closed grasp on cube_3 without also emitting close_gripper, per the API rule. freeze_orientation preserves the current panda_fingertip orientation during the lift. The manipulator_low_effort condition on the lift represents monitoring for no unexpected arm/TCP effort spike during non-contact lifting. Explicit finger joint position/effort balance, slip detection beyond object_grasped, quaternion feedback thresholds beyond freeze_orientation, contact signals, and explicit 0.15 m minimum separation from cube_1 and cube_2 cannot be represented directly with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.2,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

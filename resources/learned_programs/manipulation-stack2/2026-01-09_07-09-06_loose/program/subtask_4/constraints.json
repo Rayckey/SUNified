@@ -1,0 +1,44 @@
+{
+    "Reasoning": "Success for this subtask means the grasped cube_1 is moved so that its center is horizontally aligned above the center of cube_2 in world x/y, and with a vertical (world +z) clearance of at least 0.075 m between them, while the gripper remains closed and the end-effector's orientation remains fixed (i.e., no rotation) throughout the motion. Only positional feedback is monitored, so no forces/effort are considered. The constraints are combined with 'and' because all must be satisfied together for the subtask to be complete: (1) the gripped object (cube_1) must reach a target point that is vertically above cube_2 (matching x/y coordinates; +0.075 m in world z), (2) the position/orientation of the gripper does not change except as needed for the translation (with orientation frozen), and (3) the gripper remains closed throughout the motion.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.075
+                ],
+                "tolerance_m": 0.03
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.4
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

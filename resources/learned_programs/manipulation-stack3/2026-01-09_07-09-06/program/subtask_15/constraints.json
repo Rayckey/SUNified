@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Success is defined by safely moving the tool (panda_fingertip frame) away from the center of cube_3 such that it is at least 0.075 m distant, beginning from its post-release pose with the gripper fully open. The tool must maintain its orientation fixed relative to the world frame during this motion. Throughout, the gripper must remain fully open (finger joints at 1.0, as monitored by position/effort feedback). All these requirements must be met simultaneously, so all constraints are joined by 'and'. Only one positional operator is allowed, so 'reach_distance' best models the required minimum standoff. 'freeze_orientation' ensures no rotation w.r.t. world, and 'open_gripper' holds the gripper open.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_3",
+                "offset_from_origin_xyz": [
+                    0,
+                    0,
+                    0
+                ],
+                "distance_m": 0.075,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

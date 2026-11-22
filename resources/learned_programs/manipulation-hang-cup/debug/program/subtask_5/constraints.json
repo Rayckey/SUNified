@@ -1,0 +1,67 @@
+{
+    "Diagnosis": "Multiple constraint validation errors: (1) 'reach_point' was used twice, violating rule that only one position op (reach_point/reach_distance/directional_move/freeze_position) can appear per Constraints list. (2) 'freeze_orientation' was combined with axis_align orientation constraints, which is explicitly disallowed (must not mix freeze_orientation with other orientation ops). Also, axis_align tolerance_rad should be 0.2, matching TermAPI.",
+    "Reasoning": "Success requires the grasped mug to be aligned for branch insertion: (1) Laterally align mug_handle_hole_frame with cup_hanger_branch_1_tip_frame in the branch_x-z plane (orthogonal to branch +y) within 0.01 m. (2) The opening axis of the mug handle (+y or -y in mug_handle_hole_frame) must be codirectional or antiparallel to the branch +y axis in cup_hanger_branch_1_tip_frame, within 0.2 rad (10 deg is 0.175 rad; but API allows 0.2 only). (3) Maintain an axial standoff \u22650.1 m along branch +y. (4) Gripper must be securely closed through alignment. All constraints must be satisfied simultaneously for safe, successful lateral/axial alignment for insertion, so they are 'and'-combined, except the two axis_align options which are permitted as an 'or' pair for the bipolar alignment. Only one position operator (reach_point) is used, and no freeze_orientation is mixed with axis_align, resolving previous validation errors.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.1,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "or",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+y",
+                "alignment": "codirectional",
+                "tolerance_rad": 0.1
+            }
+        },
+        {
+            "logic": "or",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "-y",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.1
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

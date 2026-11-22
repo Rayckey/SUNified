@@ -1,0 +1,13 @@
+baseline_config: ${oc.env:KUAFU2REAL_ROOT}/configs/dp3_train_kuafu_eff_simple_full.yaml
+seeds: [42, 43, 44]
+epochs: 1000
+batch_size: 64
+num_workers: 4
+device: cuda:0
+action_stride: 1
+stage:
+  stage_hidden_dim: 64
+  stage_embedding_dim: 16
+  stage_loss_weight: 0.1
+hypothesis: Predicted task stage improves complete-task success beyond auxiliary supervision alone.
+failure_evidence: []

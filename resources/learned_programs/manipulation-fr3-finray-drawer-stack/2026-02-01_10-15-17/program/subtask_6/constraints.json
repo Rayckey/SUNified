@@ -1,0 +1,49 @@
+{
+    "Reasoning": "Success for this subtask is defined by moving the end-effector (panda_fingertip) to a top-down, pre-grasp pose above the center of the strawberry, maintaining a specific orientation (tool +z axis antiparallel to world +z), ensuring a standoff along the world +z axis of at least 0.125 m (measured from fingertip origin to strawberry center), and keeping the gripper fully open (fingers near 1.0). The tool +y orientation is not otherwise constrained. The approach must be careful to avoid contact (implied by monitoring distance and effort), but the stopping condition is reaching the specified standoff without triggering contact or increased effort. Thus, the constraints are conjunctive (\"and\"): achieving the correct position along the +z axis above the strawberry, aligning the gripper orientation, and ensuring the gripper is open.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "strawberry",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.125
+                ],
+                "tolerance_m": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

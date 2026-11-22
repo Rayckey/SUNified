@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This release/retract stage is represented as an open-gripper upward retraction of panda_fingertip while freezing its current orientation. The open_gripper term encodes maintaining the gripper in the released/open state rather than commanding closure. The freeze_orientation term preserves the current panda_fingertip world-frame orientation, covering the fixed tool +z and +y directions. The directional_move term commands the panda_fingertip frame to move along world +z by a clearance-derived 0.125 m retract distance with 0.01 m tolerance, and includes manipulator_low_effort to reflect free-space/non-contact monitoring during the retract. The API cannot directly encode numeric gripper joint value 1.0, exact gripper finger effort/contact thresholds, continuous distance inequalities to cube_3/cube_1/cube_2, or object-pose stack support constraints for cube_1, cube_2, and cube_3 because there is no collision-distance/contact-threshold operator and ungripped object pose constraints are not controllable terms here.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.125,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

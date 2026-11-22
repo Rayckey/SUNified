@@ -1,0 +1,85 @@
+{
+    "Diagnosis": "The parser rejected the previous constraint at index 3 because it tried to align panda_fingertip +y against panda_fingertip +z using the same frame as both controlled target and reference origin, which is self-referential and invalid for axis_align. The smallest repair is to express the same orthogonality needed for the top-down setup relative to world +z, since panda_fingertip +z is already constrained antiparallel to world +z.",
+    "Reasoning": "This stage moves the open gripper to a non-contact pregrasp standoff 0.10 m above mug_rim_frame_0 with 0.01 m tolerance. open_gripper represents maintaining the gripper open during the motion. The first axis_align keeps panda_fingertip tool +z antiparallel to world +z for the top-down approach. The second axis_align keeps panda_fingertip tool +y orthogonal to mug_rim_frame_0 local +x; because orthogonality is unchanged for +x versus -x, this covers the bipolar virtual handle axis. The repaired third axis_align keeps panda_fingertip tool +y orthogonal to world +z, which is the valid non-self-referential equivalent needed together with the tool +z top-down constraint. The reach_point term targets the mug_rim_frame_0 origin offset by 0.10 m along world +z and includes manipulator_low_effort to represent the required non-contact, low-interaction monitoring condition. Explicit individual finger joint values, finger effort monitoring, and contact feedback are not directly representable beyond open_gripper and manipulator_low_effort.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "mug_rim_frame_0",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "mug_rim_frame_0",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.1
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

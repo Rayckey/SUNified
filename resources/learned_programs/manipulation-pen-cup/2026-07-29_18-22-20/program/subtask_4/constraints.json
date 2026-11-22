@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage keeps the panda_fingertip origin fixed in place while reorienting the already grasped marker until the marker local +y length axis is upright with either end allowed upward, represented by bipolar alignment to world +z. The grasp/no-slip requirement is represented with object_grasped and gripper_closed metadata rather than close_gripper, because the object must remain physically held. The exact bilateral finger effort/contact feedback, continuous monitoring requirements, explicit no-slip feedback checks, and 'no commanded translation' beyond the fixed-position constraint cannot be represented more specifically by the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

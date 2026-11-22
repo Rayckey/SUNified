@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage requires the already-grasped can to remain firmly held while its upright axis is reoriented without translating the can. The object_grasped constraint represents maintaining the physical closed grasp/no-slip hold; close_gripper is not emitted because object_grasped is the stronger held-object requirement. The freeze_position constraint keeps can_center_frame at its start-of-stage world position within the required 0.02 m. The axis_align constraint makes can_center_frame local -y codirectional with world +z, which is the upright success condition. Finger joint values, explicit gripper effort/contact feedback, continuous monitoring signals, and the exact rigid transform between panda_fingertip and can_center_frame are not directly expressible beyond object_grasped with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "-y",
+                "reference_axis": "+z",
+                "alignment": "codirectional",
+                "tolerance_rad": 0.0872665
+            }
+        }
+    ]
+}

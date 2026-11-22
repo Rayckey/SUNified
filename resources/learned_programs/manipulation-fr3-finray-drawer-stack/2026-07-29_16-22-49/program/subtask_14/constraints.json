@@ -1,0 +1,42 @@
+{
+    "Reasoning": "Use a single controller stage with conjunctive requirements. The directional_move term commands the panda_fingertip frame to retract 0.12 m along cabinet +z with a 0.01 m terminal tolerance, representing the specified non-contact clearance motion away from strawberry_center_frame. The freeze_orientation term preserves the current panda_fingertip orientation with the required 0.05 rad tolerance, covering the requirement that tool +z and tool +y keep their current directions. The open_gripper term keeps the fingers open at success and throughout the stage as gripper-open metadata. The manipulator_low_effort condition on the retract motion represents free-space/no-unexpected-arm-contact feedback during the retract. Unrepresented clauses: explicit continuous monitoring/fail-pause logic, verifying strawberry_center_frame remains within 0.01 m of top_drawer_center_frame, avoiding specific contacts with top_drawer_center_frame/top_drawer_handle_frame/cabinet as named collision constraints, and gripper finger contact-effort/free-space feedback beyond the open-gripper state cannot be directly encoded with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "cabinet",
+                "axis": "+z",
+                "travel_distance_m": 0.12,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

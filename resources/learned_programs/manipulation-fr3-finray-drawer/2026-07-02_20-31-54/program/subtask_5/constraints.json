@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Success is represented by the open gripper, the panda_fingertip reaching the specified 0.12 m offset along top_drawer_handle_frame -y, and maintaining the current panda_fingertip orientation during the retract. The reach_point term uses the handle frame as both reference basis and origin, with offset [0, -0.12, 0] and 0.01 m tolerance as specified; it is also labeled manipulator_low_effort to reflect the required free-space/non-contact effort feedback during retract. The freeze_orientation term preserves the current end-effector quaternion in the robot base frame, thereby keeping the panda_fingertip +z and +y directions unchanged. The open_gripper term maintains the released/open gripper state. Explicit collision clearance from top_drawer_handle_frame/cabinet, geometric separation involving panda_fingertip and panda_link4, gripper finger joint position monitoring, gripper effort feedback, and freezing the current top_drawer_handle_frame/top_drawer_center_frame positions within 0.01 m cannot be directly encoded with the available operators without violating the single-position-op rule or because no collision/separation/joint-effort operator exists; these are therefore noted but omitted except for the reachable offset and low-effort condition.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.12,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

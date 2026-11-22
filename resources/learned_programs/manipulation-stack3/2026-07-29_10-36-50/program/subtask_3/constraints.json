@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage is a lift of the currently grasped cube_2. A single directional_move encodes the required 0.15 m translation along world +z with the explicit 0.01 m completion tolerance. object_grasped with gripper_closed encodes that cube_2 must remain physically held and the gripper must stay closed rather than opening. freeze_orientation keeps the panda_fingertip orientation fixed at the start-of-stage orientation with the required 0.05 rad tolerance. The exact closed finger joint positions and detailed finger effort/contact feedback are not directly representable beyond requiring object_grasped/gripper_closed. The exact preserved relative transform/no-slip constraint is represented indirectly by object_grasped during the lift; there is no separate relative-transform operator. The requested non-contact center-distance constraints from cube_2 to cube_1 and cube_3 are not directly representable with the available operators, so they are omitted.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

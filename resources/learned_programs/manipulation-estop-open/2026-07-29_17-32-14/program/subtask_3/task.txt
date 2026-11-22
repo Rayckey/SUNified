@@ -1,0 +1,1 @@
+[Manipulate] Rotate grasped estop_cap_center to the unlocked state with the gripper closed while keeping the gripper position fixed.

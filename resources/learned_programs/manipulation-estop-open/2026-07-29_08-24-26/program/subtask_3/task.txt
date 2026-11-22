@@ -1,0 +1,1 @@
+[Manipulate] Twist estop_cap_center to unlock the e-stop while keeping the gripper position fixed and maintaining the grasp.

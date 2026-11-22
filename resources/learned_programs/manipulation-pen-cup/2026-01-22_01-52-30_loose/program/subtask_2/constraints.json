@@ -1,0 +1,38 @@
+{
+    "Reasoning": "Success for this subtask is defined as closing the gripper to grasp the marker, with the critical requirements that the gripper/tool frame position and orientation must remain constant in the agent frame (robot hand must not move or rotate during grasping), and the gripper must close from fully open until either a firm grasp is detected through contact or effort feedback, or the gripper reaches its fully closed state. 'or' logic is used for the closing termination, because success can be achieved by either a detected grasp (contact/effort) or fully closing the fingers. Preventing marker movement or slip during grasping is enforced by keeping the gripper stationary and closing with care until one of the stopping criteria is reached.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.5
+            }
+        },
+        {
+            "logic": "or",
+            "condition": [
+                "gripper_closed",
+                "manipulator_high_effort"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,56 @@
+{
+    "Reasoning": "This stage is encoded conjunctively. The gripped cube_3 is commanded to reach the non-contact above-cube_2 goal at cube_2 plus 0.15 m in world +z, with 0.01 m tolerance, which also encodes the desired x/y alignment. The panda_fingertip orientation is frozen to preserve the current world-frame tool orientation during the carry. cube_3 orientation is also frozen as a representable consequence of carrying it as a rigid grasped body. object_grasped with the gripper_closed condition represents maintaining the closed grasp of cube_3 throughout the carry. Unrepresented details: exact preservation of both individual gripper joint values, finger effort/no-slip thresholds, dynamic selection of signed lateral +x/-x and +y/-y motion from feedback, continuous non-contact monitoring, maintaining cube_3-to-cube_1/cube_2 clearance throughout the path, and proving cube_1/cube_2 remain undisturbed cannot be directly expressed with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

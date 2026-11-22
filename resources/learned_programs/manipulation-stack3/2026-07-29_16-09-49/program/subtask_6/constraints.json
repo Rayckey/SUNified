@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage keeps the panda_fingertip pose fixed while commanding the gripper to open. freeze_position represents no commanded translation of the panda_fingertip from its start-of-stage world position, and freeze_orientation represents no commanded rotation from its start-of-stage orientation. open_gripper represents commanding both fingers open toward the released state and is the gripper-open success condition. The requested finger squeeze/contact-effort drop proving cube_2 is no longer held is not directly representable because the available effort labels are defined for arm/TCP interaction effort, not opposing-finger squeeze/contact. The cube_2-on-cube_1 placement check at cube_1 plus world +z 0.05 m with 0.01 m tolerance is also not emitted because the API permits at most one position operator per stage, and the fixed end-effector position is a required central constraint for this release stage. Contact/effort feedback confirming cube_2 remains supported on cube_1 is not directly representable with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

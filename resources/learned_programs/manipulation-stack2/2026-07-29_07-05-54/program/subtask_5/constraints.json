@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage is encoded as a single downward placement controller stage. The directional_move commands the currently gripped cube_1 to move 0.10 m along world -z, matching the specified lowering motion; given the prior above-cube_2 stage, this realizes the stacked placement target. freeze_orientation keeps panda_fingertip at its start-of-stage orientation within 0.05 rad. object_grasped requires cube_1 to remain physically held with the gripper closed throughout, and no open_gripper command is emitted. The exact cube_2-relative final reach point and continuous x/y lateral alignment cannot be separately encoded because the API permits at most one position op; they are therefore represented indirectly by the strict world -z move from the aligned start pose. Early/off-axis contact fault handling and detailed finger effort/contact consistency are not directly representable beyond object_grasped and the absence of release/opening.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.015
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

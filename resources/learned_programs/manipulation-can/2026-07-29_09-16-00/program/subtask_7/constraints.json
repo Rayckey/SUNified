@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage retracts the already-open panda_fingertip by 0.10 m along its start-of-stage tool -z direction, while keeping the tool orientation fixed and maintaining open-gripper state. The directional_move encodes the 0.10 m retract with 0.02 m tolerance; using the panda_fingertip as the robot-frame reference and freezing orientation preserves the start-of-stage tool direction during the move. The manipulator_low_effort condition is included on the retract motion to represent free-space/non-contact interaction monitoring at the arm/TCP level. The open_gripper term represents keeping the fingers open with no commanded closing. Unrepresented clauses: exact finger joint values near 1.0, finger-specific gripper effort/contact feedback, explicit can-clearance inequality of at least 0.15 m, and preservation/monitoring of the non-gripped can pose are not directly expressible with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "robot_frame",
+                "reference_origin": "panda_fingertip",
+                "axis": "-z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

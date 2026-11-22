@@ -1,0 +1,1 @@
+[Manipulate] Carry the grasped strawberry_center_frame to a clearance position above top_drawer_center_frame with the gripper closed.

@@ -1,0 +1,48 @@
+{
+    "Diagnosis": "The failure is caused by mixing `freeze_orientation` with another orientation constraint in the same stage. The runtime explicitly reports that `freeze_orientation` cannot be combined with `axis_align`: `Mixes 'freeze_orientation' with other orientation constraints (not allowed)`. The smallest valid repair is to remove the `freeze_orientation` term and keep the required `axis_align` term that preserves the handle-hole to hanger-branch axis relation.",
+    "Reasoning": "The corrected stage remains conjunctive with `logic=\"and\"`. `object_grasped` with `gripper_closed` keeps the mug held and prevents release. `directional_move` commands the grasped mug_rim_frame_0 to settle as the held object along world -z by up to 0.01 m; its condition includes both `geometry` and `manipulator_high_effort` so geometric settling and support/contact effort are represented inside the same term rather than by top-level OR. `axis_align` maintains the mug_handle_hole_frame local +y axis bipolar with the cup_hanger_branch_1_tip_frame local +y branch axis during settling. The removed `freeze_orientation` term was only an approximation of rigid-body orientation preservation and cannot coexist with `axis_align` under the runtime validation rule. Unrepresented clauses: exact opposing-finger no-slip feedback and exact rigid transform locking between panda_fingertip and mug_rim_frame_0 are approximated by `object_grasped`; the mug_handle_hole_frame origin within 0.01 m of the hanger tip cannot be added because only one position op is allowed and the explicit settling move is already represented; table clearance, excessive off-axis contact or jamming avoidance, disengagement prevention along hanger +y, and detailed monitoring requirements have no direct TermAPI operator.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_rim_frame_0",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.01,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+y",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

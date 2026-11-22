@@ -1,0 +1,32 @@
+{
+    "Reasoning": "Success requires that cube_1, held firmly by the closed gripper, is positioned directly above the center of cube_2 in the agent (robot) frame with a minimum vertical clearance of 0.075 m above cube_2's center. The horizontal alignment must be within 0.01 m. The tool's +z axis must remain as in the current grasp (not required to reorient or align with another axis), and the gripper must keep cube_1 securely grasped (both in terms of finger closure and monitoring the grip force). All conditions must be fulfilled together, so 'and' logic is used throughout. Only one positional constraint is chosen (reach_point) because the subtask calls for both a specific vertical offset and horizontal positioning, not a move strictly along one axis. The 'close_gripper' term is included because maintaining a firm grasp is necessary for success.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.075
+                ],
+                "tolerance_m": 0.03
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

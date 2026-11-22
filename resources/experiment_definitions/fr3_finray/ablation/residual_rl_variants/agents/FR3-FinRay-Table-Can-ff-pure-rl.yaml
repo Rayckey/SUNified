@@ -1,0 +1,87 @@
+# Generated for Kuafu ablations: Pure RL + No Program.
+# Source: src/kuafu/isaac/learned/agents/FR3-FinRay-Table-Can-ff.yaml
+# Difference from source: residual_rl removed, clip_actions set to 2.0.
+params:
+  seed: 42
+  env:
+    clip_actions: 2.0
+  algo:
+    name: a2c_continuous
+  model:
+    name: continuous_a2c_logstd
+  mpc:
+    use_absolute_progress_rewards: true
+    use_relative_progress_rewards: false
+    use_velocity_penalty: false
+    use_time_penalty: false
+    regularize_velocity_scale: 0.03
+    regularize_time_scale: 0.0
+    progress_rewards_scale: 100.0
+    stage_transition_bonus_scale: 1.0
+    stage_transition_bonus_use_remaining_horizon: true
+    penalize_false_completions: true
+    reward_print_every: 100
+    episode_outcome_print_every: 100
+    collect_terminal_stuck_constraint_stats: false
+  network:
+    name: actor_critic
+    separate: true
+    space:
+      continuous:
+        mu_activation: None
+        sigma_activation: None
+        mu_init:
+          name: default
+        sigma_init:
+          name: const_initializer
+          val: -3.0
+        fixed_sigma: true
+    mlp:
+      units:
+      - 2048
+      - 1024
+      - 512
+      - 1024
+      - 2048
+      activation: relu
+      d2rl: false
+      initializer:
+        name: default
+      regularizer:
+        name: None
+  load_checkpoint: false
+  load_path: ''
+  config:
+    name: fr3-finray-can
+    env_name: rlgpu
+    device: cuda:0
+    device_name: cuda:0
+    multi_gpu: false
+    ppo: true
+    mixed_precision: false
+    normalize_input: true
+    normalize_value: true
+    num_actors: -1
+    reward_shaper:
+      scale_value: 0.01
+    normalize_advantage: true
+    gamma: 0.99
+    tau: 0.95
+    learning_rate: 1e-5
+    lr_schedule: adaptive
+    kl_threshold: 0.002
+    score_to_win: 100000000
+    max_epochs: 3000
+    save_best_after: 100
+    save_frequency: 50
+    grad_norm: 1.0
+    entropy_coef: 0.0
+    truncate_grads: true
+    e_clip: 0.2
+    horizon_length: 64
+    minibatch_size: 65536
+    mini_epochs: 2
+    critic_coef: 4
+    clip_value: true
+    seq_length: 4
+    bounds_loss_coef: 0.0001

@@ -1,0 +1,41 @@
+{
+    "Reasoning": "Success for this subtask requires (1) raising the tool (and grasped mug_rim_frame_0) vertically in the world +z direction by a positive distance so that, after the motion, the lowest point of the mug is at least 0.1 m above the table surface. Since the table top is world_z = table center z + 0.2 (table height is 0.4 m, so top is at world_z = table center z + 0.2 m), the lowest point of the mug must be at or above (table center z + 0.3 m). The subtask demands translation along world +z by a positive distance, so directional_move is appropriate. (2) The tool's orientation must be kept fixed relative to the agent (the robot), so freeze_orientation is needed. (3) The gripper must remain closed (never open) throughout the motion, so close_gripper is required. (4) Continuous firm grasp must be maintained -- interpreted and enforced by requiring close_gripper with the understanding that force/effort monitoring is an underlying system check, not a top-level constraint. (5) Success is defined as reaching the minimum required clearance (lowest point \u2265 0.1 m above table surface) OR loss of grasp. Since we are encoding constraints for the intended success condition and must not represent failure as success, the 'or' condition here is not encoded; monitoring and abort-on-failure is handled externally. Hence, all constraints are conjoined with 'and'.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.03
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

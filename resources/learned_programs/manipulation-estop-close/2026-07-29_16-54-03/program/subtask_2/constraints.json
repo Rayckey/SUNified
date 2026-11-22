@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is represented as a conjunctive press motion: the panda_fingertip moves 0.03 m along estop_cap_tip local -z from the current contact pose. The directional_move condition includes both geometry and manipulator_high_effort to encode the supported stop alternative: success/stop may occur either when the geometric travel is completed or when high effort indicates the e-stop has bottomed out. The panda_fingertip orientation is frozen with a 5 degree tolerance throughout the motion. The gripper is kept closed with close_gripper. Continuous contact and exact individual finger joint values at 0.0 are not separately expressible beyond the press-direction motion, effort condition, and closed-gripper constraint.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "axis": "-z",
+                "travel_distance_m": 0.03,
+                "tolerance_m": 0.005
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0873
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

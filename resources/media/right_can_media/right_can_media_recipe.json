@@ -1,0 +1,82 @@
+{
+  "name": "right_can_best_front_close_screenshot",
+  "date_created": "2026-05-16",
+  "purpose": "Recreate the final clean and debug-frame screenshots for the FR3FinRay right-can task with a close front camera that keeps the upright can, table contact, and gripper readable.",
+  "task": "FR3-FinRay-Table-Can-ff",
+  "seed": 20260516,
+  "deterministic_policy": true,
+  "camera_bank": "best",
+  "selected_view": "front_close_can_tight",
+  "camera_spec": {
+    "offset_xyz": [
+      0.08,
+      -0.62,
+      0.46
+    ],
+    "target_bias_xyz": [
+      0.0,
+      0.04,
+      0.05
+    ],
+    "focal_length": 30.0
+  },
+  "resolved_camera_pose_from_final_run": {
+    "eye_xyz": [
+      0.461348295211792,
+      -0.7061665654182434,
+      0.5199999809265137
+    ],
+    "target_xyz": [
+      0.38134828209877014,
+      -0.046166568994522095,
+      0.10999999940395355
+    ],
+    "focal_length": 30.0
+  },
+  "policy_inputs": {
+    "checkpoint": "Residuals/FR3-FinRay-Table-Can-ff/2026-05-15_17-47-54/rl_runs/2026-05-15_17-51-08_Run-2/nn/last_fr3-finray-can_ep_700_rew_1234.2773.pth",
+    "prior_checkpoint": "Priors/athe/can_spice/right_can_chunking_15_ff_damped/best.pth",
+    "prior_mode": "residual_rl",
+    "weights_params_json": "resources/experiment_definitions/fr3_finray/residual_rl/parameter_search/fr3_finray_learned_can/best.json"
+  },
+  "render_settings": {
+    "capture_backend": "viewport",
+    "headless": true,
+    "device": "cuda:0",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "max_steps": 450,
+    "video_every": 1,
+    "no_video": true,
+    "viewport_settle_frames": 0,
+    "screenshot_steps": "0,100,200,300,340,360,380,390,391,394,395,396"
+  },
+  "final_outputs": {
+    "clean_run_dir": "outputs/media/right_can_best/2026-05-16_16-04-08_best_clean_seed20260516",
+    "clean_final_screenshot": "outputs/media/right_can_best/2026-05-16_16-04-08_best_clean_seed20260516/screenshots/front_close_can_tight/final.png",
+    "debugframes_run_dir": "outputs/media/right_can_best/2026-05-16_16-05-44_best_debugframes_seed20260516",
+    "debugframes_final_screenshot": "outputs/media/right_can_best/2026-05-16_16-05-44_best_debugframes_seed20260516/screenshots/front_close_can_tight/final.png",
+    "success_policy_step": 395
+  },
+  "capture_notes": {
+    "weights_path_issue": "collect_and_upload_loop_can.sh originally referenced Residuals/FR3-FinRay-Table-Can-ff/2026-05-15_17-44-46/best.json, but that file is not present in this checkout and collect_and_upload_loop_common.sh requires WEIGHTS_PARAMS_JSON. The loop and media wrapper were updated to resources/experiment_definitions/fr3_finray/residual_rl/parameter_search/fr3_finray_learned_can/best.json, which reproduced true success with the selected checkpoint.",
+    "no_weights_check": "With WEIGHTS_PARAMS_JSON empty, seed 20260516 timed out at stage 0. With resources/experiment_definitions/fr3_finray/residual_rl/parameter_search/fr3_finray_learned_can/best.json, the rollout printed Successfully finished #: 1.",
+    "video_capture": "The final recipe is screenshot-only by default. Viewport stills were enough for the show artifact.",
+    "final_still_cache": "capture_right_can_best_media.py caches the last scheduled pre-step capture so final.png is not overwritten by an auto-reset pose after done."
+  },
+  "candidate_sweeps": {
+    "no_weights_timeout": "outputs/media/right_can_best/2026-05-16_15-54-09_best_clean_seed20260516",
+    "weights_fast_success_sensor": "outputs/media/right_can_best/2026-05-16_15-56-04_best_clean_seed20260516",
+    "front_can_close_success_window": "outputs/media/right_can_best/2026-05-16_15-58-20_front_can_close_clean_seed20260516",
+    "side_can_comparison": "outputs/media/right_can_best/2026-05-16_16-00-07_side_can_clean_seed20260516",
+    "best_clean_verified": "outputs/media/right_can_best/2026-05-16_16-04-08_best_clean_seed20260516",
+    "best_debug_verified": "outputs/media/right_can_best/2026-05-16_16-05-44_best_debugframes_seed20260516"
+  },
+  "source_scripts": {
+    "capture_python": "src/kuafu/data/collection/capture_right_can_best_media.py",
+    "capture_wrapper": "src/kuafu/data/collection/capture_right_can_best_media.sh",
+    "collection_loop": "src/kuafu/data/collection/collect_and_upload_loop_can.sh",
+    "recreate_wrapper": "resources/media/right_can_media/recreate_right_can_media.sh"
+  }
+}

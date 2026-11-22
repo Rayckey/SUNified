@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage is a fixed-pose grasp closure. The panda_fingertip position is frozen with the required 0.01 m tolerance, and its full orientation is frozen with the required 0.05 rad tolerance, which represents preserving the start-of-stage +z and +y tool directions. The grasp success is represented with object_grasped rather than close_gripper because the stage requires cube_1 to be physically held, not merely that the finger joints reach a closed value; per the API rules, close_gripper and object_grasped are not emitted together. The object_grasped term is the representable success condition for closing onto and holding cube_1. The API has no explicit way to name cube_1 inside object_grasped, encode bilateral finger contact/effort feedback, encode finger joint value 0.0, encode 'no longer opening', or encode intentional avoidance of cube_2 contact, so those clauses are noted but not separately represented. manipulator_high_effort is not used because it refers to arm/TCP effort, not finger squeeze feedback.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

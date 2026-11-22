@@ -1,0 +1,1 @@
+[Manipulate] Move the grasped can to a lifted clearance state with the gripper closed.

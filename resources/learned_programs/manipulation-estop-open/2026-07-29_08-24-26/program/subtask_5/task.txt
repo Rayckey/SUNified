@@ -1,0 +1,1 @@
+[Release] Retract the gripper away from estop_cap_center to a non-contact configuration with the gripper open, preserving continuity with the immediately preceding interaction.

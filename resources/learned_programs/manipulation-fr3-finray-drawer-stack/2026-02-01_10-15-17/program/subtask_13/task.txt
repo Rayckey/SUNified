@@ -1,0 +1,1 @@
+[Release] Retract the gripper away from the strawberry to a safe configuration with the gripper open.

@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage commands the already-open gripper to retract the panda_fingertip by 0.10 m along pen_holder +z, with 0.01 m completion tolerance, while preserving the start-of-stage fingertip orientation within 5 degrees. The open_gripper term represents keeping the fingers commanded open near the fully open state through success. Marker pose stability, marker insertion-depth monitoring, marker local +y alignment with pen_holder +z, and gripper-marker free-space/decreasing finger contact-effort feedback cannot be directly represented with the available operators because observed non-gripped objects cannot be constrained or monitored as controlled entities, and there is no finger contact-effort constraint distinct from gripper-open state.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

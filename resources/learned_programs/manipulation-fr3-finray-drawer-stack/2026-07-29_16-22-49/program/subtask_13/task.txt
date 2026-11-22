@@ -1,0 +1,1 @@
+[Release] Open the gripper to release strawberry_center_frame at top_drawer_center_frame while keeping both the gripper position and orientation fixed.

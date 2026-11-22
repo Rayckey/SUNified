@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage is represented by holding the panda_fingertip pose fixed while opening the gripper. freeze_position enforces the current panda_fingertip world position within 0.01 m, and freeze_orientation preserves the current panda_fingertip orientation within 0.05 rad, covering the requirement to avoid translation or rotation during release. open_gripper commands the fingers to the open/released state. The API has no direct term for finger effort feedback, negative grasp state/no-longer-held, or support contact between cube_2 and cube_1. The requested cube_2-on-cube_1 placement check would require an additional object position relation, but the constraint API allows at most one position op in the stage; the explicit end-effector position freeze is kept and the object placement/effort-release monitoring is therefore noted as unrepresented.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

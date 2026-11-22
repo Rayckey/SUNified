@@ -1,0 +1,139 @@
+# right_can example config that emphasizes the final stage of the demonstration.
+# Run with:
+#   python "src/kuafu/bc/training/train_bc_prior_mlp.py" --config "resources/experiment_definitions/fr3_finray/prior_configs/right_can/right_can_chunking_10_shift_U_long_long.yaml"
+#
+# This file is fully documented so you can tune it directly.
+
+dataset:
+  # HDF5 dataset containing many right_can demos.
+  dataset: "src/kuafu/data/datasets/fr3_finray_table_right_can_spice_damped_noise.hdf5"
+  
+  # null = use all demos. Set "demo_0" etc. to train on only one trajectory.
+  demo: null
+
+  # right_can PPO policy observation is 31-D, so "state" is the usual choice for
+  # a policy prior. Use "full_state" only if you intentionally want privileged
+  # information in BC training.
+  obs_key: "full_state"
+
+  # Action branch to imitate. Keep this aligned with how you intend to use the
+  # prior later.
+  # Examples: "relative_joint", "absolute_joint", "absolute_ee", "relative_ee"
+  action_mode: "absolute_ee"
+
+  # Temporal alignment. For this setup, -1 was already your default.
+  # Examples:
+  #   -1 : obs[t] predicts previous action
+  #    0 : obs[t] predicts same-timestep action
+  #    1 : obs[t] predicts next action
+  time_shift: -1
+
+  # Hold out 10% of demos for validation.
+  val_fraction: 0.1
+
+  # Random demo split gives better coverage across the dataset.
+  split_mode: "random"
+
+  # Reproducibility seed.
+  seed: 1999
+
+preprocessing:
+  # 1 = predict only one action at a time.
+  # Try 4 or 8 if you want the prior to model short future action sequences.
+  action_chunk_size: 10
+
+  # 1 = only current obs.
+  # Try 2 or 4 if the final insertion/release stage needs short-term context.
+  obs_history: 1
+
+model:
+  # Hidden layer sizes of the BC MLP.
+  # This can contain more than three layers.
+  # This matches your PPO actor width pattern.
+  # Example alternatives:
+  #   [256, 256]
+  #   [512, 512, 256]
+  #   [256, 256, 128]
+  #   [512, 512, 256, 128]
+  hidden_dims: [512,256,128,256,512]
+
+  # Hidden nonlinearity. If you want to match PPO exactly, consider "relu".
+  activation: "relu"
+
+
+optimization:
+  # Adam learning rate.
+  lr: 1.0e-5
+
+  # Weight decay regularization.
+  weight_decay: 1.0e-5
+
+  # Batch size used by the main training loop.
+  batch_size: 1024
+
+  # Data loading workers.
+  num_workers: 8
+
+  # Total epochs.
+  num_epochs: 300
+
+  # Save periodic checkpoints every 100 epochs.
+  save_every_n_epochs: 50
+
+  # Gradient clipping max norm.
+  grad_clip: 10.0
+
+logging:
+  # Root output directory for tensorboard logs and checkpoints.
+  log_dir: "logs/bc_prior_mlp"
+
+  # Optional single demo to monitor every epoch.
+  # Example values: null, 0, 15, 99
+  monitor_demo_index: null
+
+auto_shift:
+  # Used only if you launch with --time_shift auto from CLI.
+  epochs: 50
+
+  # Warmup batch size used only for auto-shift search.
+  batch_size: 512
+
+sample_weighting:
+  # Turn on stage-based weighting for training loss.
+  enabled: true
+
+  # In right_can, stage is stored as the last scalar in both "state" and
+  # "full_state", so -1 is the correct index.
+  obs_stage_index: -1
+
+  # Default weight for all non-listed stages.
+  default_weight: 1.0
+
+  # Keep mean weight around 1.0 so weighted training does not explode the
+  # overall loss scale.
+  normalize: true
+
+  # If true, validation loss also uses the same stage weighting.
+  # This affects both best-checkpoint selection and time_shift=auto ranking.
+  # Set this to true if your real objective is specifically final-stage quality.
+  # Set it to false if you want validation to remain a neutral overall metric.
+  weight_validation: true
+
+  # Final-stage emphasis.
+  # Your dataset stage ids are 0..7, and 7 is the last stage.
+  # Current meaning:
+  #   stage 7 gets 3x training weight
+  #   all other stages get 1x
+  #
+  # Example alternatives:
+  #   {7: 2.0}
+  #   {6: 1.5, 7: 4.0}
+  #   {5: 1.2, 6: 2.0, 7: 5.0}
+  stage_weights:
+    {}
+
+critic_pretraining:
+  enabled: false
+  gamma: 0.99
+  loss_coef: 1.0
+  normalize_targets: true

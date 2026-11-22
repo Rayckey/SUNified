@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage is encoded as a conjunctive hold-and-lift controller stage. `object_grasped` represents maintaining a firm closed grasp on the can rather than merely commanding finger closure. The single allowed position operator is a `directional_move` of the panda_fingertip along world +z by 0.15 m with 0.01 m tolerance, matching the geometric stop condition. `freeze_orientation` preserves the current end-effector orientation during the lift; the requested 5 degree bound is encoded as about 0.087 rad. The grasped can is expected to move with the fingertip through the grasp constraint. Exact monitoring of left/right finger joint positions near 0.0, gripper squeeze effort feedback, unsafe-contact/loss-of-grasp early stopping, and exact relative pose preservation between panda_fingertip and can_center_frame are not directly representable with the available operators or condition labels, so they are noted but omitted.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        }
+    ]
+}

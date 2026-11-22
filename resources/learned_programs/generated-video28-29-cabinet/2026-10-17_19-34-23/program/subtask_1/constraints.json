@@ -1,0 +1,58 @@
+{
+    "Reasoning": "This stage keeps the gripper open, preserves the current panda_fingertip orientation, and moves the panda_fingertip to the top_drawer_handle_frame origin for intended contact. The reach_point target is the handle-frame origin expressed in the top_drawer_handle_frame basis. Its condition includes both geometry and manipulator_high_effort to represent stopping either on reaching the intended contact geometry or on first fingertip/gripper contact effort. The previously established -y-side approach is preserved by context and the fixed orientation; no new tool-axis relation is added. Excessive unexpected effort before the intended geometry as a failure condition cannot be explicitly encoded beyond the manipulator_high_effort stop condition.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ],
+    "TolerancePolicy": {
+        "version": "operator_geometry_v2",
+        "profile": "mpc",
+        "source": "receiver",
+        "decisions": {
+            "1": {
+                "tolerance_rad": "MPC angular default; non-contact/contact-setup angular tolerance"
+            },
+            "2": {
+                "tolerance_m": "MPC precision cap; first-contact size rule"
+            }
+        }
+    }
+}

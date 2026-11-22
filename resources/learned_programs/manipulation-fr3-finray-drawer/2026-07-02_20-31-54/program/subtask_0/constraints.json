@@ -1,0 +1,66 @@
+{
+    "Reasoning": "This stage moves panda_fingertip to the specified non-contact approach point 0.12 m along top_drawer_handle_frame -y, with a 0.02 m success tolerance, while establishing the requested approach orientation using two axis alignment constraints. The gripper is required to remain open, represented by open_gripper. The explicit non-contact/geometric separation monitoring against top_drawer_handle_frame and cabinet, and low-level monitoring of end-effector position/quaternion and finger joint positions, are not directly representable beyond the reach_point target, orientation constraints, and open_gripper metadata.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+z",
+                "reference_axis": "-y",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.12,
+                    0.0
+                ],
+                "tolerance_m": 0.02
+            }
+        }
+    ]
+}

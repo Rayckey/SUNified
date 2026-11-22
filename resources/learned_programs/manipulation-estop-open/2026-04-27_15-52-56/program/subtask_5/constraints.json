@@ -1,0 +1,44 @@
+{
+    "Reasoning": "This retract stage requires:\n1. Gripper remains fully open throughout (open_gripper).\n2. Orientation continuity: tool +z antiparallel with estop_cap_center +z, and tool +y orthogonal to estop_cap_center +z. Since the prior steps established this orientation and the requirement says \"keep tool orientation fixed (invariant)\", I use freeze_orientation to preserve it. The orientation was already established in prior steps, so freeze_orientation is appropriate here.\n3. Translational motion: move along object +z of estop_cap_center frame to reach the retract target point (estop_cap_center origin + 0.12 m along object +z). This is a concrete target point, so reach_point is appropriate. The offset is [0, 0, 0.12] in the estop_cap_center object frame (object +z direction).\n4. Stop condition: within 0.01 m of the retract target point.\n5. Monitor: effort on gripper finger joints should remain at free-space baseline (manipulator_low_effort on gripper channels - but this is gripper effort, not arm effort; the TermAPI doesn't have a dedicated gripper effort monitor separate from manipulator_low_effort). I'll note this in Reasoning as not directly representable.\n\nThe reach_point target: panda_fingertip reaches estop_cap_center origin offset by [0, 0, 0.12] m along object +z in estop_cap_center object frame.\n\nConstraints order:\n1. open_gripper (and) - gripper state\n2. freeze_orientation (and) - keep orientation fixed\n3. reach_point (and) - move to retract target\n\nNote: The axis_align constraints for tool +z antiparallel to estop_cap_center +z and tool +y orthogonal to estop_cap_center +z were established in prior steps. The current stage says \"keep tool orientation fixed (invariant) as established in prior steps\", so freeze_orientation is the correct operator here rather than re-establishing with axis_align.\n\nThe effort monitoring on gripper finger joints (state channels 7 and 8 at free-space baseline) cannot be directly represented by the TermAPI's manipulator_low_effort (which covers arm/TCP contact forces, not finger squeeze). This is noted in Reasoning.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

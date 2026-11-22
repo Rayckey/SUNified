@@ -1,0 +1,50 @@
+{
+    "Reasoning": "This release stage keeps the end-effector fixed while opening the gripper. `freeze_position` enforces no commanded translation of `panda_fingertip`; `freeze_orientation` enforces no commanded rotation. `open_gripper` represents symmetric opening to the open release state. The current top drawer open state and current handle pose are preserved implicitly by commanding no end-effector motion during release, but object/drawer immobility cannot be separately encoded because only one position operator is allowed and the stage specifically requires freezing the fingertip. Finger effort dropping to free-space baseline, unexpected increase in contact effort during opening, failure of fingers to open, and detectable drawer slip/motion are not directly representable with the available operators/condition labels; success is represented by the gripper-opened condition together with fixed fingertip pose.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ],
+    "TolerancePolicy": {
+        "version": "operator_geometry_v2",
+        "profile": "mpc",
+        "source": "receiver",
+        "decisions": {
+            "0": {
+                "tolerance_m": "MPC precision cap; secured-result tool release guard"
+            },
+            "1": {
+                "tolerance_rad": "MPC angular default; release/retract angular tolerance"
+            }
+        }
+    }
+}

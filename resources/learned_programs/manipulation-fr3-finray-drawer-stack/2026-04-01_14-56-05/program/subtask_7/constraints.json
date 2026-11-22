@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The subtask requires:\n1. Move the open gripper into contact with strawberry_center_frame (reach the origin, no standoff offset).\n2. Keep gripper orientation fixed (freeze_orientation).\n3. Keep gripper fully open (open_gripper).\n4. Stop when contact is detected (effort spike) OR when tool frame is within 0.01 m of strawberry_center_frame origin.\n\nConstraints:\n- reach_point: Move panda_fingertip to strawberry_center_frame origin (offset [0,0,0]), tolerance 0.01 m (contact threshold). This is the positional goal.\n- freeze_orientation: Keep panda_fingertip orientation fixed throughout (tool +z antiparallel to world +z as established in prior step).\n- open_gripper: Both finger joints remain fully open.\n\nThe stop condition is \"contact OR within 0.01 m\" \u2014 the reach_point tolerance of 0.01 m covers the distance condition. The effort spike (contact) condition is represented by adding a manipulator_high_effort OR condition on the reach_point or as a separate or-logic constraint. Since the subtask says \"stop when contact OR within 0.01 m\", I'll use \"or\" logic for the effort-based halt: the overall success is (reach_point within tolerance) OR (manipulator_high_effort detected). I'll encode this as: first constraint is reach_point (logic \"and\"), then a manipulator_high_effort condition with \"or\" logic using freeze_position to represent \"halt here on contact\". Actually, the TermAPI doesn't have a dedicated \"halt on effort\" operator. The closest representation is to use the condition metadata \"manipulator_high_effort\" on a freeze_position term with \"or\" logic, meaning success is also achieved if high effort is detected (contact). freeze_position would mean \"stay where you are\" which is appropriate once contact is made.\n\nSo the structure:\n1. reach_point (and, geometry) \u2014 positional goal\n2. freeze_orientation (and, geometry) \u2014 orientation fixed\n3. open_gripper (and, gripper_opened) \u2014 gripper state\n4. freeze_position (or, manipulator_high_effort) \u2014 halt on contact effort spike (alternative success condition)\n\nWait, but rule says AT MOST ONE position constraint operator (reach_point OR directional_move OR freeze_position). So I cannot use both reach_point and freeze_position. \n\nI'll encode the contact-halt condition via the condition metadata on the reach_point itself, and add a separate \"or\" constraint that uses manipulator_high_effort condition. But without a position op, I can't add freeze_position. \n\nThe best approach: use reach_point as the primary position constraint (and), freeze_orientation (and), open_gripper (and). For the contact/effort stop condition, I note in Reasoning that the TermAPI cannot directly represent \"halt on effort spike\" as a separate operator beyond the condition metadata. The manipulator_high_effort condition on the reach_point itself (as an additional condition label) captures the intent that contact effort is monitored. Alternatively, I can put manipulator_high_effort as a condition on the reach_point term to indicate this is also an effort-monitored constraint.\n\nActually, re-reading the rules: \"condition is metadata only and does not enforce success by itself.\" So I'll add manipulator_high_effort to the condition list of the reach_point to signal monitoring, and note in Reasoning that the effort-spike halt cannot be fully represented as a separate boolean branch without a second position op.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "strawberry_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

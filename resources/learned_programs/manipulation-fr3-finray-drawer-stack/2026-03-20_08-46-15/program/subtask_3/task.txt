@@ -1,0 +1,1 @@
+[Manipulate] Pull the grasped top_drawer_handle_frame outward in the pulling direction to open the drawer fully, with the gripper closed.

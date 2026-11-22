@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage is encoded as a stacking/lowering goal for the currently gripped cube_1: cube_1 must reach the point at cube_2 plus world +z 0.05 m within 0.01 m. The reach condition includes both geometry and manipulator_high_effort so the controller can treat either geometric arrival or sustained contact/effort during lowering as the stopping condition, while still requiring the grasp to remain firm. The object_grasped term represents preserving the stable closed grasp of cube_1 rather than issuing a new close command. The freeze_orientation term preserves the panda_fingertip start-of-stage orientation within 5 degrees. Unrepresented details: exact per-finger joint start-value holding with only symmetric inward adjustment/no opening is not directly expressible; preserving the exact rigid transform from the tool frame to the cube center is only approximated by object_grasped plus fixed tool orientation; strict world -z path travel of exactly 0.11 m and continuous lateral alignment throughout the path cannot be added because the API permits at most one position operator, so the final stacking goal was prioritized. Monitoring signals and stop-on-grasp-loss/excessive-unintended-contact are runtime safety policies not directly expressible as Constraint terms.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.05
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        }
+    ]
+}

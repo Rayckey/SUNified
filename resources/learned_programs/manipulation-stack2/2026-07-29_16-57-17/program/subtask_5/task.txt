@@ -1,0 +1,1 @@
+[Manipulate] Lower cube_1 onto cube_2 with the gripper closed while keeping the gripper orientation fixed.

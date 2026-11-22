@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The subtask is to move the open gripper into contact with top_drawer_handle_frame while keeping orientation fixed. \n\nKey constraints:\n1. Gripper must be fully open throughout \u2192 open_gripper\n2. Orientation must remain fixed (as established in prior step) \u2192 freeze_orientation on panda_fingertip\n3. Positional goal: reach top_drawer_handle_frame origin with no standoff offset \u2192 reach_point with offset [0,0,0] and tight tolerance (0.01 m as specified)\n4. Stop when contact/effort rises above free-space OR when within 0.01 m \u2192 this is an OR condition between geometry (reach_point) and manipulator_high_effort\n\nThe subtask says \"Stop when contact/effort feedback rises above free-space levels... OR when the tool frame origin is within 0.01 m\" \u2014 this is an explicit OR alternative for the stopping condition. However, the constraint model works as a left-to-right boolean reduction. The reach_point encodes the geometric goal (within 0.01 m tolerance). The contact/effort condition is encoded as manipulator_high_effort on the reach_point constraint using \"or\" logic to represent the alternative stopping condition.\n\nActually, looking at the constraint model more carefully: the first constraint sets the initial truth value, and subsequent constraints combine via their logic. So I should structure:\n- Constraint 1 (and): open_gripper \u2014 gripper must be open\n- Constraint 2 (and): freeze_orientation \u2014 keep orientation fixed\n- Constraint 3 (or): reach_point \u2014 reach the handle frame origin OR contact detected (the \"or\" here represents the alternative stopping condition: contact/effort OR distance threshold)\n\nWait, the \"or\" logic in the model combines with the accumulated result. Let me think again:\n\nThe stopping condition is: (within 0.01m) OR (contact detected). This means success = reach_point OR manipulator_high_effort. But both must also be combined with the gripper open and freeze_orientation requirements.\n\nStructure:\n1. open_gripper (and) \u2014 gripper open required\n2. freeze_orientation (and) \u2014 orientation fixed required  \n3. reach_point (or, condition includes manipulator_high_effort) \u2014 reach target OR contact stops motion\n\nThe \"or\" on constraint 3 means: accumulated_result OR reach_point_satisfied. But that's not quite right either since we want (open AND frozen_orientation) AND (reach_point OR contact).\n\nThe condition field is metadata only and doesn't affect boolean combination. So I'll use:\n1. open_gripper, logic=\"and\", condition=[\"gripper_opened\"]\n2. freeze_orientation, logic=\"and\", condition=[\"geometry\"]\n3. reach_point, logic=\"and\", condition=[\"geometry\", \"manipulator_high_effort\"] \u2014 the condition metadata notes that contact also triggers success, but the boolean is \"and\" with previous\n\nActually the subtask says \"whichever occurs first\" for stopping \u2014 this is an OR stopping condition. I'll encode the reach_point with condition=[\"geometry\", \"manipulator_high_effort\"] to capture both stopping triggers as metadata, and use \"or\" logic to represent the alternative. But since open_gripper and freeze_orientation must always hold, I need them as \"and\".\n\nLet me structure it as:\n1. (and) open_gripper\n2. (and) freeze_orientation  \n3. (or) reach_point with condition=[\"geometry\", \"manipulator_high_effort\"] \u2014 this \"or\" means: success if (constraints 1&2 satisfied) OR (reach_point satisfied with contact). \n\nHmm, that's not right. The \"or\" would mean success = (open_gripper AND freeze_orientation) OR reach_point, which loses the requirement for open gripper.\n\nThe most faithful encoding given the model limitations:\n- Use \"and\" for all constraints, with the reach_point having condition=[\"geometry\", \"manipulator_high_effort\"] to note the dual stopping condition as metadata.\n- The \"or\" stopping condition (contact vs distance) cannot be perfectly represented in the boolean chain but is captured in the condition metadata.\n\nActually re-reading: \"or\" in logic means this constraint combines with accumulated via OR. So:\n1. (and) open_gripper \u2192 result = open_gripper_satisfied\n2. (and) freeze_orientation \u2192 result = open_gripper AND freeze_orientation  \n3. (and) reach_point [condition includes manipulator_high_effort] \u2192 result = open_gripper AND freeze_orientation AND reach_point\n\nTo encode the OR stopping: I could add a 4th constraint with \"or\" and condition=[\"manipulator_high_effort\"] but there's no op for \"contact detected\" alone. The closest would be to put the reach_point as \"or\" but that loses the AND with gripper/orientation.\n\nBest approach: encode reach_point with \"and\" and include manipulator_high_effort in condition as metadata indicating contact is also a valid stopping trigger. This is the most practical encoding given the TermAPI limitations.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "or",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

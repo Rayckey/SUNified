@@ -1,0 +1,5 @@
+{
+  "artifact": "assets/tasks/generated_cabinet/task.json",
+  "description": "Task configuration, robot/object assets and interaction frames",
+  "path_base": "repository root"
+}

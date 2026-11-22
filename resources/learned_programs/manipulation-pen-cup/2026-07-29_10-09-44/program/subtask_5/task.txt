@@ -1,0 +1,1 @@
+[Manipulate] Move the grasped marker above pen_holder with the gripper closed while keeping marker upright.

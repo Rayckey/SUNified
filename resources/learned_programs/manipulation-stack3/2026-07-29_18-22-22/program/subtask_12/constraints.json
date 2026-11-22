@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Use one position goal for the held cube_3 origin: reach the world-frame point at cube_2 origin plus +0.15 m in world z, which also gives lateral x/y alignment, with the required 0.01 m final tolerance. Maintain the physical grasp on cube_3 using object_grasped rather than a separate close_gripper term, because the stage requires a firm held object and the API says not to emit both. Preserve the current panda_fingertip orientation with freeze_orientation. Low manipulator effort is included as feedback on the motion term to represent monitoring for unexpected contact/effort spikes where supported. Unrepresented clauses: explicit left/right finger joint position and effort balance, slip detection beyond object_grasped, exact 0.15 m center-to-center clearance constraints along the whole path for cube_1/cube_2, and direct contact-signal monitoring are not expressible with the available flat operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

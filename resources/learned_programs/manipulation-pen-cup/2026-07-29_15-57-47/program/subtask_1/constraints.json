@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage moves the open panda_fingertip into contact with the marker center while preserving the start-of-stage fingertip orientation. The reach_point term targets the marker center with 0.01 m contact tolerance; its condition includes both geometry and manipulator_high_effort to represent stopping by geometric contact completion or contact/effort feedback without using a top-level OR. The freeze_orientation term keeps the panda_fingertip orientation fixed relative to its current start-of-stage orientation, representing no intentional change of the tool +z or +y directions, with a 5 degree tolerance. The open_gripper term represents keeping/confirming the gripper open. Contact allowance and the absence of non-contact clearance are handled by not adding any avoidance or clearance constraint. The API cannot explicitly command individual finger joint positions near 1.0, so that clause is represented by open_gripper.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "marker",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

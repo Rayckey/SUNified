@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage keeps the panda_fingertip end-effector pose fixed while opening the gripper. The freeze_position term encodes holding the panda_fingertip origin at its stage-start world position within 0.01 m with no end-effector translation. The freeze_orientation term encodes holding the panda_fingertip frame orientation at its stage-start world orientation within 0.05 rad with no end-effector rotation. The open_gripper term encodes commanding the fingers toward the fully open state for release. Marker non-commanded motion, marker support by the pen_holder, direct bilateral finger-contact reduction along the tool +y axis, explicit finger joint target value 1.0, and gripper finger effort/contact thresholds are not directly representable with the available operators/condition labels; manipulator_low_effort is not used because it refers to arm/TCP interaction effort, not finger squeeze/contact.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

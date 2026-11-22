@@ -1,0 +1,5 @@
+{
+  "artifact": "src/kuafu/sim2real/examples/evaluation.json",
+  "description": "DP3 dataset, policy checkpoint and paired rollout results",
+  "path_base": "repository root"
+}

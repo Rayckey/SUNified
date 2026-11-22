@@ -1,0 +1,18 @@
+{
+  "source_run": "kinova_other_tasks_100_20261023T000049Z",
+  "source_file": "stack2/workers/worker_00/datasets/state_demos.hdf5",
+  "task": "Kinova-Table-Gen3-Stack-2",
+  "demonstrations": {
+    "demo_0": 110,
+    "demo_1": 120,
+    "demo_2": 125,
+    "demo_3": 129
+  },
+  "obs_key": "state",
+  "obs_dim": 31,
+  "action_key": "absolute_ee",
+  "action_dim": 11,
+  "sha256": "690c591f4bccecdf28ade16afa0dcb3cebc5e952d11627dc9ceda771440905d3",
+  "license": "Apache-2.0",
+  "scope": "A small installation and training example; evaluate a trained policy in simulation before deployment."
+}

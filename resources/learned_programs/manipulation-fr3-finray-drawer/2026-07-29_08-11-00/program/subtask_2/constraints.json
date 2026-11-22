@@ -1,0 +1,38 @@
+{
+    "Reasoning": "This stage closes the gripper to establish a grasp while holding the current end-effector pose. freeze_position keeps panda_fingertip at its stage-start position within 0.01 m. freeze_orientation keeps the stage-start orientation within 5 degrees. object_grasped represents the required successful physical grasp of top_drawer_handle_frame; close_gripper is not emitted because the API forbids using close_gripper together with object_grasped, and this stage requires a real held object rather than only mechanical closure. The detailed bilateral finger contact, finger joint stall before full closure, handle centered along the panda_fingertip +y finger axis, and left/right finger effort or jamming stop logic cannot be directly parameterized in the available terms; manipulator_high_effort is not used because the described effort is gripper-finger effort, not arm/TCP effort.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

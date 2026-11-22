@@ -1,0 +1,1 @@
+[Manipulate] Close the gripper to grasp the mug at mug_rim_frame_0 while keeping both the gripper position and orientation fixed.

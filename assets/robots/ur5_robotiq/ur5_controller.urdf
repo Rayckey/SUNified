@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="kuafu_ur5_robotiq">
+  <link name="base_link" />
+  <link name="shoulder_pan_joint_frame" />
+  <link name="shoulder_link" />
+  <joint name="shoulder_pan_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="shoulder_pan_joint_frame" />
+    <origin xyz="0 0 0.0891589969397" rpy="0 0 -3.14159256617" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.283185307179586" upper="6.283185307179586" effort="150" velocity="3.141592653589793" />
+  </joint>
+  <joint name="shoulder_pan_joint_child_frame" type="fixed">
+    <parent link="shoulder_pan_joint_frame" />
+    <child link="shoulder_link" />
+    <origin xyz="-0 -0 -0" rpy="-0 0 0" />
+  </joint>
+  <link name="shoulder_lift_joint_frame" />
+  <link name="upper_arm_link" />
+  <joint name="shoulder_lift_joint" type="revolute">
+    <parent link="shoulder_link" />
+    <child link="shoulder_lift_joint_frame" />
+    <origin xyz="0 0 0" rpy="1.57079632679 0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.283185307179586" upper="6.283185307179586" effort="150" velocity="3.141592653589793" />
+  </joint>
+  <joint name="shoulder_lift_joint_child_frame" type="fixed">
+    <parent link="shoulder_lift_joint_frame" />
+    <child link="upper_arm_link" />
+    <origin xyz="-0 -0 -0" rpy="-0 0 0" />
+  </joint>
+  <link name="elbow_joint_frame" />
+  <link name="forearm_link" />
+  <joint name="elbow_joint" type="revolute">
+    <parent link="upper_arm_link" />
+    <child link="elbow_joint_frame" />
+    <origin xyz="-0.425000011921 0 0" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-3.141592653589793" upper="3.141592653589793" effort="150" velocity="3.141592653589793" />
+  </joint>
+  <joint name="elbow_joint_child_frame" type="fixed">
+    <parent link="elbow_joint_frame" />
+    <child link="forearm_link" />
+    <origin xyz="-0 -0 -0" rpy="-0 0 0" />
+  </joint>
+  <link name="wrist_1_joint_frame" />
+  <link name="wrist_1_link" />
+  <joint name="wrist_1_joint" type="revolute">
+    <parent link="forearm_link" />
+    <child link="wrist_1_joint_frame" />
+    <origin xyz="-0.392250001431 0 0.109149999917" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.283185307179586" upper="6.283185307179586" effort="28" velocity="3.141592653589793" />
+  </joint>
+  <joint name="wrist_1_joint_child_frame" type="fixed">
+    <parent link="wrist_1_joint_frame" />
+    <child link="wrist_1_link" />
+    <origin xyz="-0 -0 -0" rpy="-0 0 0" />
+  </joint>
+  <link name="wrist_2_joint_frame" />
+  <link name="wrist_2_link" />
+  <joint name="wrist_2_joint" type="revolute">
+    <parent link="wrist_1_link" />
+    <child link="wrist_2_joint_frame" />
+    <origin xyz="0 -0.0946500003338 -1.94130388848e-11" rpy="1.57079632679 0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.283185307179586" upper="6.283185307179586" effort="28" velocity="3.141592653589793" />
+  </joint>
+  <joint name="wrist_2_joint_child_frame" type="fixed">
+    <parent link="wrist_2_joint_frame" />
+    <child link="wrist_2_link" />
+    <origin xyz="-0 -0 -0" rpy="-0 0 0" />
+  </joint>
+  <link name="wrist_3_joint_frame" />
+  <link name="wrist_3_link" />
+  <joint name="wrist_3_joint" type="revolute">
+    <parent link="wrist_2_link" />
+    <child link="wrist_3_joint_frame" />
+    <origin xyz="0 0.0822999998927 -1.68800130124e-11" rpy="-1.57079632679 -8.74227799041e-08 8.74227797931e-08" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.283185307179586" upper="6.283185307179586" effort="28" velocity="3.141592653589793" />
+  </joint>
+  <joint name="wrist_3_joint_child_frame" type="fixed">
+    <parent link="wrist_3_joint_frame" />
+    <child link="wrist_3_link" />
+    <origin xyz="-0 -0 -0" rpy="-0 0 0" />
+  </joint>
+  <link name="panda_link4" />
+  <joint name="panda_link4_fixed" type="fixed">
+    <parent link="forearm_link" />
+    <child link="panda_link4" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  <link name="panda_link7" />
+  <joint name="panda_link7_fixed" type="fixed">
+    <parent link="wrist_3_link" />
+    <child link="panda_link7" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  <link name="panda_fingertip" />
+  <joint name="panda_fingertip_fixed" type="fixed">
+    <parent link="wrist_3_link" />
+    <child link="panda_fingertip" />
+    <origin xyz="0 0 0.162" rpy="0 0 0" />
+  </joint>
+</robot>

@@ -1,0 +1,49 @@
+{
+    "Reasoning": "Success for this subtask requires the tool (panda_fingertip) to reach a pre-grasp pose near cube_3 in a top-down arrangement. This involves (1) aligning the tool +z axis (in agent frame) antiparallel to world +z (to match a top-down approach), (2) positioning the tool so its origin is above the center of cube_3 by at least 0.075 m along the world +z axis, (3) ensuring the gripper remains fully open throughout, and (4) stopping when the tool origin is within 0.005 m of the target standoff position above cube_3 and not in contact with the object, which is implied by relying only on pose feedback (not force/effort sensing and not establishing contact). Each constraint is strictly necessary for the definition of a valid pre-grasp approach, and their satisfaction is conjunctive ('and') as all conditions must be met for success.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_3",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.075
+                ],
+                "tolerance_m": 0.005
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

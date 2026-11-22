@@ -1,0 +1,1 @@
+[Manipulate] Move cube_3 to create clearance for transporting cube_3 while keeping the gripper closed.

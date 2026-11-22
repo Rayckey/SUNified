@@ -1,0 +1,48 @@
+{
+  "recorded_date": "2026-10-23",
+  "selection": "latest checkpoints",
+  "runs": [
+    {
+      "run": "full_dp3",
+      "epoch": 52,
+      "conditions": {
+        "cabinet_x_plus_3cm": {
+          "attempts": 5,
+          "successes": 0
+        },
+        "nominal": {
+          "attempts": 5,
+          "successes": 0
+        }
+      }
+    },
+    {
+      "run": "small_dp3",
+      "epoch": 599,
+      "conditions": {
+        "cabinet_x_plus_3cm": {
+          "attempts": 5,
+          "successes": 0
+        },
+        "nominal": {
+          "attempts": 5,
+          "successes": 0
+        }
+      }
+    },
+    {
+      "run": "simple_dp3_relative",
+      "epoch": 657,
+      "conditions": {
+        "cabinet_x_plus_3cm": {
+          "attempts": 5,
+          "successes": 0
+        },
+        "nominal": {
+          "attempts": 5,
+          "successes": 0
+        }
+      }
+    }
+  ]
+}

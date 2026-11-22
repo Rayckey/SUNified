@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage keeps the already-held estop_cap_center grasp secure while twisting it in place about its object +z axis toward unlock, capped at 45 degrees. freeze_position holds the panda_fingertip at its start-of-stage base-frame position with the specified 0.01 m tolerance, representing no intentional translation during the twist. object_grasped represents that the cap must remain physically held without slip, rather than merely commanding closed finger joints. directional_rotate commands the gripped estop_cap_center to rotate about its local +z axis by up to 45 degrees; its condition includes both geometry and manipulator_high_effort to represent stopping on geometric rotation/unlock progress or on hard-stop/unsafe resistance feedback. The explicit unlocked-state detector, small compliance behavior, separate freezing of the estop_cap_center origin, detailed finger joint monitoring, slip detection, and asymmetric finger-effort limits are not directly representable beyond object_grasped and the single allowed position freeze.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_rotate",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "estop_cap_center",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "rotation_axis": "+z",
+                "rotation_angle_rad": 0.785398,
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage is a conjunctive lift while maintaining the grasp. The directional_move encodes the required 0.10 m lift of panda_fingertip along world +z with the specified 0.01 m completion tolerance, which also represents increasing clearance from the table. The freeze_orientation constraint keeps panda_fingertip at its stage-start world orientation within 0.05 rad. The object_grasped constraint represents that mug_rim_frame_0 remains physically held during and at the end of the lift; mechanical closure alone is not used as sufficient. Detailed bilateral finger contact/effort feedback, finger joint positions near 0.0 unless effort requires stable holding, and explicit collision/contact avoidance with the table are not directly representable with the available operators, beyond object_grasped and the upward lift direction.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+{
+    "Reasoning": "This release stage is represented by holding the panda_fingertip pose fixed while commanding the gripper open. freeze_position keeps the fingertip origin within the specified 0.01 m start-of-stage world-frame tolerance, and freeze_orientation preserves the current fingertip orientation using the controller-supported angular tolerance. open_gripper commands the finger joints to the release/open state; its condition also includes manipulator_high_effort to represent the requested early stop if unexpected arm/TCP effort is detected during opening. The API has no negative object_grasped term and no explicit gripper contact/effort-low feedback term, so the requirements that the marker is no longer reported as grasped and that bilateral finger contact effort drops below the grasping threshold are noted here but cannot be directly encoded beyond commanding open_gripper.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened",
+                "manipulator_high_effort"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

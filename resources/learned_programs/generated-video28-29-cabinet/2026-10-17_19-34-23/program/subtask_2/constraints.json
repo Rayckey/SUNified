@@ -1,0 +1,51 @@
+{
+    "Reasoning": "This stage keeps the panda_fingertip pose fixed while executing a grasp. freeze_position and freeze_orientation encode no commanded translation or rotation of the end effector in the current robot-base pose. object_grasped encodes successful physical holding/stable grasp of the intended handle after finger closure, rather than merely reaching a closed gripper state. The available schema has no arguments on object_grasped or close_gripper, so the specific target top_drawer_handle_frame, symmetric finger closure along panda_fingertip +y, centered contact at the handle-frame origin, finger-effort stop criterion, fully-closed-without-contact failure, excessive finger effort failure, and explicit pose-loss failure cannot be represented directly; they are therefore omitted from Constraints beyond the fixed-pose and grasp-success requirements.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ],
+    "TolerancePolicy": {
+        "version": "operator_geometry_v2",
+        "profile": "mpc",
+        "source": "receiver",
+        "decisions": {
+            "0": {
+                "tolerance_m": "MPC precision cap; compliant protrusion tool-hold rule"
+            },
+            "1": {
+                "tolerance_rad": "MPC angular default; ordinary angular-maintenance tolerance"
+            }
+        }
+    }
+}

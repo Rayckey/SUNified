@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage is represented as a conjunctive retract controller: keep the gripper open, keep the panda_fingertip orientation fixed to its start-of-stage orientation within 0.05 rad, and move the panda_fingertip origin to the specified non-contact retract point 0.12 m along mug_rim_frame_0 +z with 0.01 m tolerance. The 0.12 m offset also satisfies the requested final separation of at least 0.10 m geometrically. manipulator_low_effort is attached to the retract reach term to represent the required free-space / no-intentional-contact feedback during the retract as far as the available labels allow. The API has no explicit collision-avoidance operator for the named objects/table, no finger-contact/loss-of-contact feedback operator distinct from gripper_opened, and no passive support/slip/jamming monitor for the released mug_handle_hole_frame relative to cup_hanger_branch_1_tip_frame, so those clauses are noted here but not separately encoded.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "mug_rim_frame_0",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

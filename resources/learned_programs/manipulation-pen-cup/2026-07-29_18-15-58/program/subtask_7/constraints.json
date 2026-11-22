@@ -1,0 +1,46 @@
+{
+    "Diagnosis": "The failure is caused by the runtime restriction reported in the error message: the same controller stage cannot mix `freeze_orientation` with another orientation constraint. The previous list contained both `freeze_orientation` for `panda_fingertip` and `axis_align` for the gripped `marker`, so the `axis_align` term was removed as the smallest repair. The fixed fingertip orientation is kept because it is the primary stage requirement and, with `object_grasped`, indirectly preserves the already established marker alignment from the preceding stage.",
+    "Reasoning": "This corrected stage keeps the marker grasped with the gripper closed, freezes the `panda_fingertip` orientation at its stage-start orientation, and moves the grasped `marker` origin to the incremental insertion target at the `pen_holder` frame offset [0, 0, 0.1235] within 0.02 m. The `reach_point` term also includes `manipulator_high_effort` as a condition label to represent the required abort/stop monitoring for jamming during insertion without using a top-level OR. The explicit marker +y bipolar alignment with pen_holder +z is not emitted as a separate `axis_align` constraint because the runtime forbids mixing it with `freeze_orientation` in this stage; it is intended to be preserved by the closed grasp and fixed fingertip orientation from the already aligned preceding stage.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.1235
+                ],
+                "tolerance_m": 0.02
+            }
+        }
+    ]
+}

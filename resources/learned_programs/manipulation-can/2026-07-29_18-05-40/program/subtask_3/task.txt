@@ -1,0 +1,1 @@
+[Manipulate] Move the grasped can with the gripper closed to create clearance for reorienting can.

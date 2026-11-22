@@ -1,0 +1,1 @@
+[Manipulate] Move the grasped strawberry to a position over the top_drawer_center_frame with the gripper closed.

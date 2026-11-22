@@ -1,0 +1,1 @@
+[Approach] Use a top-down approach to move the open gripper above mug_rim_frame_0 without touching it.

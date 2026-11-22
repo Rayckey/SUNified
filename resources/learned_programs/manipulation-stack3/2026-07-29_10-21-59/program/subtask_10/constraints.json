@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage is a fixed-pose grasp closure. The panda_fingertip position is frozen to prevent intentional end-effector translation while the fingers close, and its orientation is frozen to preserve the preceding approach orientation without adding any new axis relation. Because the required success condition is a real grasp rather than merely commanded finger closure, object_grasped is used instead of close_gripper, per the operator rule not to emit both. The API cannot explicitly parameterize object_grasped with cube_3, bilateral finger contact, finger joint symmetry/value 0.0, exclusion of cube_1/cube_2 contact, or continuous monitoring of feedback/object poses; these are therefore represented only implicitly by the stage context and noted as unrepresented.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

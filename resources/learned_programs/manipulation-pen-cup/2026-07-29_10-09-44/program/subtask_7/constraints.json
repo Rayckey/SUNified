@@ -1,0 +1,43 @@
+{
+    "Diagnosis": "The runtime error explicitly rejects combining freeze_orientation with another orientation constraint in the same controller stage: freeze_orientation was mixed with axis_align. The smallest valid repair is to keep freeze_orientation, because the stage primarily requires preserving the start-of-stage marker world-frame orientation, and remove the axis_align term. The already-established marker-to-pen_holder axial alignment is therefore preserved indirectly by freezing the marker orientation from the aligned start state, but it cannot be redundantly monitored with axis_align in this same stage under the validator rule.",
+    "Reasoning": "Use object_grasped rather than close_gripper so the stage maintains an existing closed grasp without commanding additional closing. Keep freeze_orientation on the gripped marker to preserve the start-of-stage marker orientation in the world frame throughout insertion; because the marker was already aligned with the pen_holder opening at the start of this stage, holding that orientation also preserves the established axial relationship as far as the API allows without mixing orientation ops. The insertion progress is represented by a strict 0.12 m directional_move of the gripped marker along pen_holder local -z with 0.01 m tolerance, avoiding further motion toward the pen_holder origin. The directional_move condition includes manipulator_high_effort as the supported early-stop alternative for jamming, bottoming out, collision, or excessive insertion resistance while still retaining the geometric insertion goal. Explicit finger-joint hold-without-extra-closing, detailed gripper slip/contact feedback, independent panda_fingertip-origin translation, and separate x/y lateral-error monitoring cannot be represented directly beyond object_grasped and the strict axial directional_move.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "axis": "-z",
+                "travel_distance_m": 0.12,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

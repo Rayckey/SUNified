@@ -1,0 +1,49 @@
+{
+    "Reasoning": "This stage moves the already-grasped marker, so object_grasped is used rather than close_gripper to require the marker remain physically held with the gripper closed. The marker origin is commanded to the non-contact alignment standoff relative to pen_holder. Because the API cannot express the asymmetric axial interval z >= 0.2235 and z <= 0.2335 directly, the reach target is placed at the midpoint 0.2285 m with a 0.005 m tolerance, conservatively ensuring the marker does not go below the required 0.2235 m standoff and stays no more than 0.01 m above it; this also enforces lateral alignment more tightly than the requested 0.01 m. The marker +y axis is aligned bipolar with pen_holder +z within 5 degrees. Detailed finger-joint hold, slip detection, sustained finger contact/effort monitoring, rigid relative-pose preservation feedback, and full sensor-monitoring clauses are not directly representable beyond object_grasped and the geometric constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.2285
+                ],
+                "tolerance_m": 0.005
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.0872665
+            }
+        }
+    ]
+}

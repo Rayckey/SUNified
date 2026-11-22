@@ -1,0 +1,57 @@
+{
+  "campaign": "estop_first_two_new_successful_programs_mpc1600_kinova_20260819",
+  "output_root": "/mnt/shared/rocky/kuafu_mpc_estop_programs_20260819",
+  "collection": {
+    "successful_trajectories_per_task": 1600,
+    "successful_trajectories_per_program": 800,
+    "tranches_per_program": 2,
+    "successful_trajectories_per_tranche_per_program": 400,
+    "seed_stride_per_tranche": 1000000,
+    "gpus": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "workers_per_gpu_per_program": 1,
+    "simultaneous_workers_per_gpu": 2,
+    "trajectories_per_worker": 100,
+    "control_output_mode": "absolute_ee",
+    "action_noise_std": 0.003,
+    "record_failures": false,
+    "task_concurrency": 1
+  },
+  "tasks": [
+    {
+      "slug": "estop_open",
+      "task_name": "Kinova-Table-Gen3-EStop-Open",
+      "robot_name": "kinova",
+      "programs": [
+        {
+          "path": "resources/learned_programs/manipulation-estop-open/2026-07-29_08-20-02",
+          "base_seed": 810000
+        },
+        {
+          "path": "resources/learned_programs/manipulation-estop-open/2026-07-29_08-24-26",
+          "base_seed": 820000
+        }
+      ]
+    },
+    {
+      "slug": "estop_close",
+      "task_name": "Kinova-Table-Gen3-EStop-Close",
+      "robot_name": "kinova",
+      "programs": [
+        {
+          "path": "resources/learned_programs/manipulation-estop-close/2026-07-03_02-19-48",
+          "base_seed": 910000
+        },
+        {
+          "path": "resources/learned_programs/manipulation-estop-close/2026-07-29_06-56-50",
+          "base_seed": 920000
+        }
+      ]
+    }
+  ],
+  "source_revision": "b9467f8"
+}

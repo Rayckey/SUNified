@@ -1,0 +1,5 @@
+{
+  "artifact": "src/kuafu/asset_generation/examples/semantics.json",
+  "description": "Articulated USD, preview images and interaction semantics",
+  "path_base": "repository root"
+}

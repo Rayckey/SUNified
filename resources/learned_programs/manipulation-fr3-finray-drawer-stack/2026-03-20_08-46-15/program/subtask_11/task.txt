@@ -1,0 +1,1 @@
+[Manipulate] Lower the grasped strawberry_center_frame down into the interior of the drawer at top_drawer_center_frame, with the gripper closed.

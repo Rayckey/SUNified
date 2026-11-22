@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage is a vertical lift of the already-grasped mug. A single directional_move on panda_fingertip along world +z by 0.10 m with 0.01 m tolerance represents the required lift target and, because directional_move is strictly along the specified axis, also represents no intentional world x/y translation toward the cup_hanger or cup_hanger_branch_1_tip_frame. freeze_orientation keeps the current panda_fingertip orientation fixed during the lift, preserving the current world-frame directions of the tool +z and +y axes with no intentional rotation. object_grasped represents maintaining the closed, firm grasp and sustained grasp feedback on mug_rim_frame_0; it is used instead of close_gripper because the object must remain physically held. The rigid movement of mug_rim_frame_0 and mug_center_frame with the fingertip is represented through the maintained grasp plus the fingertip motion, since only one position operator is allowed. Direct monitoring of gripper effort values, slip detection, and non-gripper collision/contact feedback with the table, cup_hanger, or cup_hanger_branch_1_tip_frame cannot be directly encoded with the available operators, beyond requiring the grasp to remain valid and commanding vertical-only motion.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

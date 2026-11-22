@@ -1,0 +1,1 @@
+[Manipulate] Move cube_3 with the gripper closed to above cube_2 while keeping the gripper orientation fixed.

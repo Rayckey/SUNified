@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This retract stage is represented by commanding the panda_fingertip frame to the non-contact standoff point 0.12 m along estop_cap_center +z, while keeping the gripper open and preserving the current end-effector orientation. The reach_point term encodes the geometric stop condition at the estop_cap_center +z offset with 0.01 m tolerance and includes manipulator_low_effort to represent the required free-space/no-contact effort condition during retract. The freeze_orientation term preserves the start-of-stage panda_fingertip orientation, but the API only provides the fixed 0.2 rad tolerance for freeze_orientation, so the requested 5 degree tolerance cannot be encoded exactly. The open_gripper term encodes that the gripper remains fully open, though the exact left/right finger joint values of 1.0 cannot be represented. Monitoring of estop_cap_center unlocked pose, no added twist of estop_cap_center, and explicit non-contact with estop_base_frame/table are not directly representable with the available operators, beyond commanding the retract offset and low-effort condition.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

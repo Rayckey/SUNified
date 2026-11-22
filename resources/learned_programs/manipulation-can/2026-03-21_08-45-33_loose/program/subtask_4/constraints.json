@@ -1,0 +1,61 @@
+{
+    "Reasoning": "The subtask is to reorient the grasped can so that its long axis (can -y in object frame) aligns with world +z (upright), while keeping the gripper closed and the tool frame position fixed.\n\nKey constraints to encode:\n1. **Orientation target**: can -y in object frame must be antiparallel to world -z (i.e., codirectional with world +z). This is an axis_align: controlled_entity=gripped_object, controlled_target=can_center_frame, controlled_axis=-y, reference_axis=+z in world, alignment=codirectional. Tolerance = 0.05 rad (as specified).\n\n2. **Tool +y orthogonal to can -y**: After reorientation, tool +y must remain orthogonal to can -y (the long axis). This is an axis_align: controlled_entity=robot_frame, controlled_target=panda_fingertip, controlled_axis=+y, reference_axis=-y of can_center_frame in object frame, alignment=orthogonal. This is a secondary orientation constraint.\n\n3. **Freeze position**: The tool frame center must not translate during this reorientation. freeze_position on panda_fingertip.\n\n4. **Gripper closed**: Gripper remains closed (grasping). close_gripper.\n\nNote on position constraint rule: I can use AT MOST ONE position constraint operator. freeze_position counts as the position constraint. I'll use freeze_position for the tool frame.\n\nFor the axis_align constraints:\n- First: align can_center_frame -y axis with world +z (codirectional). reference_basis=world, reference_origin=world.\n- Second: align panda_fingertip +y with can_center_frame -y (orthogonal). reference_basis=object, reference_origin=can_center_frame.\n\nThe subtask says \"do NOT add any absolute world-aligned tool +z constraint\" so I won't add any constraint on tool +z direction.\n\nThe effort monitoring (constraint 7) cannot be directly represented in the TermAPI as a constraint operator \u2014 it's a monitoring condition. I'll note this in reasoning.\n\nLogic: all constraints are \"and\" since they all must hold simultaneously.\n\nOrder: \n1. freeze_position (panda_fingertip) \u2014 position must not change\n2. axis_align (can -y \u2192 world +z, codirectional) \u2014 primary orientation goal\n3. axis_align (panda_fingertip +y orthogonal to can -y) \u2014 secondary orientation constraint\n4. close_gripper \u2014 gripper state\n\nThe \"do NOT change gripper finger velocity\" and effort monitoring cannot be represented in TermAPI.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.04
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "gripper_closed"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "-y",
+                "reference_axis": "+z",
+                "alignment": "codirectional",
+                "tolerance_rad": 0.4
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "gripper_closed"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "can_center_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "-y",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.4
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

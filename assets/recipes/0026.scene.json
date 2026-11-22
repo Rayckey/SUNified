@@ -1,0 +1,52 @@
+{
+  "name": "0026 - sage rounded-square holder",
+  "summary": "An open-top, handleless, pale sage green holder with a rounded square footprint, softly rounded rim, slightly tapered straight walls and a closed interior floor. Reconstructed from IMG_0026.mov for Kuafu simulation.",
+  "scale_basis": "estimated",
+  "assumptions": [
+    "Reconstructed by the interactive assistant from 16 sampled video frames; no external model API request was made.",
+    "Monocular video supplies no known metric reference. The outside width and depth are assumed to be approximately 80 mm; all dimensions remain uncalibrated estimates, not measurements.",
+    "Square footprint and fourfold symmetry are inferred from the high-angle views at 2.0-2.9 seconds. The nominal height-to-width ratio is 1.4.",
+    "Material is modeled as opaque pale sage plastic with moderate roughness. Color is an approximate unlit albedo, not a recovered texture or calibrated material.",
+    "Mass, density and friction cannot be established from the video. Dynamic mass remains a provisional 0.2 kg and friction a provisional 0.5.",
+    "The underside is not visible. A flat closed bottom is inferred from the visible interior floor and stable contact with the tabletop; its thickness is assumed.",
+    "The dark contact line is represented by the rounded base and its shadow; a separate rubber foot is not established by the video.",
+    "Minor marks in the interior floor are omitted from contact geometry. No drainage hole is visible.",
+    "Collision geometry preserves the cavity with a base and 16 convex wall pieces. Small rim/base fillets are simplified in the colliders."
+  ],
+  "parts": [
+    {
+      "name": "rounded_holder_shell",
+      "geometry": {
+        "kind": "rounded_container",
+        "size": {
+          "x": 0.08,
+          "y": 0.08,
+          "z": 0.112
+        },
+        "corner_radius": 0.0135,
+        "wall_thickness": 0.0035,
+        "base_thickness": 0.0045,
+        "bottom_inset": 0.0012,
+        "edge_radius": 0.003
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.8,
+        "g": 0.82,
+        "b": 0.7
+      },
+      "roughness": 0.44,
+      "metallic": 0.0,
+      "evidence": "Frames 0 and 123 show tall straight sides, broad rounded vertical corners and a soft substantial rim. Frames 60-86 show a rounded square opening and a flat closed floor. Compared with v1, the lip and corner rounding are increased slightly and the albedo is lighter/creamier to better match frame 123. Perspective and lighting are not calibrated."
+    }
+  ]
+}

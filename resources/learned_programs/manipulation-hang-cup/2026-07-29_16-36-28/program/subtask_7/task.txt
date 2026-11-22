@@ -1,0 +1,1 @@
+[Manipulate] Move the grasped mug_rim_frame_0 to settle mug_handle_hole_frame onto cup_hanger_branch_1_tip_frame in the hooked state, keeping the gripper closed.

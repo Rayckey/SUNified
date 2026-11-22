@@ -1,0 +1,130 @@
+{
+  "task": "Open the top drawer by 10 cm.",
+  "fresh_generation": true,
+  "reference_program_loaded": false,
+  "manual_constraint_edits": false,
+  "model": "gpt-5.5",
+  "generation_requests": 13,
+  "automatic_corrections": 0,
+  "validation_api_budget": {
+    "approved": 20,
+    "used": 14,
+    "initial_logging_failure_requests": 1,
+    "successful_generation_requests": 13,
+    "replay_requests": 0
+  },
+  "source_baseline_commit": "91cc4c00c190023f216464ea6706bee2538f71f9",
+  "generation_source_sha256": {
+    "src/kuafu/formulate/generated_drawer.py": "51fe47c6ae18441792af3f5d85ce1a686f276daeb85e8cb45010b2ff102cdc98",
+    "src/kuafu/environments/formulation/generated_drawer.py": "51ffb32d9defa2762335a454d50a935e45729152ab96a12a7339073996358927",
+    "src/kuafu/control/controller/bounded_ik.py": "b31813d3ad8f91042918ffb0b52d3ce960984ebd7b0e594a21ab267ebca56703",
+    "src/kuafu/formulate/robust_loop.py": "753457ef34624c8b3074cab3e0d5822cf70b721e52a89c29856b6b28e941fa19"
+  },
+  "scene": {
+    "position_m": [
+      0.6,
+      -0.5,
+      0.2
+    ],
+    "yaw_deg": 180,
+    "support_height_m": 0.2,
+    "seed": 0,
+    "robot": "Franka Panda",
+    "simulation_dt_s": 0.008333333333333333,
+    "control_dt_s": 0.03333333333333333
+  },
+  "validation": {
+    "kuafu_harness": {
+      "passed": true,
+      "program_passed": true,
+      "solver_passed": true,
+      "physical": {
+        "passed": true,
+        "target_travel_m": 0.1,
+        "tolerance_m": 0.01,
+        "actual_travel_m": 0.10005237684658397,
+        "other_drawer_max_motion_m": 1.2339424593221793e-07,
+        "finite_states": true
+      },
+      "control_steps": 241,
+      "mpc_solves": 52,
+      "model_requests": 13,
+      "passed_stages": 6,
+      "artifact_directory": "generate_02",
+      "asset_hashes": {
+        "asset_dynamic.usda": "57dc395fe6125ad7ed62f8d9badfe204a0b5056771c18d68385cc671a44b5812",
+        "asset_geometry.usda": "4fb931be8c16ee528b4e7b5398d554f7150ec49f664b82dff4bf6f9a62e6bc12",
+        "semantics.json": "ac515ff8e3c3cb25ffca383541a24a4e5b5169db9ad6b68ccc5e10d7c86281d8"
+      },
+      "frame_motion_max_error_m": {
+        "top_drawer_handle_frame": 3.2027450913574285e-08,
+        "top_drawer_center_frame": 5.602368702284366e-08
+      },
+      "max_horizon_ik_position_error_m": 0.07205739432266582,
+      "last_10_steps_drawer_drift_m": -5.9135258197784424e-05
+    },
+    "standalone_asset_export": {
+      "passed": true,
+      "program_passed": true,
+      "solver_passed": true,
+      "physical": {
+        "passed": true,
+        "target_travel_m": 0.1,
+        "tolerance_m": 0.01,
+        "actual_travel_m": 0.10005237684658397,
+        "other_drawer_max_motion_m": 1.2339424593221793e-07,
+        "finite_states": true
+      },
+      "control_steps": 241,
+      "mpc_solves": 50,
+      "model_requests": 0,
+      "passed_stages": 6,
+      "artifact_directory": "kuafu_generated_replay",
+      "asset_hashes": {
+        "asset_dynamic.usda": "57dc395fe6125ad7ed62f8d9badfe204a0b5056771c18d68385cc671a44b5812",
+        "asset_geometry.usda": "4fb931be8c16ee528b4e7b5398d554f7150ec49f664b82dff4bf6f9a62e6bc12",
+        "semantics.json": "ac515ff8e3c3cb25ffca383541a24a4e5b5169db9ad6b68ccc5e10d7c86281d8"
+      },
+      "frame_motion_max_error_m": {
+        "top_drawer_handle_frame": 3.2027450913574285e-08,
+        "top_drawer_center_frame": 5.602368702284366e-08
+      },
+      "max_horizon_ik_position_error_m": 0.07205739432266582,
+      "last_10_steps_drawer_drift_m": -5.9135258197784424e-05
+    }
+  },
+  "program_files_sha256": {
+    "program/subtask_0/atomic.txt": "b082db4bb24d841a0d79fca87ed39dddf54e4ac1d4f4d34de6c2b0cc93b4bc1c",
+    "program/subtask_0/constraints.json": "6aeeb993d47362218d1f76225de899a10ceb894119590ffd9991c655c02da5fe",
+    "program/subtask_0/status.txt": "54d199709d6dbd32ca9e549818ae117b74a646f8bf167050288816b82080f333",
+    "program/subtask_0/task.txt": "7df72e667dba66f725c4f69f4a2cfc92a4b202d73b752e144ac97fbe2e770054",
+    "program/subtask_1/atomic.txt": "a1d47c6c4eee3262f136a189f33e856b81b5b507ad2d60d5d47e6219f3d7104d",
+    "program/subtask_1/constraints.json": "ffad3bd12d3c7fcbe8d067c772e9a004b463b5fb059bf56a45fd67d94cae8286",
+    "program/subtask_1/status.txt": "6d871ad4daef99c028221febca28f345761ad31e94ce50edf7ead0ca85ab2f9c",
+    "program/subtask_1/task.txt": "9785ccddc004c460ac070b185485d0517ff46d39e99a567793277c7773c08ce1",
+    "program/subtask_2/atomic.txt": "416b7322b41e50258debe26ac876278cff0413b44d175c031f71d4dd21c51b1f",
+    "program/subtask_2/constraints.json": "d08644c5f09801a1bd7dab437327d24ff70ac68431038bcd2f3d78de93bb2b6f",
+    "program/subtask_2/status.txt": "a0130ebe56c7de25ea18abc123d796f3713fbd152fd6fa467ea878fb51295e50",
+    "program/subtask_2/task.txt": "9beb2cfb3871b822d9c1306d368d38a9df0bd8d3a8405d92accfea907d530295",
+    "program/subtask_3/atomic.txt": "aa5756df3ccd280ccdfc72dde1107b0bef0559935baffeb6660c51a13ecc0074",
+    "program/subtask_3/constraints.json": "6b249348b9854cdd9537fbff71f75beb545272052afcc586bcdf66063fa51d4a",
+    "program/subtask_3/status.txt": "115c2851df5d95adc871523655c2370bc8497b8eae68f20dbce36ad6e4d8c221",
+    "program/subtask_3/task.txt": "16b97cfbabecd47d10a410a8e28c93e068b2593d0affac083ed3b6c2a74912c7",
+    "program/subtask_4/atomic.txt": "268f3730ab96c2fee13aaed3cfb7631bfff9cbdf472136da3644aec8ae76c80e",
+    "program/subtask_4/constraints.json": "7e992c75fae137336a242e651741b00190e7c51fecb62665a166beaff38ddb09",
+    "program/subtask_4/status.txt": "201015d3b0eaedd16b0fd64bbdf030eb9e87331d84886817c0ea2d307423677a",
+    "program/subtask_4/task.txt": "89a8da940eb3da4e460adcd9af7f8e9880b3370b74aee9e434e5cd95bfa38ec0",
+    "program/subtask_5/atomic.txt": "ec93d076aee4a3e628b623a2ff24bb8e39fe61ec6435ca42f3177bbea330802f",
+    "program/subtask_5/constraints.json": "9658e42a7e32b3ddf2e0e0053afd677b10eaa2ec5cf95ddf5e9f46416274f130",
+    "program/subtask_5/status.txt": "32a82d5492e45842a160664e81e305ac42cfd18e7d50031da9186293595b1d64",
+    "program/subtask_5/task.txt": "cf07dfb7068fc9993b81a1cff49fe2d35cc8b6e937209fa86bd05cc0a7cffb24"
+  },
+  "external_artifact_root": "live_validation_20261017/drawer_program",
+  "notes": [
+    "Program files are copied byte-for-byte from generate_02. Only the normal receiver tolerance policy processed model constraints.",
+    "Both pipeline exports were generated from the same annotated reconstruction and have identical USD and semantics hashes.",
+    "The original run stats report completed_subtasks as zero-based final index 5; all six stage status files succeeded. The summary counter was fixed afterward without changing control behavior.",
+    "One deterministic placement and seed; dimensions inferred from video remain estimates. Lower drawers were checked for unintended motion, not independently opened by generated programs."
+  ],
+  "source_paths_note": "Source paths are expressed in the current Kuafu namespace. The hashes preserve the original source content used for generation, before the package rename."
+}

@@ -1,0 +1,7 @@
+python src/kuafu/isaac/tasks/train.py --video --task stack-2 --track --wandb-project-name KUAFU --wandb-entity milesway --wandb-name stack-2-0 --headless --video_length 800 --video_interval 2400
+
+wandb.ai
+username
+mikelili@ucla.edu
+password
+dygdY3-qonbeh-jubraf

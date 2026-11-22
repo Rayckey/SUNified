@@ -1,0 +1,22 @@
+{
+  "mode": "replay",
+  "program_passed": true,
+  "physical": {
+    "passed": true,
+    "target_travel_m": 0.1,
+    "tolerance_m": 0.01,
+    "actual_travel_m": 0.09586818293741572,
+    "other_drawer_max_motion_m": 1.2288225725853863e-07,
+    "finite_states": true
+  },
+  "passed": true,
+  "solver_passed": true,
+  "control_steps": 240,
+  "mpc_solves": 49,
+  "model_requests": 0,
+  "error": null,
+  "recorded_date": "2026-11-04",
+  "passed_stages": 6,
+  "source_run": "public_release_layout_20261104/module-mpc-replay-final",
+  "scope": "Recorded simulation replay of the bundled SUN Program; no model requests."
+}

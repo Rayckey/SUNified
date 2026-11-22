@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This grasping stage is encoded as maintaining the current panda_fingertip pose while requiring a real grasp. freeze_position holds the panda_fingertip origin at its stage-start world position within 0.01 m. freeze_orientation holds the stage-start orientation; the requested 5 degree bound is encoded as 0.087266 rad. object_grasped is used instead of close_gripper because the stage requires marker to be firmly held, not merely that the fingers reach the mechanical closed value. The API does not expose explicit symmetric left/right finger joint commands, target joint value 0.0, bilateral finger effort thresholds, marker pose monitoring, or continuous feedback-monitoring terms; those are therefore represented only to the extent captured by object_grasped and the pose-freeze constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.087266
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

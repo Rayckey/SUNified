@@ -1,0 +1,38 @@
+{
+    "Reasoning": "The release stage keeps the current panda_fingertip pose fixed while opening the gripper. freeze_position holds the fingertip origin at the pose inherited from the immediately preceding placement stage within 0.01 m. freeze_orientation holds the inherited fingertip orientation within 0.05 rad and does not add any new tool +z or +y alignment constraint. open_gripper commands the fingers to the fully open/released state; its condition also includes manipulator_low_effort to represent the required drop toward free-space contact/effort feedback as far as the available labels permit. The API has no negative/not-grasped operator, so explicit confirmation that cube_3 is no longer grasped cannot be represented directly. The cube_3-on-cube_2, cube_2-on-cube_1, and cube_1-undisturbed pose-monitoring requirements are also not encoded because the API allows at most one position operator in the stage and does not provide a monitoring-only or arbitrary-object pose-hold operator for non-gripped objects.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened",
+                "manipulator_low_effort"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

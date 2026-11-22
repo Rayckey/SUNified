@@ -1,0 +1,1 @@
+[Manipulate] Close the gripper to grasp estop_cap_center while keeping both the gripper position and orientation fixed.

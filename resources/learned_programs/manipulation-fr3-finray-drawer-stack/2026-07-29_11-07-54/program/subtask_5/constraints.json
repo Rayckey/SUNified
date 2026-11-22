@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage retracts the open panda_fingertip from the released top_drawer_handle_frame to a non-contact offset 0.10 m along the handle frame -y direction. The position goal is encoded as a reach_point to the top_drawer_handle_frame-relative offset with 0.01 m tolerance, with manipulator_low_effort included to represent maintaining free-space/no-contact interaction during retract. The gripper is commanded/required open with gripper_opened feedback metadata. The current start-of-stage panda_fingertip orientation is preserved using freeze_orientation, which keeps the tool +z and +y directions fixed relative to their start directions within the controller orientation threshold. Direct monitoring requirements are implicit in the feedback conditions; gripper joint-state verification is represented by open_gripper/gripper_opened. There is no dedicated API term for gripper-specific effort/no bilateral grasp-contact feedback, so that part is only partially represented by the open gripper state and low-effort free-space condition.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.1,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

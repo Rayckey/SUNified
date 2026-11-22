@@ -1,0 +1,1 @@
+[Manipulate] Depress estop_cap_tip to achieve the pressed state while keeping the gripper orientation fixed.

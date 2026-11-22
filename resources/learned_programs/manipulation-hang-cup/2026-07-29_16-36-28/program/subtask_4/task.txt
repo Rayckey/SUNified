@@ -1,0 +1,1 @@
+[Manipulate] Carry the grasped mug_rim_frame_0 near cup_hanger_branch_1_tip_frame, keeping the gripper closed and the mug clear of table and cup_hanger.

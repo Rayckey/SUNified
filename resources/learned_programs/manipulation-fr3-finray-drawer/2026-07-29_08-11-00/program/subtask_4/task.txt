@@ -1,0 +1,1 @@
+[Release] Open the gripper to release top_drawer_handle_frame at the desired open state while keeping both the gripper position and orientation fixed.

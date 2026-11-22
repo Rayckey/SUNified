@@ -1,0 +1,44 @@
+{
+    "Reasoning": "Success for this subtask means that the grasped marker is moved so that its center is directly above the pen_holder's center, with x and y axes aligned within 2 cm (0.02 m), and vertically (z) separated by at least 0.16 m. The orientation between the marker and the gripper (tool) must not change (no slip), and the gripper must remain closed to maintain the grasp throughout. The geometry conditions are mandatory, and the grasp state is preserved with 'close_gripper'. The constraints are joined with 'and' since all must be met together for the task to be considered successful.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "pen_holder",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.16
+                ],
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

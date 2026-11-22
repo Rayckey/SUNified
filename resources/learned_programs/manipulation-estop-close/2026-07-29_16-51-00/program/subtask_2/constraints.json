@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage presses from the current contact configuration by commanding the panda_fingertip to move 0.03 m along estop_cap_tip local -z, with 0.01 m tolerance. The directional_move term also includes manipulator_high_effort as an encoded early-stop alternative for detecting the closed mechanical stop. The freeze_orientation term preserves the current panda_fingertip orientation throughout the press without adding any new axis-alignment constraint. The close_gripper term keeps the fingers commanded closed for continuity. Maintaining contact is represented by the pressing directional move from the current contact configuration, but explicit no-separation enforcement, exact gripper joint targets of 0.0, detailed pose/joint/effort monitoring, and effort-threshold inhibition beyond the intended press contact are not directly representable with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "axis": "-z",
+                "travel_distance_m": 0.03,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

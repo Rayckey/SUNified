@@ -1,0 +1,46 @@
+{
+    "Diagnosis": "The failure is caused by the reach_point constraint containing both manipulator_low_effort and manipulator_high_effort in the same stage. The runtime explicitly rejects conflicting manipulator effort conditions and requires exactly one expected effort condition for a single atomic action. Since this is a release/retract into free space, manipulator_low_effort is the appropriate expected condition; the unexpected high-effort safety stop cannot be represented simultaneously in this stage without triggering the validator conflict.",
+    "Reasoning": "Use reach_point because the retract target is explicitly the estop_cap_tip origin offset by +0.10 m along estop_cap_tip +z, with a 0.01 m tolerance. freeze_orientation preserves the current panda_fingertip orientation throughout the retract, including the current tool +z and +y directions, without adding a new axis-alignment constraint. close_gripper keeps the fingers commanded closed during release/retract. Effort/contact monitoring is represented with manipulator_low_effort on the retract position term to require contact/effort to drop toward free-space during retraction. The alternative stop/inhibit condition for unexpected high effort is not included because the validator requires a single effort condition and rejects manipulator_high_effort together with manipulator_low_effort in one stage.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.1
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

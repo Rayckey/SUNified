@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage success is represented as the grasped mug handle-hole frame reaching the hanger tip seating point while arm interaction effort remains non-excessive, the end-effector orientation stays frozen within 0.05 rad, and the mug remains physically grasped with the gripper intended closed. The reach_point term places mug_handle_hole_frame at cup_hanger_branch_1_tip_frame with 0.01 m contact precision; its manipulator_low_effort condition represents supported seating without excessive jamming. The freeze_orientation term holds panda_fingertip at its start-of-stage world orientation. The object_grasped term represents maintaining the closed grasp on mug_rim_frame_0. Unrepresented clauses: the exact finger joint value 0.0 is not directly encodable; strict straight-line world -z lowering by an unspecified positive distance cannot be encoded as directional_move without a numeric distance, so the seating target is used instead; explicit collision allowances/exclusions for table and non-tip hanger structures and early-abort logic for unintended contact are not directly expressible beyond the low-effort condition. No independent mug-frame orientation freeze is emitted.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "world",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

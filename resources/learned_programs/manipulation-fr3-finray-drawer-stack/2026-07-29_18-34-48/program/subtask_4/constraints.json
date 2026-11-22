@@ -1,0 +1,38 @@
+{
+    "Reasoning": "This release stage keeps the panda_fingertip pose fixed while opening the gripper. freeze_position holds the fingertip origin at the stage-start position within 0.01 m, which also prevents any commanded pull or push motion along top_drawer_handle_frame -y or +y. freeze_orientation holds the stage-start orientation within 5 degrees. open_gripper commands the left and right fingers to open/release; its conditions include gripper_opened for the open joint state and manipulator_low_effort for the available low-contact/free-space feedback aspect. The released frame is top_drawer_handle_frame by task context, but the API has no explicit released-object argument. Finger-specific effort drop is not directly representable beyond gripper_opened and the available low-effort contact label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0873
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened",
+                "manipulator_low_effort"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

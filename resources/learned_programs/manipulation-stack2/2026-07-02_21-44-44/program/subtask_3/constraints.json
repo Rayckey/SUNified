@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage is a conjunctive lift while maintaining the grasp. A directional_move on panda_fingertip encodes the explicit world +z lift by 0.10 m with the 0.01 m goal tolerance. freeze_orientation keeps the tool orientation equal to the start-of-stage orientation, using the requested 5 degree tolerance. object_grasped encodes that cube_1 must remain physically held during the motion; its condition also marks the required closed-gripper state. Exact preservation of both finger joint start values, symmetric inward-only adjustment, detailed gripper effort/contact feedback thresholds, and direct monitoring of cube_1 pose are not separately representable with the available operators, so they are covered only to the extent represented by object_grasped and noted here.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0873
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

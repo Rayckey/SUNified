@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage succeeds when the panda_fingertip remains at its current contact position, keeps its current world-frame orientation, and cube_2 is physically grasped. freeze_position encodes no commanded end-effector linear motion while holding the current contact position within 0.01 m; the stated coincidence with cube_2 is treated as the current grounded contact configuration. freeze_orientation encodes no commanded angular motion and preserves the current tool +z/+y directions within the supported 0.2 rad orientation tolerance. object_grasped is used instead of close_gripper because the required success condition is a real grasp of cube_2, not merely mechanical full closure, and the API forbids emitting both close_gripper and object_grasped in one stage. Finger joint position feedback, bilateral finger effort thresholds, object-specific effort consistency, and detailed end-effector feedback monitoring are not directly representable as separate terms; they are captured only indirectly by the geometry freeze constraints and object_grasped success requirement.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

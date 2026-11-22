@@ -1,0 +1,12 @@
+# Prevent transitive dependencies from replacing the CUDA/NumPy ABI or HF CLI.
+torch==2.5.1
+torchvision==0.20.1
+torchaudio==2.5.1
+xformers==0.0.28.post3
+numpy==1.26.4
+opencv-python==4.9.0.80
+huggingface-hub>=0.34,<1
+gradio==5.49.0
+Pillow>=10,<12
+packaging>=24,<26
+setuptools<76

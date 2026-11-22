@@ -1,0 +1,89 @@
+{
+  "global": null,
+  "stages": {
+    "0": {
+      "checkpoint": "/home/rocky/isaac/temp3/Kuafu/IsaacLab/logs/residual_rl/pen-cup/2026-02-19_05-34-42/checkpoints/best_stage_0.pth",
+      "iter": 3,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.04
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_rad": 0.2
+        },
+        "3": {}
+      },
+      "success_metric": 6.8173956871032715,
+      "weights": {
+        "0": 10.0,
+        "1": 4.0,
+        "2": 1.0,
+        "3": 6.0
+      }
+    },
+    "1": {
+      "checkpoint": "/home/rocky/isaac/temp3/Kuafu/IsaacLab/logs/residual_rl/pen-cup/2026-02-19_05-34-42/checkpoints/best_stage_1.pth",
+      "iter": 8,
+      "parameters": {
+        "0": {
+          "tolerance_rad": 0.5
+        },
+        "1": {
+          "tolerance_rad": 0.2
+        },
+        "2": {},
+        "3": {
+          "tolerance_m": 0.05
+        }
+      },
+      "success_metric": 8.345065116882324,
+      "weights": {
+        "0": 6.0,
+        "1": 1.0,
+        "2": 1.0,
+        "3": 10.0
+      }
+    },
+    "2": {
+      "checkpoint": "/home/rocky/isaac/temp3/Kuafu/IsaacLab/logs/residual_rl/pen-cup/2026-02-19_05-34-42/checkpoints/best_stage_2.pth",
+      "iter": 10,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.04
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {}
+      },
+      "success_metric": 7.158520698547363,
+      "weights": {
+        "0": 1.0,
+        "1": 1.0,
+        "2": 4.0
+      }
+    },
+    "3": {
+      "checkpoint": "/home/rocky/isaac/temp3/Kuafu/IsaacLab/logs/residual_rl/pen-cup/2026-02-19_05-34-42/checkpoints/best_stage_3.pth",
+      "iter": 24,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.04
+        },
+        "1": {
+          "tolerance_rad": 0.2
+        },
+        "2": {}
+      },
+      "success_metric": 9.127166748046875,
+      "weights": {
+        "0": 8.0,
+        "1": 2.0,
+        "2": 2.0
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+[Manipulate] Lift cube_1 with the gripper closed to create clearance for transporting cube_1 while keeping the gripper orientation fixed.

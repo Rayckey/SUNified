@@ -1,0 +1,18 @@
+{
+  "operator": "freeze_orientation",
+  "arguments": {
+    "controlled_entity": {
+      "enum": [
+        "robot_frame",
+        "gripped_object"
+      ]
+    },
+    "controlled_target": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    }
+  },
+  "source": "kuafu.skills.schema.OP_ARGS",
+  "tolerances": "Assigned by the receiver using the MPC or learning profile."
+}

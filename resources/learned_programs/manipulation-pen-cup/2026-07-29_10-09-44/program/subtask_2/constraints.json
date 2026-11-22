@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage keeps the current panda_fingertip pose fixed while establishing a real grasp on the marker. freeze_position enforces the current end-effector origin position within 0.01 m and represents commanding no translational motion. freeze_orientation enforces the current end-effector orientation with the supported 0.2 rad tolerance and represents commanding no angular motion. object_grasped is used instead of close_gripper because the stage requires grasp success to be based on the marker being physically held, not merely on the finger joints reaching a closed position. The API cannot explicitly encode bilateral finger joint synchronization, left/right joint position monitoring, or finger squeeze/contact effort thresholds, so those details are omitted; the representable grasp confirmation is object_grasped.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

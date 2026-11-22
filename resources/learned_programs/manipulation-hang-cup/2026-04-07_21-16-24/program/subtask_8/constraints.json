@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The current stage requires:\n1. Gripper remains fully open (open_gripper) - from the preceding release action, fingers stay open.\n2. Tool orientation is held fixed as established during the grasp - freeze_orientation on panda_fingertip.\n3. Translation: move upward along world +z by 0.15 m (directional_move, axis +z, travel 0.15 m).\n4. No lateral motion (covered by directional_move along +z only).\n5. Low effort expected (manipulator_low_effort condition on the directional_move).\n6. After stop condition, hold pose fixed - but this is a post-condition note, not a separate constraint term needed beyond the directional_move stop.\n\nThe orientation was established in prior subtasks (axis_align constraints were set then). Here the requirement says \"hold tool orientation fixed as established\" - this is a freeze_orientation scenario. The stage does NOT establish a new orientation relation; it preserves the existing one. So freeze_orientation is appropriate.\n\nThe position constraint is directional_move: upward along world +z by 0.15 m for panda_fingertip.\n\nConstraints:\n1. open_gripper (logic: \"and\", condition: [\"gripper_opened\"]) - gripper stays open\n2. freeze_orientation on panda_fingertip (logic: \"and\", condition: [\"geometry\"]) - hold orientation fixed\n3. directional_move along world +z by 0.15 m (logic: \"and\", condition: [\"geometry\", \"manipulator_low_effort\"]) - retract upward\n\nThe rule says AT MOST ONE position constraint operator. directional_move is the position constraint here. freeze_orientation is orientation, open_gripper is gripper state. That's fine.\n\nFor directional_move: controlled_entity = \"robot_frame\", controlled_target = \"panda_fingertip\", reference_basis = \"world\", reference_origin = \"world\", axis = \"+z\", travel_distance_m = 0.15, tolerance_m = 0.01.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

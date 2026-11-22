@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Success for this subtask requires: (1) the robot translates the tool away from drawer_top_handle_frame along the tool +z axis in the agent (robot) frame by at least 0.15 m, ensuring a large clearance; (2) the orientations of tool +z and tool +y must remain fixed during this motion (i.e., no rotation); (3) the gripper remains fully open throughout; (4) stopping criteria is the tool's origin being at least 0.15 m away from the drawer handle frame's origin in the agent frame; (5) optionally, manipulator effort/contact is monitored to confirm free-space after retraction. Only one positional constraint operator is allowed, so reach_distance is used because the main goal is a standoff distance, not a precise target point. Freeze_orientation is needed to maintain both +z and +y tool axes fixed. Open_gripper is needed to ensure gripper is open. All constraints use 'and' logic as all must hold for success.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "drawer_top_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "distance_m": 0.15,
+                "tolerance_m": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_open"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,331 @@
+#usda 1.0
+(
+    defaultPrim = "PandaDrawer"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "PandaDrawer"
+{
+    def Xform "base" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysxRigidBodyAPI"]
+    )
+    {
+        float physics:mass = 0.01
+        bool physxRigidBody:enableGyroscopicForces = 1
+        int physxRigidBody:solverPositionIterationCount = 16
+        int physxRigidBody:solverVelocityIterationCount = 4
+
+        def PhysicsFixedJoint "base_to_frame"
+        {
+            rel physics:body0 = </PandaDrawer/base>
+            rel physics:body1 = </PandaDrawer/frame>
+            point3f physics:localPos0 = (0, 0, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+        }
+    }
+
+    def Xform "frame" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysxRigidBodyAPI"]
+    )
+    {
+        float physics:mass = 2
+        bool physxRigidBody:enableGyroscopicForces = 1
+        int physxRigidBody:solverPositionIterationCount = 16
+        int physxRigidBody:solverVelocityIterationCount = 4
+
+        def Scope "visuals"
+        {
+            def Xform "body_visual"
+            {
+                def Xform "source" (
+                    prepend references = @panda_drawer_body/panda_drawer_body.usdc@
+                )
+                {
+                }
+            }
+        }
+
+        def Scope "collisions"
+        {
+            def Cube "left_side_rail_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.012, 0.164288, 0.222)
+                double3 xformOp:translate = (-0.1589999943971634, 0.08382599800825119, 0.11132500320672989)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Cube "right_side_rail_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.012, 0.164288, 0.222)
+                double3 xformOp:translate = (0.1589999943971634, 0.08382599800825119, 0.11132500320672989)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Cube "bottom_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.33, 0.174288, 0.012)
+                double3 xformOp:translate = (0, 0.07882600277662277, 0.006324999965727329)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Cube "back_wall_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.33, 0.012, 0.222)
+                double3 xformOp:translate = (0, 0.1599700003862381, 0.11132500320672989)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Cube "roof_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.312, 0.1585, 0.0085)
+                double3 xformOp:translate = (0, 0.07925000041723251, 0.15524999797344208)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Cube "front_lower_panel_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.33, 0.016318, 0.086765)
+                double3 xformOp:translate = (0, 0.009840999729931355, 0.04370750114321709)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Cube "front_roof_lip_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.312, 0.006818, 0.0085)
+                double3 xformOp:translate = (0, 0.005090999882668257, 0.15524999797344208)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+        }
+
+        def PhysicsPrismaticJoint "upper_drawer_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:linear", "PhysxJointAPI"]
+        )
+        {
+            float drive:linear:physics:damping = 0
+            float drive:linear:physics:maxForce = 0.1
+            float drive:linear:physics:stiffness = 0
+            float drive:linear:physics:targetVelocity = 0
+            uniform token drive:linear:physics:type = "force"
+            uniform token physics:axis = "Y"
+            rel physics:body0 = </PandaDrawer/frame>
+            rel physics:body1 = </PandaDrawer/upper_drawer>
+            quatf physics:localRot0 = (0, 1, 0, 0)
+            quatf physics:localRot1 = (0, 1, 0, 0)
+            float physics:lowerLimit = 0
+            float physics:upperLimit = 0.15
+            float physxJoint:maxJointVelocity = 10
+        }
+    }
+
+    def Xform "upper_drawer" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysxRigidBodyAPI"]
+    )
+    {
+        float physics:mass = 0.6
+        bool physxRigidBody:enableGyroscopicForces = 1
+        int physxRigidBody:solverPositionIterationCount = 16
+        int physxRigidBody:solverVelocityIterationCount = 4
+
+        def Scope "visuals"
+        {
+            def Xform "drawer_visual"
+            {
+                double3 xformOp:translate = (0, 0.08100000023841858, 0.11999999731779099)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+
+                def Xform "source" (
+                    prepend references = @panda_drawer_drawer/panda_drawer_drawer.usdc@
+                )
+                {
+                    float3 xformOp:rotateXYZ = (0, 0, 180)
+                    uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+                }
+            }
+        }
+
+        def Scope "collisions"
+        {
+            def Cube "floor_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.305, 0.165, 0.01)
+                double3 xformOp:translate = (0, 0.08106999844312668, 0.09209000319242477)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Cube "left_wall_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.01, 0.165, 0.056)
+                double3 xformOp:translate = (-0.14749999344348907, 0.08106999844312668, 0.12509000301361084)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Cube "right_wall_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.01, 0.165, 0.056)
+                double3 xformOp:translate = (0.14749999344348907, 0.08106999844312668, 0.12509000301361084)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Cube "back_wall_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.305, 0.01, 0.056)
+                double3 xformOp:translate = (0, 0.15857000648975372, 0.12509000301361084)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Cube "front_lip_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.305, 0.01, 0.056)
+                double3 xformOp:translate = (0, 0.0035699999425560236, 0.12509000301361084)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+        }
+
+        def PhysicsFixedJoint "upper_drawer_handle_joint"
+        {
+            rel physics:body0 = </PandaDrawer/upper_drawer>
+            rel physics:body1 = </PandaDrawer/upper_drawer_handle>
+            point3f physics:localPos0 = (0, -0.017, 0.12)
+            point3f physics:localPos1 = (0, 0, 0)
+        }
+    }
+
+    def Xform "upper_drawer_handle" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysxRigidBodyAPI"]
+    )
+    {
+        float physics:mass = 0.05
+        bool physxRigidBody:enableGyroscopicForces = 1
+        int physxRigidBody:solverPositionIterationCount = 16
+        int physxRigidBody:solverVelocityIterationCount = 4
+        double3 xformOp:translate = (0, -0.017000000923871994, 0.11999999731779099)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def Scope "collisions"
+        {
+            def Cylinder "handle_grip_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                uniform token axis = "X"
+                double height = 0.1582
+                double radius = 0.0085
+                token visibility = "invisible"
+                double3 xformOp:translate = (0, -0.007000000216066837, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def Cube "handle_mount_collision" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (0.1582, 0.0225, 0.017)
+                double3 xformOp:translate = (0, 0.0042500002309679985, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+        }
+    }
+
+    def PhysicsFixedJoint "root_joint" (
+        prepend apiSchemas = ["PhysicsArticulationRootAPI", "PhysxArticulationAPI"]
+    )
+    {
+        rel physics:body0 = None
+        rel physics:body1 = </PandaDrawer/base>
+    }
+
+    def Scope "Cameras"
+    {
+        def Camera "front_minus_y"
+        {
+            float2 clippingRange = (0.01, 5)
+            float focalLength = 45
+            float horizontalAperture = 24
+            float verticalAperture = 16
+            matrix4d xformOp:transform = ( (1, 0, -0, 0), (0, 0.015997952393132148, 0.9998720245707583, 0), (0, -0.9998720245707583, 0.015997952393132148, 0), (0, -0.55, 0.13, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+
+        def Camera "right_side"
+        {
+            float2 clippingRange = (0.01, 5)
+            float focalLength = 45
+            float horizontalAperture = 24
+            float verticalAperture = 16
+            matrix4d xformOp:transform = ( (0, 1, -0, 0), (-0.03633961810714302, 0, 0.9993394979464322, -0), (0.9993394979464322, -0, 0.03633961810714302, 0), (0.55, 0.075, 0.14, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+
+        def Camera "top"
+        {
+            float2 clippingRange = (0.01, 5)
+            float focalLength = 45
+            float horizontalAperture = 24
+            float verticalAperture = 16
+            matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, -0, 1, 0), (0, 0.075, 0.65, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+
+        def Camera "three_quarter"
+        {
+            float2 clippingRange = (0.01, 5)
+            float focalLength = 45
+            float horizontalAperture = 24
+            float verticalAperture = 16
+            matrix4d xformOp:transform = ( (0.7767557487195038, 0.6298019584212194, 2.7755575615628926e-17, 0), (-0.1697639531197483, 0.20937554218102283, 0.9629860240717718, -0), (0.6064904838926651, -0.748004930134287, 0.26955132617451794, 0), (0.45, -0.48, 0.32, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+}
+

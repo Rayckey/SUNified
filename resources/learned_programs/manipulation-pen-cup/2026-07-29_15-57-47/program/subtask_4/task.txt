@@ -1,0 +1,1 @@
+[Manipulate] Move marker near pen_holder with the gripper closed while maintaining clearance from table.

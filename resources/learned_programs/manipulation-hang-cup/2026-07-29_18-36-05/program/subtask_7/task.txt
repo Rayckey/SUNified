@@ -1,0 +1,1 @@
+[Manipulate] Lower the grasped mug_rim_frame_0 until mug_handle_hole_frame is seated on cup_hanger_branch_1_tip_frame, keeping the gripper closed and orientation fixed.

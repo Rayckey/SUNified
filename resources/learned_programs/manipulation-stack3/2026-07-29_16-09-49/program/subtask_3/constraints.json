@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This stage lifts the already grasped cube_2 by commanding the panda_fingertip to translate 0.10 m along world +z with 0.01 m tolerance, while keeping the fingertip orientation fixed at its start-of-stage orientation. The object_grasped constraint represents maintaining a stable physical hold on cube_2 with the gripper closed, which also supports preserving the relative pose between cube_2 and the fingertip during the lift. Exact left/right gripper joint command values and detailed finger effort/contact thresholds are not directly representable beyond object_grasped/gripper_closed metadata.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

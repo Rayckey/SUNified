@@ -1,0 +1,832 @@
+{
+  "name": "0028 - bamboo desktop organizer",
+  "summary": "A bamboo desktop organizer with two fixed closed lower drawers, two dark ring pulls, an open middle shelf, and a top shelf with a tall back and curved side guards.",
+  "scale_basis": "estimated",
+  "assumptions": [
+    "Shape inferred by the interactive assistant from 16 sampled frames; no standalone model API request was made.",
+    "No measurements or known metric reference were supplied. Dimensions are uncalibrated nominal estimates based on proportions and object-size priors, not a metric scan.",
+    "The object is represented as one rigid assembly. No articulation or internal mechanism is inferred.",
+    "Materials use approximate flat PBR colors. Lighting is not calibrated and image textures are not recovered.",
+    "Mass and friction are simulation assumptions; these are not determined by the visible video dynamics.",
+    "Nominal cabinet body is 330 x 200 x 240 mm. Shelf levels and board thicknesses are inferred proportionally; 9 mm structural sides are assumed.",
+    "Drawers and ring pulls are fixed in the observed positions. Hidden drawer boxes, rails, joints and opening travel are not modeled.",
+    "The middle shelf remains physically open from the front; the top shelf is also usable. Do not replace the whole cabinet with one convex collider.",
+    "Bamboo grain, seams between laminated strips and pull-backplate ornamentation are omitted from the flat-color material approximation.",
+    "The rear and underside are not fully shown and are inferred as ordinary flat boards. No borrowed cabinet model or dimensions are used.",
+    "Nominal mass is assumed to be 1.8 kg; friction 0.5 and restitution 0 are assumptions.",
+    "Second candidate was refined by comparing renders to video crops; no calibrated image registration or metric accuracy score is claimed."
+  ],
+  "parts": [
+    {
+      "name": "left_curved_side_panel",
+      "geometry": {
+        "kind": "convex_hull",
+        "points": [
+          {
+            "x": -0.0045,
+            "y": -0.1,
+            "z": 0.0
+          },
+          {
+            "x": -0.0045,
+            "y": 0.1,
+            "z": 0.0
+          },
+          {
+            "x": -0.0045,
+            "y": 0.1,
+            "z": 0.24
+          },
+          {
+            "x": -0.0045,
+            "y": -0.054000000000000006,
+            "z": 0.24
+          },
+          {
+            "x": -0.0045,
+            "y": -0.058508788455159805,
+            "z": 0.23977849742692106
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0629741548127419,
+            "z": 0.2391161228985486
+          },
+          {
+            "x": -0.0045,
+            "y": -0.06735309515370527,
+            "z": 0.23801925544368163
+          },
+          {
+            "x": -0.0045,
+            "y": -0.07160343788879414,
+            "z": 0.2364984584955192
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0756842498939959,
+            "z": 0.23456837816002435
+          },
+          {
+            "x": -0.0045,
+            "y": -0.07955623071890171,
+            "z": 0.23224760216591708
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0831820910715277,
+            "z": 0.22955848085468591
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0865269119345812,
+            "z": 0.2265269119345812
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0895584808546859,
+            "z": 0.2231820910715277
+          },
+          {
+            "x": -0.0045,
+            "y": -0.09224760216591708,
+            "z": 0.2195562307189017
+          },
+          {
+            "x": -0.0045,
+            "y": -0.09456837816002434,
+            "z": 0.2156842498939959
+          },
+          {
+            "x": -0.0045,
+            "y": -0.09649845849551919,
+            "z": 0.21160343788879413
+          },
+          {
+            "x": -0.0045,
+            "y": -0.09801925544368162,
+            "z": 0.20735309515370526
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0991161228985486,
+            "z": 0.2029741548127419
+          },
+          {
+            "x": -0.0045,
+            "y": -0.09977849742692106,
+            "z": 0.1985087884551598
+          },
+          {
+            "x": -0.0045,
+            "y": -0.1,
+            "z": 0.194
+          },
+          {
+            "x": 0.0045,
+            "y": -0.1,
+            "z": 0.0
+          },
+          {
+            "x": 0.0045,
+            "y": 0.1,
+            "z": 0.0
+          },
+          {
+            "x": 0.0045,
+            "y": 0.1,
+            "z": 0.24
+          },
+          {
+            "x": 0.0045,
+            "y": -0.054000000000000006,
+            "z": 0.24
+          },
+          {
+            "x": 0.0045,
+            "y": -0.058508788455159805,
+            "z": 0.23977849742692106
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0629741548127419,
+            "z": 0.2391161228985486
+          },
+          {
+            "x": 0.0045,
+            "y": -0.06735309515370527,
+            "z": 0.23801925544368163
+          },
+          {
+            "x": 0.0045,
+            "y": -0.07160343788879414,
+            "z": 0.2364984584955192
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0756842498939959,
+            "z": 0.23456837816002435
+          },
+          {
+            "x": 0.0045,
+            "y": -0.07955623071890171,
+            "z": 0.23224760216591708
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0831820910715277,
+            "z": 0.22955848085468591
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0865269119345812,
+            "z": 0.2265269119345812
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0895584808546859,
+            "z": 0.2231820910715277
+          },
+          {
+            "x": 0.0045,
+            "y": -0.09224760216591708,
+            "z": 0.2195562307189017
+          },
+          {
+            "x": 0.0045,
+            "y": -0.09456837816002434,
+            "z": 0.2156842498939959
+          },
+          {
+            "x": 0.0045,
+            "y": -0.09649845849551919,
+            "z": 0.21160343788879413
+          },
+          {
+            "x": 0.0045,
+            "y": -0.09801925544368162,
+            "z": 0.20735309515370526
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0991161228985486,
+            "z": 0.2029741548127419
+          },
+          {
+            "x": 0.0045,
+            "y": -0.09977849742692106,
+            "z": 0.1985087884551598
+          },
+          {
+            "x": 0.0045,
+            "y": -0.1,
+            "z": 0.194
+          }
+        ]
+      },
+      "position": {
+        "x": -0.1605,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.84,
+        "g": 0.69,
+        "b": 0.43
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Side panel has a rounded upper-front corner and square lower corners. Refined to a broader, more finely sampled upper-front curve."
+    },
+    {
+      "name": "right_curved_side_panel",
+      "geometry": {
+        "kind": "convex_hull",
+        "points": [
+          {
+            "x": -0.0045,
+            "y": -0.1,
+            "z": 0.0
+          },
+          {
+            "x": -0.0045,
+            "y": 0.1,
+            "z": 0.0
+          },
+          {
+            "x": -0.0045,
+            "y": 0.1,
+            "z": 0.24
+          },
+          {
+            "x": -0.0045,
+            "y": -0.054000000000000006,
+            "z": 0.24
+          },
+          {
+            "x": -0.0045,
+            "y": -0.058508788455159805,
+            "z": 0.23977849742692106
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0629741548127419,
+            "z": 0.2391161228985486
+          },
+          {
+            "x": -0.0045,
+            "y": -0.06735309515370527,
+            "z": 0.23801925544368163
+          },
+          {
+            "x": -0.0045,
+            "y": -0.07160343788879414,
+            "z": 0.2364984584955192
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0756842498939959,
+            "z": 0.23456837816002435
+          },
+          {
+            "x": -0.0045,
+            "y": -0.07955623071890171,
+            "z": 0.23224760216591708
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0831820910715277,
+            "z": 0.22955848085468591
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0865269119345812,
+            "z": 0.2265269119345812
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0895584808546859,
+            "z": 0.2231820910715277
+          },
+          {
+            "x": -0.0045,
+            "y": -0.09224760216591708,
+            "z": 0.2195562307189017
+          },
+          {
+            "x": -0.0045,
+            "y": -0.09456837816002434,
+            "z": 0.2156842498939959
+          },
+          {
+            "x": -0.0045,
+            "y": -0.09649845849551919,
+            "z": 0.21160343788879413
+          },
+          {
+            "x": -0.0045,
+            "y": -0.09801925544368162,
+            "z": 0.20735309515370526
+          },
+          {
+            "x": -0.0045,
+            "y": -0.0991161228985486,
+            "z": 0.2029741548127419
+          },
+          {
+            "x": -0.0045,
+            "y": -0.09977849742692106,
+            "z": 0.1985087884551598
+          },
+          {
+            "x": -0.0045,
+            "y": -0.1,
+            "z": 0.194
+          },
+          {
+            "x": 0.0045,
+            "y": -0.1,
+            "z": 0.0
+          },
+          {
+            "x": 0.0045,
+            "y": 0.1,
+            "z": 0.0
+          },
+          {
+            "x": 0.0045,
+            "y": 0.1,
+            "z": 0.24
+          },
+          {
+            "x": 0.0045,
+            "y": -0.054000000000000006,
+            "z": 0.24
+          },
+          {
+            "x": 0.0045,
+            "y": -0.058508788455159805,
+            "z": 0.23977849742692106
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0629741548127419,
+            "z": 0.2391161228985486
+          },
+          {
+            "x": 0.0045,
+            "y": -0.06735309515370527,
+            "z": 0.23801925544368163
+          },
+          {
+            "x": 0.0045,
+            "y": -0.07160343788879414,
+            "z": 0.2364984584955192
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0756842498939959,
+            "z": 0.23456837816002435
+          },
+          {
+            "x": 0.0045,
+            "y": -0.07955623071890171,
+            "z": 0.23224760216591708
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0831820910715277,
+            "z": 0.22955848085468591
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0865269119345812,
+            "z": 0.2265269119345812
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0895584808546859,
+            "z": 0.2231820910715277
+          },
+          {
+            "x": 0.0045,
+            "y": -0.09224760216591708,
+            "z": 0.2195562307189017
+          },
+          {
+            "x": 0.0045,
+            "y": -0.09456837816002434,
+            "z": 0.2156842498939959
+          },
+          {
+            "x": 0.0045,
+            "y": -0.09649845849551919,
+            "z": 0.21160343788879413
+          },
+          {
+            "x": 0.0045,
+            "y": -0.09801925544368162,
+            "z": 0.20735309515370526
+          },
+          {
+            "x": 0.0045,
+            "y": -0.0991161228985486,
+            "z": 0.2029741548127419
+          },
+          {
+            "x": 0.0045,
+            "y": -0.09977849742692106,
+            "z": 0.1985087884551598
+          },
+          {
+            "x": 0.0045,
+            "y": -0.1,
+            "z": 0.194
+          }
+        ]
+      },
+      "position": {
+        "x": 0.1605,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.84,
+        "g": 0.69,
+        "b": 0.43
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Rounded upper-front side contour is clear in the final oblique views. Refined to a broader, more finely sampled upper-front curve."
+    },
+    {
+      "name": "full_height_back",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.312,
+          "y": 0.006,
+          "z": 0.24
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.097,
+        "z": 0.12
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.84,
+        "g": 0.69,
+        "b": 0.43
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "bottom_board",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.312,
+          "y": 0.194,
+          "z": 0.009
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.003,
+        "z": 0.0045
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.84,
+        "g": 0.69,
+        "b": 0.43
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "shelf_above_drawers",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.312,
+          "y": 0.194,
+          "z": 0.007
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.003,
+        "z": 0.074
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.88,
+        "g": 0.76,
+        "b": 0.51
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "upper_display_shelf",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.312,
+          "y": 0.194,
+          "z": 0.008
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.003,
+        "z": 0.162
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.88,
+        "g": 0.76,
+        "b": 0.51
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Broad upper shelf has no front retaining wall; back and side guards remain open above it."
+    },
+    {
+      "name": "drawer_center_divider",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.006,
+          "y": 0.194,
+          "z": 0.061
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.003,
+        "z": 0.04
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.84,
+        "g": 0.69,
+        "b": 0.43
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "left_drawer_front",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.151,
+          "y": 0.009,
+          "z": 0.06
+        }
+      },
+      "position": {
+        "x": -0.08,
+        "y": -0.0955,
+        "z": 0.0405
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.81,
+        "g": 0.65,
+        "b": 0.39
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Two closed front panels have a visible central seam and individual dark ring pulls."
+    },
+    {
+      "name": "left_pull_backplate",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.006,
+        "height": 0.0018
+      },
+      "position": {
+        "x": -0.08,
+        "y": -0.1008,
+        "z": 0.044
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.24,
+        "g": 0.19,
+        "b": 0.13
+      },
+      "roughness": 0.43,
+      "metallic": 0.55,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "left_pull_pivot",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.0022,
+        "height": 0.007
+      },
+      "position": {
+        "x": -0.08,
+        "y": -0.1045,
+        "z": 0.044
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.24,
+        "g": 0.19,
+        "b": 0.13
+      },
+      "roughness": 0.43,
+      "metallic": 0.55,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "left_hanging_ring",
+      "geometry": {
+        "kind": "torus",
+        "major_radius": 0.006,
+        "minor_radius": 0.0011
+      },
+      "position": {
+        "x": -0.08,
+        "y": -0.108,
+        "z": 0.038
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.24,
+        "g": 0.19,
+        "b": 0.13
+      },
+      "roughness": 0.5,
+      "metallic": 0.55,
+      "evidence": "Close frontal view reveals hanging metal rings, not black holes or round solid knobs."
+    },
+    {
+      "name": "right_drawer_front",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.151,
+          "y": 0.009,
+          "z": 0.06
+        }
+      },
+      "position": {
+        "x": 0.08,
+        "y": -0.0955,
+        "z": 0.0405
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.81,
+        "g": 0.65,
+        "b": 0.39
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Two closed front panels have a visible central seam and individual dark ring pulls."
+    },
+    {
+      "name": "right_pull_backplate",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.006,
+        "height": 0.0018
+      },
+      "position": {
+        "x": 0.08,
+        "y": -0.1008,
+        "z": 0.044
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.24,
+        "g": 0.19,
+        "b": 0.13
+      },
+      "roughness": 0.43,
+      "metallic": 0.55,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "right_pull_pivot",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.0022,
+        "height": 0.007
+      },
+      "position": {
+        "x": 0.08,
+        "y": -0.1045,
+        "z": 0.044
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.24,
+        "g": 0.19,
+        "b": 0.13
+      },
+      "roughness": 0.43,
+      "metallic": 0.55,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "right_hanging_ring",
+      "geometry": {
+        "kind": "torus",
+        "major_radius": 0.006,
+        "minor_radius": 0.0011
+      },
+      "position": {
+        "x": 0.08,
+        "y": -0.108,
+        "z": 0.038
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.24,
+        "g": 0.19,
+        "b": 0.13
+      },
+      "roughness": 0.5,
+      "metallic": 0.55,
+      "evidence": "Close frontal view reveals hanging metal rings, not black holes or round solid knobs."
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "task": "Open the top drawer by 10 cm.",
+  "position": [
+    0.6,
+    -0.5,
+    0.2
+  ],
+  "yaw_deg": 180.0,
+  "control_dt": 0.03333333333333333,
+  "descriptions": {
+    "panda_link4": [
+      "frame of robot link 4",
+      "/Visuals/panda_link4_frame"
+    ],
+    "panda_fingertip": [
+      "frame of robot tool frame",
+      "/Visuals/panda_hand_frame"
+    ],
+    "cabinet": [
+      "Wooden cabinet with one wide white-handled top drawer and two small lower drawers with ring pulls; local frame +z is up; local frame -y is the front of the cabinet; estimated size: (0.4, 0.248, 0.26) meters",
+      "/World/envs/env_*/Cabinet"
+    ],
+    "top_drawer_handle_frame": [
+      "Grasp frame at the middle of the top drawer white handle bar; local frame +x is the handle bar direction; local frame +y is the approach direction toward the cabinet; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction",
+      "/Visuals/top_drawer_handle_frame"
+    ],
+    "top_drawer_center_frame": [
+      "Center frame of the top drawer usable interior; local frame +z is up from the drawer floor; local frame -z is the insertion direction into the open drawer; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction; estimated size: (0.36, 0.189, 0.067) meters",
+      "/Visuals/top_drawer_center_frame"
+    ],
+    "lower_left_drawer_handle_frame": [
+      "Grasp frame on the lower arc of the lower left drawer ring pull; local frame +x is the tangent of the ring at the grasp point; local frame +y is the approach direction toward the cabinet; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction",
+      "/Visuals/lower_left_drawer_handle_frame"
+    ],
+    "lower_left_drawer_center_frame": [
+      "Center frame of the lower left drawer usable interior; local frame +z is up from the drawer floor; local frame -z is the insertion direction into the open drawer; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction; estimated size: (0.168, 0.184, 0.07) meters",
+      "/Visuals/lower_left_drawer_center_frame"
+    ],
+    "lower_right_drawer_handle_frame": [
+      "Grasp frame on the lower arc of the lower right drawer ring pull; local frame +x is the tangent of the ring at the grasp point; local frame +y is the approach direction toward the cabinet; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction",
+      "/Visuals/lower_right_drawer_handle_frame"
+    ],
+    "lower_right_drawer_center_frame": [
+      "Center frame of the lower right drawer usable interior; local frame +z is up from the drawer floor; local frame -z is the insertion direction into the open drawer; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction; estimated size: (0.168, 0.184, 0.07) meters",
+      "/Visuals/lower_right_drawer_center_frame"
+    ]
+  },
+  "initial": {
+    "step": 0,
+    "joint_names": [
+      "upper_drawer_joint",
+      "lower_left_drawer_joint",
+      "lower_right_drawer_joint"
+    ],
+    "cabinet_joints": [
+      2.4576870316650457e-08,
+      1.244158553959096e-08,
+      1.3885722793816058e-08
+    ],
+    "robot_joints": [
+      -1.0403814315795898,
+      -0.4133283197879791,
+      -0.1900278478860855,
+      -2.0739681720733643,
+      0.17834164202213287,
+      2.118692398071289,
+      0.7660056352615356,
+      0.0,
+      0.0
+    ],
+    "frames": {
+      "panda_fingertip": {
+        "position": [
+          0.18510164320468903,
+          -0.4775351881980896,
+          0.5533286929130554
+        ],
+        "quaternion_wxyz": [
+          0.02937370538711548,
+          0.7786315679550171,
+          -0.5743598937988281,
+          0.2509595453739166
+        ]
+      },
+      "panda_link7": {
+        "position": [
+          0.10997457802295685,
+          -0.4072563648223877,
+          0.7368633151054382
+        ],
+        "quaternion_wxyz": [
+          -0.06890029460191727,
+          0.49956369400024414,
+          -0.8286089301109314,
+          0.24309729039669037
+        ]
+      },
+      "panda_link4": {
+        "position": [
+          -0.04011837765574455,
+          0.037603043019771576,
+          0.6549296975135803
+        ],
+        "quaternion_wxyz": [
+          0.08797426521778107,
+          0.7147442698478699,
+          0.16454200446605682,
+          -0.6740379333496094
+        ]
+      },
+      "top_drawer_handle_frame": {
+        "position": [
+          0.6000000238418579,
+          -0.390999972820282,
+          0.3369999825954437
+        ],
+        "quaternion_wxyz": [
+          -1.785814873755953e-08,
+          -2.09365857983812e-09,
+          1.0315936549432081e-08,
+          1.0
+        ]
+      },
+      "top_drawer_center_frame": {
+        "position": [
+          0.6000000238418579,
+          -0.5084999799728394,
+          0.3434999883174896
+        ],
+        "quaternion_wxyz": [
+          -1.785814873755953e-08,
+          -2.09365857983812e-09,
+          1.0315936549432081e-08,
+          1.0
+        ]
+      },
+      "lower_left_drawer_handle_frame": {
+        "position": [
+          0.6949999332427979,
+          -0.3991999328136444,
+          0.23600000143051147
+        ],
+        "quaternion_wxyz": [
+          -2.2374450736606377e-08,
+          1.2305676477808447e-09,
+          9.10810271648188e-09,
+          1.0
+        ]
+      },
+      "lower_left_drawer_center_frame": {
+        "position": [
+          0.6969999670982361,
+          -0.5119999051094055,
+          0.25200000405311584
+        ],
+        "quaternion_wxyz": [
+          -2.2374450736606377e-08,
+          1.2305676477808447e-09,
+          9.10810271648188e-09,
+          1.0
+        ]
+      },
+      "lower_right_drawer_handle_frame": {
+        "position": [
+          0.5050000548362732,
+          -0.399199903011322,
+          0.23600001633167267
+        ],
+        "quaternion_wxyz": [
+          2.0097600028634588e-08,
+          3.1481821594070425e-09,
+          7.377259692020743e-09,
+          1.0
+        ]
+      },
+      "lower_right_drawer_center_frame": {
+        "position": [
+          0.503000020980835,
+          -0.5119999051094055,
+          0.25200003385543823
+        ],
+        "quaternion_wxyz": [
+          2.0097600028634588e-08,
+          3.1481821594070425e-09,
+          7.377259692020743e-09,
+          1.0
+        ]
+      }
+    }
+  }
+}

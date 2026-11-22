@@ -1,0 +1,5 @@
+{
+  "artifact": "examples/03_demonstrations_to_policy/output/metrics.json",
+  "description": "Checkpoint, normalizers and validation curves",
+  "path_base": "repository root"
+}

@@ -1,0 +1,49 @@
+{
+    "Reasoning": "This stage is encoded as a conjunctive pre-insertion alignment while the mug remains held. The reach_point term moves the gripped mug frame mug_handle_hole_frame to the target point defined by cup_hanger_branch_1_tip_frame plus 0.18 m along that frame's local +y axis, with 0.01 m tolerance. The axis_align term makes the mug handle opening axis, mug_handle_hole_frame local +y, bipolar with cup_hanger_branch_1_tip_frame local +y, allowing either direction along the bidirectional handle-hole axis. The object_grasped term represents keeping the mug physically held with the gripper closed and not releasing it; close_gripper is not also emitted because object_grasped is the appropriate holding constraint. The 0.18 m standoff is represented by the reach target offset rather than an insertion move. The requested table clearance inequality of at least 0.615 m cannot be directly represented with the available operators without adding another position constraint, so it is omitted. Detailed no-slip opposing finger effort/contact monitoring and general feedback monitoring are also not directly encodable beyond object_grasped and the condition labels.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.18,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+y",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

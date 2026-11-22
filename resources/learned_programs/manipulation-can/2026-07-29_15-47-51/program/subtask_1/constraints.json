@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage keeps the gripper open, moves the panda_fingertip origin to the can_center_frame origin as the contact target with 0.01 m precision, and preserves the fingertip orientation from the start of the stage using a freeze_orientation tolerance of about 5 degrees. No tool-axis alignment is imposed. Contact/effort stopping is represented on the reach constraint with the manipulator_high_effort condition label together with geometry. Exact per-finger joint targets near 1.0 and gripper-effort monitoring are only partially representable by open_gripper/gripper_opened; detailed joint-state feedback and finger-effort thresholds are not directly expressible in the available terms.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0873
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "can_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The subtask requires pulling the grasped drawer_top_handle_frame outward by 0.40 m along its local +x axis while keeping the tool (end-effector) orientation fixed relative to that handle throughout the motion. The gripper must remain closed to preserve the grasp. Additionally, the robot must monitor for excessive effort indicating a possible collision, and stop if high effort is detected. Success is defined by making the specified translation along the correct axis, maintaining the relative orientation, and keeping the grasp; all conditions must be satisfied simultaneously (logic: 'and'). An 'or' combination is used between completion of the translation and the event of excessive effort\u2014the motion stops when either is reached.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_close"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "drawer_top_handle_frame",
+                "axis": "+x",
+                "travel_distance_m": 0.4,
+                "tolerance_m": 0.02
+            }
+        }
+    ]
+}

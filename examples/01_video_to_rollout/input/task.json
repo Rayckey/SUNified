@@ -1,0 +1,10 @@
+{
+  "task": "Open the top drawer by 10 cm.",
+  "object_description": "One cabinet with three sliding drawers: a large upper drawer and two small lower drawers.",
+  "target_joint": "upper_drawer_joint",
+  "target_travel_m": 0.1,
+  "tolerance_m": 0.01,
+  "other_drawer_max_motion_m": 0.005,
+  "asset_recipe": "assets/recipes/0028_0029.articulated.scene.json",
+  "program": "resources/learned_programs/generated-video28-29-cabinet/2026-10-17_19-34-23/program"
+}

@@ -1,0 +1,1 @@
+[Approach] Move the open gripper into contact with the strawberry while keeping the gripper orientation fixed.

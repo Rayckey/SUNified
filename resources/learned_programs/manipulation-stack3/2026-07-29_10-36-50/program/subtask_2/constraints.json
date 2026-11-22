@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This grasping stage is represented as conjunctive requirements. The fingertip position is frozen within 0.01 m to maintain the contact pose established at the end of the preceding approach, which is the cube_2 origin in world coordinates. The fingertip orientation is frozen within 0.05 rad to preserve the immediately preceding approach orientation, without adding any new +z or +y tool reorientation constraint. The grasp requirement is encoded with object_grasped rather than close_gripper, because success must be a physical grasp of cube_2 based on gripper contact/effort feedback, not merely reaching a closed joint position. The API has no object argument for object_grasped and no explicit finger-effort condition label, so the cube_2-only target and stable finger-contact feedback are represented by the stage context plus object_grasped; the lack of an explicit cube_2 argument is the only unrepresented detail.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

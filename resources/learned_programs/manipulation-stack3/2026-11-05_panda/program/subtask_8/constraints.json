@@ -1,0 +1,66 @@
+{
+  "Reasoning": "Align the gripper with a cube face before descending so the fingers grasp opposing faces.",
+  "Constraints": [
+    {
+      "logic": "and",
+      "condition": [
+        "geometry"
+      ],
+      "op": "reach_point",
+      "args": {
+        "controlled_entity": "robot_frame",
+        "controlled_target": "panda_fingertip",
+        "reference_basis": "world",
+        "reference_origin": "cube_3",
+        "offset_from_origin_xyz": [
+          0.0,
+          0.0,
+          0.125
+        ],
+        "tolerance_m": 0.01
+      }
+    },
+    {
+      "logic": "and",
+      "condition": [
+        "geometry"
+      ],
+      "op": "axis_align",
+      "args": {
+        "controlled_entity": "robot_frame",
+        "controlled_target": "panda_fingertip",
+        "reference_basis": "world",
+        "reference_origin": "world",
+        "controlled_axis": "+z",
+        "reference_axis": "+z",
+        "alignment": "antiparallel",
+        "tolerance_rad": 0.2
+      }
+    },
+    {
+      "logic": "and",
+      "condition": [
+        "gripper_opened"
+      ],
+      "op": "open_gripper",
+      "args": {}
+    },
+    {
+      "logic": "and",
+      "condition": [
+        "geometry"
+      ],
+      "op": "axis_align",
+      "args": {
+        "controlled_entity": "robot_frame",
+        "controlled_target": "panda_fingertip",
+        "reference_basis": "object",
+        "reference_origin": "cube_3",
+        "controlled_axis": "+x",
+        "reference_axis": "+x",
+        "alignment": "bipolar",
+        "tolerance_rad": 0.2
+      }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage is a fixed-pose grasp-closing stage. The fingertip origin is frozen at its current world position with the required 0.01 m tolerance, and the fingertip orientation is frozen at its current world orientation with the required 0.05 rad tolerance, preserving the current tool +z and +y directions without commanding translation or rotation. The grasp requirement is represented with object_grasped rather than close_gripper because success requires cube_3 to be physically held, not merely a commanded mechanical closure. The command to close both gripper joints and the use of contact/effort and joint-state feedback are only partially representable through object_grasped and the gripper_closed condition metadata. The API does not provide arguments on object_grasped to name cube_3, nor a term to explicitly forbid contact or grasp of cube_1 or cube_2, so the cube_3-specific and exclusivity clauses are implicit in the grounded stage but not directly encodable.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

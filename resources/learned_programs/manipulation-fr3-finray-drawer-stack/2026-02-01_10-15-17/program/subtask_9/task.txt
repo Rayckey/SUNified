@@ -1,0 +1,1 @@
+[Manipulate] Lift the grasped strawberry from its surface with the gripper closed to create clearance.

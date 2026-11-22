@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage keeps cube_2 physically held, keeps the panda_fingertip orientation fixed from the start of the stage, and lowers the gripped cube_2 along world -z by the specified 0.10 m with 0.01 m precision. The directional move preserves lateral alignment by commanding only vertical motion from the already-aligned start pose. The manipulator_high_effort condition on the lowering term represents the available effort/contact feedback used to detect contact at the stacking target. Exact left/right finger joint command values, finger squeeze effort thresholds, explicit cube_2-to-fingertip relative-pose locking, and the separate cube_1 +z target point cannot all be encoded simultaneously because only one position operator is allowed; these are represented as far as possible by object_grasped plus the vertical lowering command and noted here.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

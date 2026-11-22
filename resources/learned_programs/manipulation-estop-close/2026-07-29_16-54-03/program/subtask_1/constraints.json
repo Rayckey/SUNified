@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage is an approach-to-contact controller stage. A reach_point term moves the panda_fingertip origin to the estop_cap_tip origin in the estop_cap_tip object frame with 0.01 m tolerance, representing the intended contact target rather than a standoff. Its condition includes both geometry and manipulator_high_effort so the controller can use end-effector pose proximity together with rising arm/TCP effort feedback as contact evidence without using a top-level OR. A freeze_orientation term keeps panda_fingertip at its stage-start orientation, with the requested 5 degree tolerance. A close_gripper term represents keeping the gripper mechanically closed throughout the approach. The exact requirement to hold both individual finger joints at 0.0 is not directly expressible in the available operators beyond close_gripper, and direct contact-sensor contact with estop_cap_tip is not separately expressible beyond the manipulator_high_effort condition label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage moves the robot end-effector frame panda_fingertip into contact/near-contact with the can center while keeping the gripper open and preserving its start-of-stage orientation. A reach_point term targets the can_center_frame origin with 0.015 m tolerance; its condition includes both geometry and manipulator_high_effort to represent the specified stop alternative of either reaching the geometric proximity threshold or detecting contact/effort feedback. A freeze_orientation term keeps panda_fingertip fixed in orientation with the specified 5 degree tolerance. An open_gripper term represents maintaining the gripper fully open. Explicit continuous monitoring of position, orientation, gripper joint states, and effort feedback is not directly representable beyond these constraint conditions.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "can_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.015
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.087266
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

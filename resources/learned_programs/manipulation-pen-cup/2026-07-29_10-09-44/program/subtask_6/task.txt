@@ -1,0 +1,1 @@
+[Manipulate] Align the grasped marker so marker aligned with the opening of pen_holder for insertion, with the gripper closed.

@@ -1,0 +1,1 @@
+[Manipulate] Twist the grasped estop_cap_center around its local -z axis to unlock the e-stop around 60 degrees, with physical travel allowed up to 100 degrees and the gripper closed.

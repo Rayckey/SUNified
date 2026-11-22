@@ -1,0 +1,44 @@
+{
+    "Reasoning": "This stage retracts the panda_fingertip, kept as the controlled tool point, to the object-frame +z standoff 0.10 m from estop_cap_center with a 0.01 m position tolerance. The current tool orientation is preserved with freeze_orientation, using a 5 degree tolerance to match the stop condition. The gripper is commanded open throughout the stage using open_gripper, representing the required open finger state. No object_grasped constraint is emitted because the stage requires release, not holding. Direct representation of gripper joint values near 1.0, finger effort/contact feedback near free-space, explicit not-object_grasped feedback, and feedback monitoring are not available as separate API terms, so those clauses are noted but omitted.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.1
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

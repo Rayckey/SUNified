@@ -1,0 +1,67 @@
+{
+    "Reasoning": "Success for this subtask means that the gripped cube_1 is lowered vertically until it is nearly resting atop cube_2, stopping either at the specified separation (bottom face of cube_1 within 0.03 m of the top of cube_2; equivalently, the center of cube_1 is at most 0.025 + 0.03 = 0.055 m above the center of cube_2) OR as soon as force/effort feedback indicates contact. The motion must be along world -z; tool (end effector) +z in agent frame must remain antiparallel to world +z (strict top-down); tool +y in agent frame must remain orthogonal to tool +z (no 'twisting' so +y does not align with the approach axis); and the gripper must keep cube_1 grasped throughout, i.e., fingers closed and holding. The constraints are combined with 'and' except for the stop condition (either reaching the vertical position or detecting contact), which is an 'or'.",
+    "Constraints": [
+        {
+            "logic": "or",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.055
+                ],
+                "tolerance_m": 0.03
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "robot_frame",
+                "reference_origin": "panda_fingertip",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

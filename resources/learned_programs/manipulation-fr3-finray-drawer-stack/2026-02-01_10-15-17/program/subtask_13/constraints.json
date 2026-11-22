@@ -1,0 +1,33 @@
+{
+    "Reasoning": "Success for this subtask is defined by three primary requirements: (1) The gripper must be retracted away from the strawberry to a safe configuration, where 'safe' is quantified as having the tool origin (panda_fingertip) at least 0.115 m from the center of the strawberry, measured as a Euclidean separation (not strictly along one axis), and motion must stop when this separation is reached. (2) The gripper must remain fully open throughout the move. (3) During the retreat, there must be no contact or force exerted by the gripper (i.e., manipulator effort must stay at free-space/low levels and both fingers must be fully open, but this is conceptually covered by 'gripper remains fully open' for this context). All constraints must be met for the subtask to succeed, so \"and\" logic links them.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "strawberry",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "distance_m": 0.115,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,50 @@
+{
+    "Reasoning": "The stage is encoded as a conjunctive placement/hold stage. The reach_point term moves the currently gripped cube_3 to the stacking placement target at cube_2 plus world +z 0.05 m with 0.01 m tolerance; because the immediately preceding stage placed cube_3 at cube_2 plus world +z 0.15 m, this target corresponds to the requested 0.10 m downward motion, although the explicit directional path and distance are not separately encoded due to the one-position-op limit. The manipulator_high_effort label on the placement term represents intended contact at the end of the downward placement, without adding any non-contact requirement. The object_grasped term, labeled gripper_closed, represents maintaining the already closed grasp on cube_3 without opening and without slip. The axis_align term preserves the requested cube_3 +z to cube_2 +z bipolar placement orientation. Unrepresented clauses: stable bilateral finger effort/contact feedback cannot be directly encoded beyond object_grasped/gripper_closed; cube_2 support on cube_1 and cube_1 undisturbed pose monitoring cannot be directly constrained because the API only controls robot frames or the currently gripped object; monitor-only feedback requirements are not separately representable.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.05
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "object",
+                "reference_origin": "cube_2",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

@@ -1,0 +1,50 @@
+{
+    "Reasoning": "Use an axis alignment to set panda_fingertip tool +z antiparallel to estop_cap_tip +z, expressed in the estop_cap_tip object frame. Use one reach_point position constraint for the non-contact approach target: estop_cap_tip origin offset by +0.10 m along its local +z, with the required 0.01 m tolerance. Include manipulator_low_effort on the reach constraint to represent the non-contact requirement and inhibition on unexpected arm/TCP effort increase. Use close_gripper to command the gripper closed throughout the stage. Detailed monitoring of end-effector pose error, individual gripper joint states commanded to exactly 0.0, and gripper effort feedback are not directly representable beyond the geometry constraints and close_gripper term.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.1
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

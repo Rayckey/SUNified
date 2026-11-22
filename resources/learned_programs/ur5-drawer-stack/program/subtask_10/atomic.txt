@@ -1,0 +1,1 @@
+[Manipulate] Carry the grasped strawberry over the open top drawer, positioning it above top_drawer_center_frame with the gripper closed.

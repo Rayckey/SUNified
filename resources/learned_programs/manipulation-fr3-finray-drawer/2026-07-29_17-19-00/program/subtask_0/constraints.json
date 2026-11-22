@@ -1,0 +1,66 @@
+{
+    "Reasoning": "This stage moves the open panda_fingertip to a non-contact pregrasp/approach point offset 0.11 m along top_drawer_handle_frame -y, with 0.01 m positional tolerance, which gives the requested clearance from the handle. The two axis_align constraints encode the required approach orientation: tool +z antiparallel to handle -y, and tool +y orthogonal to the handle bar direction +x. The open_gripper term represents maintaining the gripper open; the API cannot explicitly constrain individual finger joint states near 1.0, so that detail is represented only by open_gripper/gripper_opened metadata. Continuous path-level non-contact avoidance is not directly representable beyond the specified offset clearance.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+z",
+                "reference_axis": "-y",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.11,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

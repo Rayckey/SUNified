@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This stage lowers the already-grasped strawberry by the explicitly specified cabinet-frame -z displacement from the prior aligned placement waypoint; given that prior alignment, this brings strawberry_center_frame to top_drawer_center_frame within the 0.01 m placement tolerance. The gripper/object holding requirement is represented with object_grasped rather than close_gripper, because the stage requires maintaining a real grasp, not merely commanding closure. The panda_fingertip orientation is frozen with the required 0.05 rad tolerance, and no extra tool +z or +y axis relation is imposed. Avoidance of top_drawer_handle_frame/cabinet, continuous monitoring, grasp-slip detection via detailed finger/contact effort, and fail/pause behavior are not directly representable with the available operators; these are noted as runtime monitoring requirements outside the emitted constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "reference_basis": "object",
+                "reference_origin": "cabinet",
+                "axis": "-z",
+                "travel_distance_m": 0.245,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

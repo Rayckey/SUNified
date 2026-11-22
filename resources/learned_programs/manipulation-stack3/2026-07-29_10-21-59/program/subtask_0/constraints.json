@@ -1,0 +1,66 @@
+{
+    "Reasoning": "This stage is a non-contact pre-grasp approach for panda_fingertip above cube_2. The reach_point places the gripper origin at cube_2's origin plus a 0.125 m world +z standoff with 0.01 m tolerance, giving lateral x/y alignment and clearance. The first axis_align enforces the top-down tool orientation by making panda_fingertip +z antiparallel to world +z. The second axis_align fixes the chosen symmetric-cube clamping-edge relation by making panda_fingertip +y orthogonal to cube_2 +x. open_gripper represents maintaining the gripper open during the stage. Exact joint value 1.0 throughout and explicit feedback monitoring are not separately representable beyond the open_gripper condition and geometric constraints; no contact or effort stopping condition is included.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "cube_2",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.125
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

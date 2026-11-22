@@ -1,0 +1,1 @@
+[Manipulate] Lower the upright can back down while keeping the gripper orientation fixed.

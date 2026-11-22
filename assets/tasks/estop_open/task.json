@@ -1,0 +1,325 @@
+{
+  "schema_version": 1,
+  "id": "estop_open",
+  "title": "Release emergency stop",
+  "status": "registered",
+  "task": "unlock the e-stop",
+  "environments": [
+    {
+      "robot_id": "fr3_finray",
+      "gym_id": "FR3-FinRay-Table-EStop-Open",
+      "registration_module": "kuafu.isaac.learned",
+      "entry_point": "kuafu.isaac.learned.fr3_finray_estop_closed_env_learned:FR3FinRayEStopClosedEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.fr3_finray_estop_closed_env_learned:FR3FinRayEStopClosedEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/fr3_finray_estop_closed_env_learned.py",
+      "variants": [
+        "FR3-FinRay-Table-EStop-Open-Long-Long-U",
+        "FR3-FinRay-Table-EStop-Open-f",
+        "FR3-FinRay-Table-EStop-Open-l",
+        "FR3-FinRay-Table-EStop-Open-c",
+        "FR3-FinRay-Table-EStop-Open-lf",
+        "FR3-FinRay-Table-EStop-Open-ff",
+        "FR3-FinRay-Table-EStop-Open-fff"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/fr3_ft_robotiq_2f_85_finrays_tcp/usd/fr3_ft_robotiq_2f_85_finrays.usd",
+          "table": "assets/objects/table/table_flattened_instanceable_meshes.usd",
+          "estop": "assets/objects/estop/estop.usda"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-estop-open/2026-04-27_15-52-56",
+        "interaction_frames": {
+          "estop_cap_tip": {
+            "description": "tip frame of mushroom cap of the twist open e-stop button for closing, press against local +z axis for 3 cm to close, size:(0.04 m, 0.04 m, 0.04 m)",
+            "prim_path": "/Visuals/estop_cap_tip_frame"
+          },
+          "estop_cap_center": {
+            "description": "center frame of mushroom cap of the twist open e-stop button for unlocking, twist around object +z axis for up to 45 degrees to unlock; size:(0.04 m, 0.04 m, 0.04 m)",
+            "prim_path": "/Visuals/estop_cap_center_frame"
+          },
+          "estop_base_frame": {
+            "description": "rectangular housing of the e-stop button; size: (0.078, 0.072, 0.073) m",
+            "prim_path": "/Visuals/estop_base_frame"
+          },
+          "table": {
+            "description": "surface the e-stop is mounted on; size: (0.4, 0.6, 0.2) m",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool / end-effector",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "franka_panda",
+      "gym_id": "Panda-Table-EStop-Open",
+      "registration_module": "kuafu.isaac.learned.panda",
+      "entry_point": "kuafu.isaac.learned.panda.panda_estop_closed_env_learned:PandaEStopClosedEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.panda.panda_estop_closed_env_learned:PandaEStopClosedEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/panda/panda_estop_closed_env_learned.py",
+      "variants": [
+        "Panda-Table-EStop-Open-Long-Long-U",
+        "Panda-Table-EStop-Open-f",
+        "Panda-Table-EStop-Open-l",
+        "Panda-Table-EStop-Open-c",
+        "Panda-Table-EStop-Open-lf",
+        "Panda-Table-EStop-Open-ff",
+        "Panda-Table-EStop-Open-fff",
+        "Panda-Table-EStop-Open-f3",
+        "Panda-Table-EStop-Open-ff3",
+        "Panda-Table-EStop-Open-fff3"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "estop": "assets/objects/estop/estop.usda",
+          "robot": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-estop-open/2026-04-27_15-52-56",
+        "interaction_frames": {
+          "estop_cap_tip": {
+            "description": "tip frame of mushroom cap of the twist open e-stop button for closing, press against local +z axis for 3 cm to close, size:(0.04 m, 0.04 m, 0.04 m)",
+            "prim_path": "/Visuals/estop_cap_tip_frame"
+          },
+          "estop_cap_center": {
+            "description": "center frame of mushroom cap of the twist open e-stop button for unlocking, twist around object +z axis for up to 45 degrees to unlock; size:(0.04 m, 0.04 m, 0.04 m)",
+            "prim_path": "/Visuals/estop_cap_center_frame"
+          },
+          "estop_base_frame": {
+            "description": "rectangular housing of the e-stop button; size: (0.078, 0.072, 0.073) m",
+            "prim_path": "/Visuals/estop_base_frame"
+          },
+          "table": {
+            "description": "surface the e-stop is mounted on; size: (0.4, 0.6, 0.2) m",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool / end-effector",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "kinova_gen3",
+      "gym_id": "Kinova-Table-Gen3-EStop-Open",
+      "registration_module": "kuafu.isaac.learned.kinova",
+      "entry_point": "kuafu.isaac.learned.kinova.kinova_estop_closed_env_learned:KinovaEStopClosedEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.kinova.kinova_estop_closed_env_learned:KinovaEStopClosedEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/kinova/kinova_estop_closed_env_learned.py",
+      "variants": [
+        "Kinova-Table-Gen3-EStop-Open-f",
+        "Kinova-Table-Gen3-EStop-Open-ff",
+        "Kinova-Table-Gen3-EStop-Open-fff",
+        "Kinova-Table-Gen3-EStop-Open-f3",
+        "Kinova-Table-Gen3-EStop-Open-ff3",
+        "Kinova-Table-Gen3-EStop-Open-fff3"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/kinova/usd/kinova_gen3_7dof_robotiq_2f85_vision_official_contact_stable.usd",
+          "estop": "assets/objects/estop/estop.usda"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-estop-open/2026-04-27_15-52-56",
+        "interaction_frames": {
+          "estop_cap_tip": {
+            "description": "tip frame of mushroom cap of the twist open e-stop button for closing, press against local +z axis for 3 cm to close, size:(0.04 m, 0.04 m, 0.04 m)",
+            "prim_path": "/Visuals/estop_cap_tip_frame"
+          },
+          "estop_cap_center": {
+            "description": "center frame of mushroom cap of the twist open e-stop button for unlocking, twist around object +z axis for up to 45 degrees to unlock; size:(0.04 m, 0.04 m, 0.04 m)",
+            "prim_path": "/Visuals/estop_cap_center_frame"
+          },
+          "estop_base_frame": {
+            "description": "rectangular housing of the e-stop button; size: (0.078, 0.072, 0.073) m",
+            "prim_path": "/Visuals/estop_base_frame"
+          },
+          "table": {
+            "description": "surface the e-stop is mounted on; size: (0.4, 0.6, 0.2) m",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool / end-effector",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "ur5_robotiq",
+      "gym_id": "UR5-Table-EStop-Closed",
+      "registration_module": "kuafu.isaac.learned.ur5",
+      "entry_point": "kuafu.isaac.learned.ur5.tasks:UR5EStopClosedEnv",
+      "config_entry_point": "kuafu.isaac.learned.ur5.tasks:UR5EStopClosedEnvCfg",
+      "source": "src/kuafu/isaac/learned/ur5/tasks.py",
+      "variants": [],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/ur5_robotiq/ur5_robotiq.usd",
+          "estop": "assets/objects/estop/estop.usda"
+        },
+        "controller_inputs": {
+          "urdf_path": "assets/robots/ur5_robotiq/ur5_controller.urdf",
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-estop-open/2026-04-27_15-52-56",
+        "interaction_frames": {
+          "estop_cap_tip": {
+            "description": "tip frame of mushroom cap of the twist open e-stop button for closing, press against local +z axis for 3 cm to close, size:(0.04 m, 0.04 m, 0.04 m)",
+            "prim_path": "/Visuals/estop_cap_tip_frame"
+          },
+          "estop_cap_center": {
+            "description": "center frame of mushroom cap of the twist open e-stop button for unlocking, twist around object +z axis for up to 45 degrees to unlock; size:(0.04 m, 0.04 m, 0.04 m)",
+            "prim_path": "/Visuals/estop_cap_center_frame"
+          },
+          "estop_base_frame": {
+            "description": "rectangular housing of the e-stop button; size: (0.078, 0.072, 0.073) m",
+            "prim_path": "/Visuals/estop_base_frame"
+          },
+          "table": {
+            "description": "surface the e-stop is mounted on; size: (0.4, 0.6, 0.2) m",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool / end-effector",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    }
+  ],
+  "object_assets": [
+    "assets/objects/estop",
+    "assets/objects/estop/estop.usda",
+    "assets/objects/table/table_flattened_instanceable_meshes.usd"
+  ],
+  "scene_source": "src/kuafu/isaac/learned/fr3_finray_estop_closed_env_learned.py",
+  "interaction_frames_source": "src/kuafu/isaac/learned/fr3_finray_estop_closed_env_learned.py:detectable_objects",
+  "interaction_frames": {
+    "estop_cap_tip": {
+      "description": "tip frame of mushroom cap of the twist open e-stop button for closing, press against local +z axis for 3 cm to close, size:(0.04 m, 0.04 m, 0.04 m)",
+      "prim_path": "/Visuals/estop_cap_tip_frame"
+    },
+    "estop_cap_center": {
+      "description": "center frame of mushroom cap of the twist open e-stop button for unlocking, twist around object +z axis for up to 45 degrees to unlock; size:(0.04 m, 0.04 m, 0.04 m)",
+      "prim_path": "/Visuals/estop_cap_center_frame"
+    },
+    "estop_base_frame": {
+      "description": "rectangular housing of the e-stop button; size: (0.078, 0.072, 0.073) m",
+      "prim_path": "/Visuals/estop_base_frame"
+    },
+    "table": {
+      "description": "surface the e-stop is mounted on; size: (0.4, 0.6, 0.2) m",
+      "prim_path": "/World/envs/env_*/Table"
+    },
+    "panda_link4": {
+      "description": "frame of robot link 4",
+      "prim_path": "/Visuals/panda_link4_frame"
+    },
+    "panda_fingertip": {
+      "description": "frame of robot tool / end-effector",
+      "prim_path": "/Visuals/panda_hand_frame"
+    }
+  },
+  "success_check": {
+    "summary": "The initially latched button unlocks, springs open and the end effector withdraws.",
+    "source": "src/kuafu/isaac/learned/fr3_finray_estop_closed_env_learned.py",
+    "method": "_external_get_dones",
+    "thresholds": "Use the selected robot configuration and implementation."
+  },
+  "formulation": [
+    {
+      "gym_id": "Formulate-Panda-EStop-Open-v0",
+      "runner": "src/kuafu/programs/estop_open_learn_programs.py"
+    }
+  ],
+  "program_families": [
+    "resources/learned_programs/manipulation-estop-open"
+  ],
+  "saved_programs": [
+    {
+      "path": "resources/learned_programs/manipulation-estop-open/2026-04-27_15-52-56",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-estop-open/2026-07-29_08-20-02",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-estop-open/2026-07-29_08-24-26",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-estop-open/2026-07-29_15-42-33",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-estop-open/2026-07-29_17-23-32",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-estop-open/2026-07-29_17-32-14",
+      "stages": 6,
+      "recorded_success": "True"
+    }
+  ],
+  "example_program": {
+    "path": "resources/learned_programs/manipulation-estop-open/2026-07-29_17-32-14",
+    "stages": 6,
+    "recorded_success": "True"
+  },
+  "agent_interface": {
+    "discovery": [
+      "kuafu_list_tasks",
+      "kuafu_get_task"
+    ],
+    "learning": "kuafu_start_stage with a compatible task manifest",
+    "scene_verification": "Use the task-specific scene and success implementation. The exported-video cabinet tool has its own task entry."
+  },
+  "robot_setup": {
+    "default": "docs/INSTALL.md",
+    "ur5_robotiq": "docs/UR5.md"
+  },
+  "external_assets": [
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+  ]
+}

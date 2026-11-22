@@ -1,0 +1,5 @@
+{
+  "artifact": "examples/03_demonstrations_to_policy/input/demonstrations.hdf5",
+  "description": "MPC or checkpoint-driven simulator rollouts",
+  "path_base": "repository root"
+}

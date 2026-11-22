@@ -1,0 +1,1 @@
+[Manipulate] Raise grasped cube_1 to create clearance for moving over cube_2 with the gripper closed.

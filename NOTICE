@@ -1,0 +1,14 @@
+Kuafu: the harness for SUN Programs
+Associated paper: SUN: Agentic Robot Policy Learning with Persistent Task Programs
+Copyright 2026 SUN project contributors.
+
+Original Kuafu code is licensed under the Apache License, Version 2.0.
+Existing third-party copyright notices and licenses continue to apply.
+
+Isaac Lab-derived files retain their BSD-3-Clause headers; the license is
+included in LICENSES/IsaacLab-BSD-3-Clause.txt. Franka, Kinova, Universal Robots
+and Robotiq robot descriptions retain the upstream terms listed in README.md
+under Third-party notices.
+
+This notice does not grant new rights to third-party assets, trained model
+weights, datasets, or the separately installed Isaac Sim runtime.

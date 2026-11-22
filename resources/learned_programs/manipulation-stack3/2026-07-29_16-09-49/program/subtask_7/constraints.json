@@ -1,0 +1,42 @@
+{
+    "Reasoning": "Use a single directional_move as the stage position goal because the current action explicitly commands the panda_fingertip to translate 0.10 m along world +z, with no lateral commanded motion; the geometry condition covers completion within 0.01 m, and manipulator_low_effort represents free-space/non-contact effort feedback during the retract. freeze_orientation preserves the panda_fingertip orientation from the start of the stage. open_gripper maintains/succeeds with the gripper in the open released configuration. Unrepresented clauses: exact left/right gripper joint command values near 1.0 and gripper-joint effort monitoring are not directly expressible beyond open_gripper; explicit 0.10 m clearance from cube_2 is not representable with the available operators; monitoring cube_2 as remaining within 0.01 m of cube_1 + world z 0.05 and supported by cube_1 rather than held by the gripper is not directly representable for an ungripped object, and a second position constraint would also violate the one-position-op rule.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

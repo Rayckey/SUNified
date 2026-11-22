@@ -1,0 +1,42 @@
+{
+    "Diagnosis": "The estop twist stage should use the cap frame as the reference basis. The previous `target_quat` error came from using an object name as `reference_basis`; the valid encoding is `reference_basis=\"object\"` with `reference_origin=\"estop_cap_center\"`. The physical estop joint now travels from -100 to 0 degrees and the latch opens around 60 degrees of negative twist.",
+    "Reasoning": "This subtask requires twisting the grasped estop_cap_center around its local -z axis. The simulated button physically allows up to 100 degrees of negative twist, while the semantic unlock threshold is around 60 degrees. The gripper holds the cap, so rotating the gripper (panda_fingertip) around the estop_cap_center -z axis achieves the cap rotation. The tool +z is antiparallel to estop_cap_center +z.\n\nConstraints:\n1. freeze_position on panda_fingertip: keep position fixed during the twist.\n2. directional_rotate on robot_frame/panda_fingertip: rotate around estop_cap_center -z using reference_basis=\"object\" and reference_origin=\"estop_cap_center\". The target is 1.5708 rad (about 90 degrees), which is below the 100 degree physical limit and above the 60 degree unlock threshold.\n3. axis_align: tool +z (panda_fingertip +z) remains antiparallel with estop_cap_center +z for orientation continuity.\n4. object_grasped: gripper holds estop_cap_center throughout.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_rotate",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "rotation_axis": "-z",
+                "rotation_angle_rad": 2.0,
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

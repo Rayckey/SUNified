@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage succeeds when the grasped can remains held with the gripper closed, the can origin is held at its current world position within 0.01 m, and the can_center_frame local -y upright axis is aligned codirectionally with world +z within 5 degrees. The axis_align term constrains only the can upright axis, leaving rotation about that cylindrical axis unconstrained. object_grasped represents maintaining a stable physical grasp rather than merely commanding finger closure. Exact left/right finger joint positions near 0.0, detailed fingertip-can relative-pose preservation, and finger effort feedback monitoring are not directly representable beyond the object_grasped holding requirement.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "-y",
+                "reference_axis": "+z",
+                "alignment": "codirectional",
+                "tolerance_rad": 0.0872665
+            }
+        }
+    ]
+}

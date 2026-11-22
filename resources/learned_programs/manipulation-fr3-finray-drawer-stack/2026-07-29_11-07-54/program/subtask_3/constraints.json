@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is a pull of the already-grasped top_drawer_handle_frame. object_grasped represents maintaining a real physical hold on the handle rather than merely commanding closure. freeze_orientation preserves the start-of-stage panda_fingertip orientation in the robot base/world frame, covering fixed tool +z and +y directions. directional_move commands the grasped handle to translate 0.14 m along the handle frame -y opening direction; the condition includes both geometry and manipulator_high_effort to represent the supported stop alternative of reaching the measured pull distance or encountering the fully-open mechanical stop. No open_gripper is emitted, preserving the closed/no-release requirement. Detailed no-slip verification, bilateral finger contact/effort feedback, gripper joint-state monitoring, and continuous feedback monitoring are not separately representable beyond object_grasped and the condition labels.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "top_drawer_handle_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

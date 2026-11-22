@@ -1,0 +1,1 @@
+[Manipulate] Carry the grasped cube_3 above cube_1 (which is now stacked on cube_2) with the gripper closed.

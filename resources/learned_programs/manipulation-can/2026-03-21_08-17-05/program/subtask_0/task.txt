@@ -1,0 +1,1 @@
+[Approach] Use a top-down approach to move the open gripper above can_center_frame without touching it.

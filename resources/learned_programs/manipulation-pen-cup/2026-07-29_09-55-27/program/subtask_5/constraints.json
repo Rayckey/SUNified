@@ -1,0 +1,67 @@
+{
+    "Reasoning": "This stage carries the already-grasped marker to a non-contact pre-insertion pose above the pen_holder. The reach_point term places the marker origin at the pen_holder-frame +z standoff target [0, 0, 0.2235] m with 0.01 m tolerance, encoding the required lateral alignment and positive non-contact axial offset. The two axis_align terms keep the marker length axis (+y) upright relative to world +z and aligned with the pen_holder opening axis (+z), both using a 5 degree tolerance. The object_grasped term represents maintaining a firm grasp during the carry rather than merely commanding mechanical closure. manipulator_low_effort is included with the geometric reaching condition to represent avoiding commanded contact and detecting unexpected arm/TCP contact during the non-contact alignment. The API cannot explicitly encode preserving the exact start-of-stage panda_fingertip-to-marker relative transform, specific left/right finger joint states measured at stage start, paired finger effort/contact magnitudes, collision avoidance against both table and pen_holder as separate constraints, or slip detection from pose/force residuals; these are represented only indirectly by object_grasped and low-effort non-contact motion.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.2235
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.0872664626
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.0872664626
+            }
+        }
+    ]
+}

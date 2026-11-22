@@ -1,0 +1,44 @@
+{
+    "Reasoning": "The stage is a carry/transfer stage with cube_2 already grasped. object_grasped requires the gripper to continue physically holding cube_2, covering the firm closed grasp/contact requirement without separately emitting close_gripper. The reach_point term commands the gripped cube_2 origin to the world-axis point laterally aligned with cube_1 and 0.15 m above cube_1, with 0.01 m tolerance, which represents the stop condition for x/y alignment and the required above-cube_1 separation. freeze_orientation preserves the current cube_2 orientation during the transfer, supporting the no-intentional-slip grasped-system motion. Exact maintenance of the stage-start world z height as a separate partial-axis constraint cannot be represented together with the required x/y reach target because the API has no partial position freeze and permits only one position op; the 0.15 m above-cube_1 target is used to encode the specified final clearance. The cube_2-to-cube_3 non-contact clearance inequality and detailed monitoring/effort feedback are not directly representable by the available ops beyond object_grasped.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

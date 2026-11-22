@@ -1,0 +1,9 @@
+prior_checkpoint,used_by_residual_prefixes,source_files
+Priors/ares/stack3/stack3_chunking_15_fff_stride3/best.pth,FR3-FinRay-Table-Stack-3-fff/2026-05-18_19-23-40,FR3-FinRay-Table-Stack-3-fff/2026-05-18_19-23-40/run_params.json
+Priors/athe/can_spice/right_can_chunking_15_ff_damped/best.pth,FR3-FinRay-Table-Can-ff/2026-05-25_17-02-29,FR3-FinRay-Table-Can-ff/2026-05-25_17-02-29/run_params.json;FR3-FinRay-Table-Can-ff/2026-05-25_16-59-11/best.json
+Priors/herm/drawer_damped_noise/drawer_chunking_30_ff_damped_noise/best.pth,FR3-FinRay-Table-Drawer-ff/2026-05-16_23-56-05,FR3-FinRay-Table-Drawer-ff/2026-05-16_23-56-05/run_params.json
+Priors/herm/drawer_stack/drawer_stack_chunking_15_fff_stride3/best.pth,FR3-FinRay-Table-Drawer-Stack-fff/2026-05-15_00-01-56,FR3-FinRay-Table-Drawer-Stack-fff/2026-05-15_00-01-56/run_params.json
+Priors/aws/pen_cup_noise_state_random/pen_cup_chunking_15_ff_damped_noise_state/best.pth,FR3-FinRay-Table-Pen-Cup-ff/2026-05-23_17-55-28,FR3-FinRay-Table-Pen-Cup-ff/2026-05-23_17-55-28/run_params.json;FR3-FinRay-Table-Pen-Cup-ff/2026-05-23_17-52-24/best.json
+Priors/herm/hang_cup/hang_cup_chunking_10_state_fff/best.pth,FR3-FinRay-Table-Hang-Cup-fff/2026-05-22_17-09-20,FR3-FinRay-Table-Hang-Cup-fff/2026-05-22_17-09-20/run_params.json;FR3-FinRay-Table-Hang-Cup-fff/2026-05-22_17-07-48/best.json
+Priors/thor/estop_open/estop_open_chunking_15_ff/best.pth,FR3-FinRay-Table-EStop-Open-ff/2026-05-25_19-11-40,FR3-FinRay-Table-EStop-Open-ff/2026-05-25_19-11-40/run_params.json
+Priors/thor/stack_2_damped_higher_noise_state/stack2_chunking_15_shift_ff_damped_higher/best.pth,FR3-FinRay-Table-Stack-2-ff/2026-05-17_11-55-03,FR3-FinRay-Table-Stack-2-ff/2026-05-17_11-55-03/run_params.json

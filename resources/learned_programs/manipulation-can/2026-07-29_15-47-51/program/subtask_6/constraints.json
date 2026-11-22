@@ -1,0 +1,38 @@
+{
+    "Diagnosis": "The runtime error explicitly says this stage mixes `freeze_orientation` with another orientation constraint: `axis_align` on `can_center_frame`. The smallest valid repair is to keep the gripper `freeze_orientation` needed for the fixed world-frame release pose and remove the conflicting `axis_align` term.",
+    "Reasoning": "This release stage keeps the panda_fingertip position fixed with `freeze_position`, keeps its orientation fixed with `freeze_orientation`, and opens the gripper with `open_gripper`. The removed can-upright `axis_align` constraint represented the desired monitoring requirement that the can_center_frame local -y axis stay aligned with world +z, but the runtime does not allow it in the same controller stage as `freeze_orientation`. Finger effort drop, absence of a stable bilateral grasp, and individual symmetric finger joint targets near 1.0 are not directly representable with the available TermAPI ops, so release is represented by the gripper-open condition.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

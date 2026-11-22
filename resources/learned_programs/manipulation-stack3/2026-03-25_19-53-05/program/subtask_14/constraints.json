@@ -1,0 +1,47 @@
+{
+    "Reasoning": "\nThe current subtask has TWO parts to translate into constraints:\n\n**Part 1: [Release] Open the gripper fingers to release cube_3 while holding the tool pose fixed.**\n\nSuccess conditions:\n1. Tool position fixed at cube_1 center XY, Z = cube_1 center Z + 0.05 m \u2192 freeze_position on panda_fingertip\n2. Tool orientation fixed (tool +z antiparallel to world +z) \u2192 axis_align (antiparallel)\n3. Gripper action: open gripper \u2192 open_gripper\n4. Stop when fingers fully open OR effort drops (alternative stop condition) \u2192 the open_gripper op captures the open state; the effort drop is a monitoring condition\n\n**Part 2: [Release] Retract the gripper upward along world +z by 0.15 m.**\n\nSuccess conditions:\n1. Gripper stays fully open \u2192 open_gripper\n2. Tool orientation fixed \u2192 axis_align (antiparallel)\n3. Translation: move along world +z by 0.15 m from current position \u2192 directional_move +z 0.15 m\n4. XY position fixed \u2192 freeze_position would conflict with directional_move; the XY constraint is captured by directional_move being strictly along +z (no XY component)\n\nSince these are two sequential subtasks listed as the \"current subtask\" pair, I need to translate BOTH into a single flat constraint list. Looking at the task description more carefully, the \"Current subtask\" field contains both subtasks as a tuple. I'll translate both sequentially.\n\nHowever, the rule says \"AT MOST ONE position constraint operator\" in the entire Constraints list. This is a challenge since Part 1 uses freeze_position and Part 2 uses directional_move.\n\nRe-reading: the current subtask is a tuple of two subtasks. I need to pick the primary one. Looking at the structure, the first element is the immediate current subtask (release/open gripper), and the second is the next one (retract). But both are listed as \"current subtask.\"\n\nGiven the constraint that only ONE position operator is allowed, I'll prioritize the most critical constraints. For Part 1 (open gripper while fixed), the key constraints are: freeze_position, freeze_orientation (via axis_align), and open_gripper. For Part 2 (retract upward), the key constraints are: directional_move +z 0.15m, axis_align, open_gripper.\n\nSince both are listed as current subtasks, I'll include constraints for both but must choose only one position operator. The retract motion (directional_move) is the more active/goal-defining constraint, while freeze_position for Part 1 is a holding constraint. I'll use directional_move for the retract as the position operator, and note that the freeze during Part 1 is implied by the zero-velocity condition before the retract begins.\n\nActually, re-reading the rules: \"AT MOST ONE position constraint operator: reach_point OR reach_distance OR directional_move OR freeze_position (never more than one of these).\" This applies to the entire Constraints list.\n\nGiven both subtasks are current, I'll include:\n- For Part 1: axis_align (orientation fixed), open_gripper, manipulator_low_effort condition\n- For Part 2: directional_move +z 0.15m (the position operator), axis_align (orientation), open_gripper\n\nBut I can't have two axis_align constraints either... wait, the rule only restricts position operators. I can have multiple axis_align constraints.\n\nLet me structure this as a sequential set:\n1. freeze_position (Part 1 - hold position while opening) - BUT this conflicts with directional_move for Part 2\n2. OR directional_move (Part 2 - retract upward)\n\nSince I can only pick ONE position operator for the whole list, and the overall goal of both subtasks combined is to end up 0.15m above the release position with gripper open, I'll use directional_move for the retract as the terminal position goal, and use axis_align + open_gripper for orientation and gripper state.\n\nThe freeze during Part 1 cannot be represented alongside directional_move. I'll note this in reasoning.\n\nFinal constraint list:\n1. directional_move: panda_fingertip, world +z, 0.15m (retract upward) - \"and\", geometry\n2. axis_align: panda_fingertip tool +z antiparallel to world +z - \"and\", geometry  \n3. open_gripper - \"and\", gripper_opened\n4. manipulator_low_effort condition for monitoring (but there's no standalone \"monitor\" op - this is just a condition label on an existing constraint)\n\nThe effort monitoring is a stop condition (halt if effort rises), which maps to manipulator_low_effort as a condition on the directional_move constraint.\n\nLet me finalize:\n- Constraint 1: directional_move along world +z by 0.15m (geometry) - this is the terminal goal for Part 2\n- Constraint 2: axis_align tool +z antiparallel world +z (geometry) - orientation fixed throughout\n- Constraint 3: open_gripper (gripper_opened) - gripper open throughout and at completion\n\nThe freeze_position for Part 1 cannot be included alongside directional_move. I'll note this limitation.\n\nFor the effort monitoring (stop if effort rises above free-space), this is a safety condition that can be represented as manipulator_low_effort condition on the directional_move constraint.\n",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened",
+                "manipulator_low_effort"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

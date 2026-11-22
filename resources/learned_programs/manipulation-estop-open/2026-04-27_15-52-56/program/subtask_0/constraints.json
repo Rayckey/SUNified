@@ -1,0 +1,66 @@
+{
+    "Reasoning": "\nThe current subtask requires:\n1. Gripper fully open (both finger joints at 1.0) \u2192 open_gripper\n2. Orientation: tool +z (panda_fingertip) antiparallel with estop_cap_center +z \u2192 axis_align with antiparallel\n3. Orientation: tool +y orthogonal to estop_cap_center +z \u2192 axis_align with orthogonal\n4. Positional goal: reach estop_cap_center origin translated +0.12 m along object +z \u2192 reach_point with offset [0, 0, 0.12] in object frame of estop_cap_center\n5. Stop when panda_fingertip is within 0.01 m of the pre-grasp target point \u2192 tolerance_m = 0.01\n6. Non-contact approach, monitor distance only\n\nFor the reach_point: The pre-grasp target is at estop_cap_center origin + 0.12 m along object +z. The controlled entity is panda_fingertip (robot_frame). reference_basis = \"object\", reference_origin = \"estop_cap_center\", offset = [0, 0, 0.12].\n\nFor axis_align (tool +z antiparallel to cap +z): controlled_axis = \"+z\" of panda_fingertip, reference_axis = \"+z\" of estop_cap_center, alignment = \"antiparallel\".\n\nFor axis_align (tool +y orthogonal to cap +z): controlled_axis = \"+y\" of panda_fingertip, reference_axis = \"+z\" of estop_cap_center, alignment = \"orthogonal\".\n\nAll constraints are conjunctive (and). The open_gripper is the first constraint establishing gripper state. Then orientation constraints, then position.\n\nNote: The constraint that tool +y must not be codirectional or antiparallel with tool +z is automatically satisfied by the orthogonality constraint (orthogonal means 90 degrees, which excludes parallel/antiparallel). The TermAPI orthogonal alignment handles this implicitly.\n",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

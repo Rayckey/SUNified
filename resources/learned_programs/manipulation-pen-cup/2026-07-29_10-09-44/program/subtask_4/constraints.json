@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage keeps the panda_fingertip origin fixed at its start-of-stage world position using freeze_position with the required 0.01 m tolerance, while reorienting the currently grasped marker until its local +y length axis is bipolar with world +z, making it upright in either direction. The grasp is maintained with object_grasped, labeled gripper_closed to reflect the required closed-gripper holding state. No panda_fingertip absolute orientation constraint is emitted, because the stage explicitly allows the tool orientation to change as needed. Detailed bilateral finger effort/contact and no-slip feedback is not directly representable beyond object_grasped.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

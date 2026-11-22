@@ -1,0 +1,44 @@
+{
+    "Reasoning": "Success for this subtask means (1) carrying the already-grasped mug (mug_rim_frame_0 is currently held) to a position near cup_hanger_branch_1_tip_frame with the gripper fingers remaining closed (continuous grasp), (2) the center of the mug (mug_center_frame) ending up at least 0.1 m offset along some world axis from the branch tip, but not touching it (clear separation, no contact/overlap), and (3) the tool orientation remains fixed relative to the robot (no re-orientation during the move). Additionally, the robot must maintain a firm grasp throughout (monitor for loss of grasp), and movement is stopped when the desired offset/standoff is reached. Constraints are combined by 'and' because all are required for success: a position constraint (reach_point) with offset and tolerance, a frozen orientation, and a maintained closed gripper state.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.1,
+                    0.0
+                ],
+                "tolerance_m": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

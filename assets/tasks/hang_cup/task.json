@@ -1,0 +1,425 @@
+{
+  "schema_version": 1,
+  "id": "hang_cup",
+  "title": "Hang mug",
+  "status": "registered",
+  "task": "hook the mug handle through the single cup hanger branch",
+  "environments": [
+    {
+      "robot_id": "fr3_finray",
+      "gym_id": "FR3-FinRay-Table-Hang-Cup",
+      "registration_module": "kuafu.isaac.learned",
+      "entry_point": "kuafu.isaac.learned.fr3_finray_hang_cup_env_learned:FR3FinRayHangCupEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.fr3_finray_hang_cup_env_learned:FR3FinRayHangCupEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/fr3_finray_hang_cup_env_learned.py",
+      "variants": [
+        "FR3-FinRay-Table-Hang-Cup-Long-Long-U",
+        "FR3-FinRay-Table-Hang-Cup-f",
+        "FR3-FinRay-Table-Hang-Cup-l",
+        "FR3-FinRay-Table-Hang-Cup-c",
+        "FR3-FinRay-Table-Hang-Cup-lf",
+        "FR3-FinRay-Table-Hang-Cup-ff",
+        "FR3-FinRay-Table-Hang-Cup-fff",
+        "FR3-FinRay-Table-Hang-Cup-fff3",
+        "FR3-FinRay-Table-Hang-Cup-ffff",
+        "FR3-FinRay-Table-Hang-Cup-ffff3",
+        "FR3-FinRay-Table-Hang-Cup-fffff",
+        "FR3-FinRay-Table-Hang-Cup-ffffff"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/fr3_ft_robotiq_2f_85_finrays_tcp/usd/fr3_ft_robotiq_2f_85_finrays.usd",
+          "table": "assets/objects/table/table_flattened_instanceable_meshes.usd",
+          "mug": "assets/objects/large_mug/large_mug.usdc",
+          "cup_hanger": "assets/objects/cup_hanger/cup_hanger.usdc"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-hang-cup/2026-04-07_21-16-24",
+        "interaction_frames": {
+          "mug_center_frame": {
+            "description": "center frame of mug; mug body is too wide for the gripper; use virtual handles instead; size: (0.13, 0.1, 0.1)",
+            "prim_path": "/World/envs/env_*/mug_center_frame"
+          },
+          "mug_rim_frame_0": {
+            "description": "rim frame 0 of mug, virtual handle frame, virtual handle axis is long local + x or -x, virtual approach is local + z",
+            "prim_path": "/World/envs/env_*/mug_rim_frame_0"
+          },
+          "mug_rim_frame_1": {
+            "description": "rim frame 0 of mug, virtual handle frame, virtual handle axis is long local + x or -x, virtual approach is local + z",
+            "prim_path": "/World/envs/env_*/mug_rim_frame_1"
+          },
+          "mug_handle_hole_frame": {
+            "description": "center of handle opening of mug; handle axis -x; hole/opening axis is \u00b1y (bidirectional); too wide for the gripper; not a graspable frame",
+            "prim_path": "/Visuals/mug_handle_hole_frame"
+          },
+          "cup_hanger": {
+            "description": "base of cup holder, static single-branch hanger; base diameter 0.16 m, pole height 0.185 m, one tilted branch only",
+            "prim_path": "/World/envs/env_*/CupHolder"
+          },
+          "cup_hanger_branch_1_tip_frame": {
+            "description": "tip frame of the only hanger branch; branch axis is +y (base->tip, outward toward local -Y and upward 20 deg); engagement/hooking moves along -y (tip->base, inward), exposed length is 0.110 m, diameter is 0.012 m",
+            "prim_path": "/Visuals/cup_hanger_branch_1_tip_frame"
+          },
+          "table": {
+            "description": "center frame of table, size: (0.3, 0.9, 0.4)",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "franka_panda",
+      "gym_id": "Panda-Table-Hang-Cup",
+      "registration_module": "kuafu.isaac.learned.panda",
+      "entry_point": "kuafu.isaac.learned.panda.panda_hang_cup_env_learned:PandaHangCupEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.panda.panda_hang_cup_env_learned:PandaHangCupEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/panda/panda_hang_cup_env_learned.py",
+      "variants": [
+        "Panda-Table-Hang-Cup-Long-Long-U",
+        "Panda-Table-Hang-Cup-f",
+        "Panda-Table-Hang-Cup-l",
+        "Panda-Table-Hang-Cup-c",
+        "Panda-Table-Hang-Cup-lf",
+        "Panda-Table-Hang-Cup-ff",
+        "Panda-Table-Hang-Cup-fff",
+        "Panda-Table-Hang-Cup-fff3",
+        "Panda-Table-Hang-Cup-ffff",
+        "Panda-Table-Hang-Cup-ffff3",
+        "Panda-Table-Hang-Cup-fffff",
+        "Panda-Table-Hang-Cup-ffffff",
+        "Panda-Table-Hang-Cup-fff-dense",
+        "Panda-Table-Hang-Cup-f3",
+        "Panda-Table-Hang-Cup-fff-absolute-lite",
+        "Panda-Table-Hang-Cup-fff-dense-low-stage",
+        "Panda-Table-Hang-Cup-ff3",
+        "Panda-Table-Hang-Cup-fff-relative"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "mug": "assets/objects/large_mug/large_mug.usdc",
+          "cup_hanger": "assets/objects/simple_hanger/assembly1_white_plastic_cyl_collision_static.usda",
+          "robot": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-hang-cup/2026-04-07_21-16-24",
+        "interaction_frames": {
+          "mug_center_frame": {
+            "description": "center frame of mug; mug body is too wide for the gripper; use virtual handles instead; size: (0.13, 0.1, 0.1)",
+            "prim_path": "/World/envs/env_*/mug_center_frame"
+          },
+          "mug_rim_frame_0": {
+            "description": "rim frame 0 of mug, virtual handle frame, virtual handle axis is long local + x or -x, virtual approach is local + z, graspable depth is 5 cm",
+            "prim_path": "/World/envs/env_*/mug_rim_frame_0"
+          },
+          "mug_rim_frame_1": {
+            "description": "rim frame 1 of mug, virtual handle frame, virtual handle axis is long local + x or -x, virtual approach is local + z, graspable depth is 5 cm",
+            "prim_path": "/World/envs/env_*/mug_rim_frame_1"
+          },
+          "mug_handle_hole_frame": {
+            "description": "center of handle opening of mug; handle axis -x; hole/opening axis is \u00b1y (bidirectional); too wide for the gripper; not a graspable frame",
+            "prim_path": "/Visuals/mug_handle_hole_frame"
+          },
+          "cup_hanger": {
+            "description": "base of cup holder, static single-branch hanger; base diameter 0.16 m, pole height 0.185 m, one tilted branch only",
+            "prim_path": "/World/envs/env_*/CupHolder"
+          },
+          "cup_hanger_branch_1_tip_frame": {
+            "description": "tip frame of the only hanger branch; branch axis is +y (base->tip, outward toward local -Y and upward 20 deg); engagement/hooking moves along -y (tip->base, inward), exposed length is 0.110 m, diameter is 0.012 m",
+            "prim_path": "/Visuals/cup_hanger_branch_1_tip_frame"
+          },
+          "table": {
+            "description": "center frame of table, size: (0.3, 0.9, 0.4)",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "kinova_gen3",
+      "gym_id": "Kinova-Table-Gen3-Hang-Cup",
+      "registration_module": "kuafu.isaac.learned.kinova",
+      "entry_point": "kuafu.isaac.learned.kinova.kinova_hang_cup_env_learned:KinovaHangCupEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.kinova.kinova_hang_cup_env_learned:KinovaHangCupEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/kinova/kinova_hang_cup_env_learned.py",
+      "variants": [
+        "Kinova-Table-Gen3-Hang-Cup-Long-Long-U",
+        "Kinova-Table-Gen3-Hang-Cup-f",
+        "Kinova-Table-Gen3-Hang-Cup-f3",
+        "Kinova-Table-Gen3-Hang-Cup-l",
+        "Kinova-Table-Gen3-Hang-Cup-c",
+        "Kinova-Table-Gen3-Hang-Cup-lf",
+        "Kinova-Table-Gen3-Hang-Cup-ff",
+        "Kinova-Table-Gen3-Hang-Cup-ff3",
+        "Kinova-Table-Gen3-Hang-Cup-fff",
+        "Kinova-Table-Gen3-Hang-Cup-fff3",
+        "Kinova-Table-Gen3-Hang-Cup-ffff",
+        "Kinova-Table-Gen3-Hang-Cup-ffff3",
+        "Kinova-Table-Gen3-Hang-Cup-fffff",
+        "Kinova-Table-Gen3-Hang-Cup-ffffff"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/kinova/usd/kinova_gen3_7dof_robotiq_2f85_vision_official_contact_stable.usd",
+          "mug": "assets/objects/large_mug/large_mug.usdc",
+          "cup_hanger": "assets/objects/simple_hanger/assembly1_white_plastic_cyl_collision_static.usda"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-hang-cup/2026-04-07_21-16-24",
+        "interaction_frames": {
+          "mug_center_frame": {
+            "description": "center frame of mug; mug body is too wide for the gripper; use virtual handles instead; size: (0.13, 0.1, 0.1)",
+            "prim_path": "/World/envs/env_*/mug_center_frame"
+          },
+          "mug_rim_frame_0": {
+            "description": "rim frame 0 of mug, virtual handle frame, virtual handle axis is long local + x or -x, virtual approach is local + z, graspable depth is 5 cm",
+            "prim_path": "/World/envs/env_*/mug_rim_frame_0"
+          },
+          "mug_rim_frame_1": {
+            "description": "rim frame 1 of mug, virtual handle frame, virtual handle axis is long local + x or -x, virtual approach is local + z, graspable depth is 5 cm",
+            "prim_path": "/World/envs/env_*/mug_rim_frame_1"
+          },
+          "mug_handle_hole_frame": {
+            "description": "center of handle opening of mug; handle axis -x; hole/opening axis is \u00b1y (bidirectional); too wide for the gripper; not a graspable frame",
+            "prim_path": "/Visuals/mug_handle_hole_frame"
+          },
+          "cup_hanger": {
+            "description": "base of cup holder, static single-branch hanger; base diameter 0.16 m, pole height 0.185 m, one tilted branch only",
+            "prim_path": "/World/envs/env_*/CupHolder"
+          },
+          "cup_hanger_branch_1_tip_frame": {
+            "description": "tip frame of the only hanger branch; branch axis is +y (base->tip, outward toward local -Y and upward 20 deg); engagement/hooking moves along -y (tip->base, inward), exposed length is 0.110 m, diameter is 0.012 m",
+            "prim_path": "/Visuals/cup_hanger_branch_1_tip_frame"
+          },
+          "table": {
+            "description": "center frame of table, size: (0.3, 0.9, 0.4)",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "ur5_robotiq",
+      "gym_id": "UR5-Table-Hang-Cup",
+      "registration_module": "kuafu.isaac.learned.ur5",
+      "entry_point": "kuafu.isaac.learned.ur5.tasks:UR5HangCupEnv",
+      "config_entry_point": "kuafu.isaac.learned.ur5.tasks:UR5HangCupEnvCfg",
+      "source": "src/kuafu/isaac/learned/ur5/tasks.py",
+      "variants": [],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/ur5_robotiq/ur5_robotiq.usd",
+          "mug": "assets/objects/large_mug/large_mug.usdc",
+          "cup_hanger": "assets/objects/simple_hanger/assembly1_white_plastic_cyl_collision_static.usda"
+        },
+        "controller_inputs": {
+          "urdf_path": "assets/robots/ur5_robotiq/ur5_controller.urdf",
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-hang-cup/2026-04-07_21-16-24",
+        "interaction_frames": {
+          "mug_center_frame": {
+            "description": "center frame of mug; mug body is too wide for the gripper; use virtual handles instead; size: (0.13, 0.1, 0.1)",
+            "prim_path": "/World/envs/env_*/mug_center_frame"
+          },
+          "mug_rim_frame_0": {
+            "description": "rim frame 0 of mug, virtual handle frame, virtual handle axis is long local + x or -x, virtual approach is local + z, graspable depth is 5 cm",
+            "prim_path": "/World/envs/env_*/mug_rim_frame_0"
+          },
+          "mug_rim_frame_1": {
+            "description": "rim frame 1 of mug, virtual handle frame, virtual handle axis is long local + x or -x, virtual approach is local + z, graspable depth is 5 cm",
+            "prim_path": "/World/envs/env_*/mug_rim_frame_1"
+          },
+          "mug_handle_hole_frame": {
+            "description": "center of handle opening of mug; handle axis -x; hole/opening axis is \u00b1y (bidirectional); too wide for the gripper; not a graspable frame",
+            "prim_path": "/Visuals/mug_handle_hole_frame"
+          },
+          "cup_hanger": {
+            "description": "base of cup holder, static single-branch hanger; base diameter 0.16 m, pole height 0.185 m, one tilted branch only",
+            "prim_path": "/World/envs/env_*/CupHolder"
+          },
+          "cup_hanger_branch_1_tip_frame": {
+            "description": "tip frame of the only hanger branch; branch axis is +y (base->tip, outward toward local -Y and upward 20 deg); engagement/hooking moves along -y (tip->base, inward), exposed length is 0.110 m, diameter is 0.012 m",
+            "prim_path": "/Visuals/cup_hanger_branch_1_tip_frame"
+          },
+          "table": {
+            "description": "center frame of table, size: (0.3, 0.9, 0.4)",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    }
+  ],
+  "object_assets": [
+    "assets/objects/cup_hanger/cup_hanger.usdc",
+    "assets/objects/large_mug/large_mug.usdc",
+    "assets/objects/simple_hanger/assembly1_white_plastic_cyl_collision_static.usda",
+    "assets/objects/table/table_flattened_instanceable_meshes.usd"
+  ],
+  "scene_source": "src/kuafu/isaac/learned/fr3_finray_hang_cup_env_learned.py",
+  "interaction_frames_source": "src/kuafu/isaac/learned/fr3_finray_hang_cup_env_learned.py:detectable_objects",
+  "interaction_frames": {
+    "mug_center_frame": {
+      "description": "center frame of mug; mug body is too wide for the gripper; use virtual handles instead; size: (0.13, 0.1, 0.1)",
+      "prim_path": "/World/envs/env_*/mug_center_frame"
+    },
+    "mug_rim_frame_0": {
+      "description": "rim frame 0 of mug, virtual handle frame, virtual handle axis is long local + x or -x, virtual approach is local + z",
+      "prim_path": "/World/envs/env_*/mug_rim_frame_0"
+    },
+    "mug_rim_frame_1": {
+      "description": "rim frame 0 of mug, virtual handle frame, virtual handle axis is long local + x or -x, virtual approach is local + z",
+      "prim_path": "/World/envs/env_*/mug_rim_frame_1"
+    },
+    "mug_handle_hole_frame": {
+      "description": "center of handle opening of mug; handle axis -x; hole/opening axis is \u00b1y (bidirectional); too wide for the gripper; not a graspable frame",
+      "prim_path": "/Visuals/mug_handle_hole_frame"
+    },
+    "cup_hanger": {
+      "description": "base of cup holder, static single-branch hanger; base diameter 0.16 m, pole height 0.185 m, one tilted branch only",
+      "prim_path": "/World/envs/env_*/CupHolder"
+    },
+    "cup_hanger_branch_1_tip_frame": {
+      "description": "tip frame of the only hanger branch; branch axis is +y (base->tip, outward toward local -Y and upward 20 deg); engagement/hooking moves along -y (tip->base, inward), exposed length is 0.110 m, diameter is 0.012 m",
+      "prim_path": "/Visuals/cup_hanger_branch_1_tip_frame"
+    },
+    "table": {
+      "description": "center frame of table, size: (0.3, 0.9, 0.4)",
+      "prim_path": "/World/envs/env_*/Table"
+    },
+    "panda_link4": {
+      "description": "frame of robot link 4",
+      "prim_path": "/Visuals/panda_link4_frame"
+    },
+    "panda_fingertip": {
+      "description": "frame of robot tool frame",
+      "prim_path": "/Visuals/panda_hand_frame"
+    }
+  },
+  "success_check": {
+    "summary": "The mug handle surrounds the hanger branch while the open gripper stays clear for the configured hold duration.",
+    "source": "src/kuafu/isaac/learned/fr3_finray_hang_cup_env_learned.py",
+    "method": "_external_get_dones",
+    "thresholds": "Use the selected robot configuration and implementation."
+  },
+  "formulation": [
+    {
+      "gym_id": "Formulate-Panda-Hang-Cup-v0",
+      "runner": "src/kuafu/programs/hang_cups_learn_programs.py"
+    }
+  ],
+  "program_families": [
+    "resources/learned_programs/manipulation-hang-cup"
+  ],
+  "saved_programs": [
+    {
+      "path": "resources/learned_programs/manipulation-hang-cup/2026-04-07_21-16-24",
+      "stages": 9,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-hang-cup/2026-07-29_11-18-23",
+      "stages": 9,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-hang-cup/2026-07-29_11-30-12",
+      "stages": 10,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-hang-cup/2026-07-29_16-36-28",
+      "stages": 10,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-hang-cup/2026-07-29_18-36-05",
+      "stages": 10,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-hang-cup/2026-07-29_18-42-51",
+      "stages": 9,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-hang-cup/debug",
+      "stages": 7,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-hang-cup/done",
+      "stages": 9,
+      "recorded_success": "True"
+    }
+  ],
+  "example_program": {
+    "path": "resources/learned_programs/manipulation-hang-cup/2026-07-29_18-42-51",
+    "stages": 9,
+    "recorded_success": "True"
+  },
+  "agent_interface": {
+    "discovery": [
+      "kuafu_list_tasks",
+      "kuafu_get_task"
+    ],
+    "learning": "kuafu_start_stage with a compatible task manifest",
+    "scene_verification": "Use the task-specific scene and success implementation. The exported-video cabinet tool has its own task entry."
+  },
+  "robot_setup": {
+    "default": "docs/INSTALL.md",
+    "ur5_robotiq": "docs/UR5.md"
+  },
+  "related_sources": [
+    "src/kuafu/isaac/base/manipulation/hang_cup_env.py",
+    "src/kuafu/isaac/tasks/hang_cup/hang_cup_env_learned.py"
+  ],
+  "external_assets": [
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+  ]
+}

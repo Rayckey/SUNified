@@ -1,0 +1,97 @@
+params:
+  seed: 42
+
+  env:
+    clip_actions: 2.0
+
+  algo:
+    name: a2c_continuous
+
+  model:
+    name: continuous_a2c_logstd
+
+  mpc:
+    use_absolute_progress_rewards: False
+    use_relative_progress_rewards: False
+    use_velocity_penalty: False
+    use_time_penalty: False
+    regularize_velocity_scale: 0.03
+    regularize_time_scale: 0.000
+    progress_rewards_scale: 100.0
+    stage_transition_bonus_scale: 0.25
+    stage_transition_bonus_use_remaining_horizon: True
+    penalize_false_completions: True
+    reward_print_every: 0
+    episode_outcome_print_every: 0
+    collect_terminal_stuck_constraint_stats: False
+
+  network:
+    name: actor_critic
+    separate: True
+    space:
+      continuous:
+        mu_activation: None
+        sigma_activation: None
+
+        mu_init:
+          name: default
+        sigma_init:
+          name: const_initializer
+          val: -3.0
+        fixed_sigma: True
+    mlp:
+      units: [4096,2048,1024,2048,4096]
+      activation: relu
+      d2rl: False
+
+      initializer:
+        name: default
+      regularizer:
+        name: None
+
+  load_checkpoint: False # flag which sets whether to load the checkpoint
+  load_path: '' # path to the checkpoint to load
+
+  config:
+    name: panda-hang-cup-dense-low-stage
+    env_name: rlgpu
+    device: 'cuda:0'
+    device_name: 'cuda:0'
+    multi_gpu: False
+    ppo: True
+    mixed_precision: False
+    normalize_input: True
+    normalize_value: True
+    # value_bootstrap: True
+    num_actors: -1  # configured from the script (based on num_envs)
+    reward_shaper:
+      scale_value: 0.01
+    normalize_advantage: True
+    gamma: 0.99
+    tau: 0.95
+    learning_rate: 3e-5
+    # learning_rate: 0.0
+    lr_schedule: adaptive
+    # lr_schedule: fixed
+    kl_threshold: 0.002
+    score_to_win: 100000000
+    max_epochs: 3000
+    save_best_after: 100
+    save_frequency: 50
+    grad_norm: 1.0
+    entropy_coef: 0.0
+    truncate_grads: True
+    e_clip: 0.2
+    horizon_length: 128
+    minibatch_size: 131072
+    mini_epochs: 3
+    critic_coef: 4
+    clip_value: True
+    seq_length: 4
+    bounds_loss_coef: 0.0001
+
+    residual_rl:
+      alpha_final: 1.5
+      alpha_warmup_epochs: 600
+      critic_warmup_epochs: 150
+      residual_bounds: [0.30, 0.30, 0.30, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50]

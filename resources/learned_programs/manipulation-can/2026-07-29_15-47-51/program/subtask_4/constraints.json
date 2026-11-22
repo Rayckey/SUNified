@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage is represented as a conjunctive controller stage. The panda_fingertip origin is held fixed with a 0.01 m tolerance using freeze_position. The can is required to remain physically held during the reorientation, so object_grasped is used rather than close_gripper. The upright goal is represented by aligning the gripped can_center_frame local -y axis codirectionally with world +z within 5 degrees. No absolute panda_fingertip orientation constraint is emitted, because the stage explicitly allows tool orientation to change as needed. The commanded angular motion about the fixed fingertip origin is implicit in satisfying the can axis alignment while the fingertip position is frozen. The exact closed finger joint state, bilateral finger effort feedback, and no-slip/compliant micro-motion contact preservation are not directly representable beyond object_grasped.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "-y",
+                "reference_axis": "+z",
+                "alignment": "codirectional",
+                "tolerance_rad": 0.0872665
+            }
+        }
+    ]
+}

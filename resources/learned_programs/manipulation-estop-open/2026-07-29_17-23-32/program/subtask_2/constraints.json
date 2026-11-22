@@ -1,0 +1,38 @@
+{
+    "Reasoning": "This stage keeps the end-effector pose fixed while closing the gripper until estop_cap_center is physically grasped. freeze_position enforces the panda_fingertip origin remains at its start-of-stage position within 0.01 m. freeze_orientation enforces the start-of-stage orientation is held, representing the required preservation of tool +z and +y directions within about 5 degrees. object_grasped is used instead of close_gripper because the requirement is a firm physical grasp of estop_cap_center, not merely mechanical finger closure. Excessive unintended hard contact with estop_base_frame or table cannot be explicitly named as an avoidance constraint with the available ops; it is only reflected by requiring low manipulator effort feedback while maintaining the fixed pose.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed",
+                "manipulator_low_effort"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

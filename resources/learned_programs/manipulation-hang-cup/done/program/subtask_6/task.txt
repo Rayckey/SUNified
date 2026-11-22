@@ -1,0 +1,1 @@
+[Manipulate] Move the mug handle to hook it through cup_hanger_branch_1_tip_frame by sliding the mug inward along the -y direction of the branch, with the gripper closed.

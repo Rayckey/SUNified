@@ -1,0 +1,1 @@
+[Manipulate] Lower the grasped can to the desired upright placement while keeping the gripper closed.

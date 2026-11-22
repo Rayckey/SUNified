@@ -1,0 +1,11 @@
+{
+  "task": "FR3-FinRay-Table-Drawer-Stack-ffff3",
+  "seeds": [20001, 20002, 20003, 20004, 20005],
+  "max_steps": 1200,
+  "chunk_exec": 1,
+  "camera_warmup_frames": 3,
+  "conditions": {
+    "nominal": {"object_offsets": {}},
+    "cabinet_x_plus_3cm": {"object_offsets": {"cabinet": [0.03, 0.0, 0.0]}}
+  }
+}

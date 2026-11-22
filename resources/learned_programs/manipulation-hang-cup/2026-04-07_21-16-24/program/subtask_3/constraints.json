@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The current subtask is to lift the grasped mug upward by 0.20 m along world +z, while:\n1. Keeping the gripper closed (holding the mug firmly).\n2. Holding tool orientation fixed (no angular velocity, orientation established during grasp).\n3. Translating strictly along world +z by 0.20 m.\n4. No lateral (x or y) velocity.\n5. Monitor effort on gripper fingers (represented as manipulator_high_effort condition on the close_gripper/gripper_closed constraint).\n\nConstraint breakdown:\n- `close_gripper`: gripper must remain closed/grasping throughout. Condition: gripper_closed.\n- `freeze_orientation`: hold tool orientation fixed as established during grasp (no new orientation is being established; the grasp orientation is already set from the previous subtask). Condition: geometry.\n- `directional_move`: move strictly along world +z by 0.20 m. The controlled entity is the robot frame (panda_fingertip), reference_basis is world, axis is +z, travel_distance_m = 0.20. Condition: geometry.\n\nThe effort monitoring clause (constraint 5) is a safety/halt condition that cannot be directly represented as a TermAPI constraint operator, but I can attach the manipulator_low_effort condition to the directional_move to signal that low effort (grasp slip) should halt motion. Actually, the effort monitoring is on the gripper fingers \u2014 if effort drops it means slip. This is best represented as a condition on the close_gripper constraint using manipulator_low_effort as a halt signal. However, the TermAPI doesn't have a \"halt\" operator. I'll note this in reasoning and attach the relevant conditions to the close_gripper constraint.\n\nLogic: all constraints are conjunctive (and).\n\nNote: The rule says AT MOST ONE position constraint operator. I use `directional_move` as the single position constraint. `freeze_orientation` is the orientation constraint. `close_gripper` is the gripper state constraint. This is valid.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.2,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

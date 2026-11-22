@@ -1,0 +1,82 @@
+{
+  "kind": "initial_constraint_sweep",
+  "stages": {
+    "0": {
+      "diagnosis": "{\"0\": \"Non-contact pre-contact standoff reach_point to a specific approach pose 0.12 m along estop_cap_tip +z; use setup tolerance, not travel-distance scaling.\", \"1\": \"Axis-align for pre-approach orientation setup; angularly non-mission-critical in this stage because small tool rotation still preserves a valid non-contact standoff approach.\", \"2\": \"Secondary axis-align that leaves symmetry-plane freedom; clearly non-mission-critical orientation maintenance for this stage.\", \"3\": \"Gripper-state validity: fingers fully closed during approach.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"This is a specific non-contact pre-contact setup pose for immediate next-stage contact, so the position tolerance follows the standoff/setup rule: 0.03 m.\", \"1\": \"Current stage success is reaching a non-contact pre-approach pose. A bit of hand rotation would still leave the stage physically valid, so use the larger angular tolerance 0.50 rad rather than a tight mission-critical value.\", \"2\": \"This orthogonality term is even less critical because the description explicitly allows freedom in the symmetry plane; small rotation does not invalidate the current stage, so use 0.50 rad.\", \"3\": \"Weight gripper closure above ordinary maintenance because loss of closed state changes the intended approach configuration, but keep it moderate since this is still non-contact setup. Position is primary, orientation terms are supportive and should not outweigh the main progress term.\"}",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.5
+      }
+    },
+    "1": {
+      "diagnosis": "{\"0\": \"reach_point to estop_cap_tip origin for explicit first contact on a constrained feature/button tip; relevant contact size from cap tip is 0.04 m, so positional tolerance uses direct-contact size cap s/2 -> 0.02 m\", \"1\": \"freeze_orientation during approach-to-contact; orientation is maintained, but current stage success is first contact at the tip, not insertion/final-pose/twist-axis validity, so small hand rotation is acceptable\", \"2\": \"close_gripper state validity; fingers must remain closed throughout approach\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.02
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "Component 0 is direct first contact with the button tip center, not a free-space waypoint and not receiver placement. The detectable tip size is 0.04 m, so by the direct-contact rule use max(0.01, min(0.03, s/2)) = 0.02 m. Component 1 is a freeze_orientation term during approach/contact setup. Although the text says keep orientation fixed, a bit of tool rotation would not by itself make this stage physically invalid because the stage completes on reaching/first touching the broad mushroom tip rather than on angular fit, insertion, or rotational actuation; therefore use 0.50 rad, not a tighter mission-critical angle. Component 2 has no tunable tolerance and remains important because losing gripper closure violates the stage, but it is not a precision geometry term. Weighting: make contact-reaching primary (1.5), keep orientation maintenance moderate (1.0), and keep gripper-state important but not dominant (1.5).",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 1.5
+      }
+    },
+    "2": {
+      "diagnosis": "{\"0\": \"directional_move on robot/tool along estop cap local -z during active force transmission; this is precision directional progress because the 0.03 m press depth is the current physical success condition for button actuation. Use translation progress cap 0.20*d with d=0.03 -> 0.01 m.\", \"1\": \"freeze_orientation on robot/tool during button press; orientation preserves the current press axis during constrained mechanism actuation, so small rotation would risk invalidating the pressing action. Use mission-critical angular tolerance 0.30 rad.\", \"2\": \"close_gripper state validity during pressing; keeping fingers closed is required but not geometric-tolerance-tuned.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.01
+        },
+        "1": {
+          "tolerance_rad": 0.3
+        }
+      },
+      "reasoning": "{\"0\": \"The stage is a constrained press/actuation, not a coarse free-space move. The traveled 0.03 m is itself the manipulation result, so apply the precision directional translation rule: max(0.01, min(0.05, 0.20*0.03)) = 0.01 m. The existing 0.003 m is tighter than policy allows for this init tuning.\", \"1\": \"Although no new alignment is being established, this stage is active mechanism actuation along the button axis. A bit of tool rotation during the press could change the force direction and make the current actuation less valid, so use 0.30 rad rather than 0.50. The current 0.2 rad is below the allowed range and must be relaxed to 0.30.\", \"2\": \"Gripper closed is a state-validity term. Losing it would invalidate the intended press posture, but it is less primary than the actual press-depth progress. Weight it above default but below or equal to other core terms. Relative weighting emphasizes actuation progress first, then orientation/closed-state support. Keep ratios simple and avoid inflating every term.\"}",
+      "weights": {
+        "0": 2.5,
+        "1": 2.0,
+        "2": 1.5
+      }
+    },
+    "3": {
+      "diagnosis": "{\"0\": \"reach_point on robot/tool pose for retract/back-away to a non-contact clearance target in object frame; classified as retract_or_clearance_progress / broad free-space waypoint after contact release, so positional tolerance uses free-space retract rule: 0.05 m.\", \"1\": \"freeze_orientation on robot/tool during retraction; current stage is post-press retract to non-contact, not insertion/fit/actuation-angle validity, so small tool rotation would still leave the stage physically valid; use non-mission-critical angular tolerance 0.50 rad.\", \"2\": \"close_gripper state-validity term; no tunable tolerance.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "Component 0 is not final placement, fit, or precision actuation depth; it is a retreat to clear contact after pressing. The 0.12 m offset defines the retract target, not a precision fit amount, so the coarse retract rule applies and tolerance_m should be 0.05. Component 1 preserves orientation during free-space retract, but this stage succeeds by separating to non-contact with gripper closed; a bit of hand rotation would not invalidate the current stage, so tolerance_rad should be 0.50 rather than a tighter mission-critical value. Weighting stays simple: positional retract progress is primary at 1.5, orientation maintenance is secondary at 1.0, and gripper-closed state is important validity but not a small-feature/final-pose critical term, so 1.5. All parameter keys are preserved exactly.",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 1.5
+      }
+    }
+  },
+  "task": "Kinova-Table-Gen3-EStop-Close-fff"
+}

@@ -1,0 +1,44 @@
+{
+    "Reasoning": "The subtask is to carry the grasped strawberry laterally to a position above top_drawer_center_frame, keeping the gripper closed and orientation fixed.\n\nSuccess conditions:\n1. **Positional goal**: Reach the point defined as top_drawer_center_frame origin + [0, 0, +0.145] in world frame. This is a specific target point, so I use `reach_point`. The controlled entity is `gripped_object` (strawberry_center_frame), but since we're controlling the end-effector carrying the strawberry, I'll use `robot_frame` with `panda_fingertip` as the controlled target, referencing `top_drawer_center_frame` origin offset by +0.145 m in world +z. Actually, the task says \"reach the point defined as top_drawer_center_frame origin translated along world +z by 0.145 m\" \u2014 this is the target for the tool frame (panda_fingertip). I'll use `robot_frame` / `panda_fingertip` with reference_origin = `top_drawer_center_frame`, offset [0, 0, 0.145] in world basis, tolerance 0.01 m (as specified in constraint 4).\n\n2. **Orientation fixed**: Keep orientation fixed as established from prior top-down grasp \u2014 tool +z antiparallel to world +z. I use `axis_align` with controlled_axis = +z of panda_fingertip, reference_axis = +z of world, alignment = antiparallel.\n\n3. **Gripper closed**: Keep gripper closed throughout. Use `close_gripper`.\n\n4. **freeze_orientation**: The subtask explicitly says \"keep orientation fixed\" and \"do not apply any angular velocity\". I use `freeze_orientation` on panda_fingertip.\n\nWait \u2014 the rules say \"AT MOST ONE position constraint operator: reach_point OR reach_distance OR directional_move OR freeze_position\". So I can only have one of those. I'll use `reach_point` for the positional goal.\n\nFor orientation: I can use both `axis_align` (to specify the target orientation relationship) AND `freeze_orientation` (to say don't change orientation). But actually, `freeze_orientation` means \"don't change from current\" while `axis_align` specifies a target alignment. The subtask says \"keep orientation fixed as established\" \u2014 this is best captured by `freeze_orientation`. The `axis_align` would be redundant if orientation is already established. However, the subtask also explicitly states the orientation relationship (tool +z antiparallel to world +z), so `axis_align` captures the success condition for orientation. I'll use `freeze_orientation` since the subtask says \"keep orientation fixed\" and the prior grasp already established the correct orientation.\n\nActually, re-reading: \"keep orientation fixed as established from the prior top-down grasp\" \u2014 this is `freeze_orientation`. The axis_align description is just clarifying what \"fixed\" means. I'll use `freeze_orientation` to capture this.\n\nSo constraints:\n1. `reach_point` (geometry) \u2014 positional goal above top_drawer_center_frame\n2. `freeze_orientation` (geometry) \u2014 keep orientation fixed\n3. `close_gripper` (gripper_closed) \u2014 maintain grasp\n\nLogic: all three must hold simultaneously \u2192 all \"and\".\n\nFor reach_point: controlled_entity = \"robot_frame\", controlled_target = \"panda_fingertip\", reference_basis = \"world\", reference_origin = \"top_drawer_center_frame\", offset_from_origin_xyz = [0.0, 0.0, 0.145], tolerance_m = 0.01.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "top_drawer_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.145
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+{
+  "artifact": "examples/01_video_to_rollout/output/handoff.json",
+  "description": "Run index, step receipts and artifact hashes",
+  "path_base": "repository root"
+}

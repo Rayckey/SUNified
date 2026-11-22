@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This release/retract stage is represented as a conjunctive controller stage. The panda_fingertip is commanded to stay open, then retract 0.10 m along the pen_holder +z axis with a 0.01 m completion tolerance, while maintaining its stage-start orientation within the requested 0.05 rad. The directional move includes geometry and manipulator_low_effort conditions to indicate successful geometric retract with low unexpected arm/TCP interaction effort. The gripper-open command represents both finger joints commanded toward the open released value. Marker pose stability relative to the pen_holder, explicit prohibition on commanding marker motion, gripper effort/contact free-space feedback, and detailed monitoring/interrupt logic are not directly representable with the available operators; they are therefore omitted except for the available low-effort condition label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

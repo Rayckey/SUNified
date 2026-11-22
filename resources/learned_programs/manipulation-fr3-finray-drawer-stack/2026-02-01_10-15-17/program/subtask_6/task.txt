@@ -1,0 +1,1 @@
+[Approach] Use an appropriate top-down approach to move the open gripper above the strawberry without touching it.

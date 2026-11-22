@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is primarily a release retract: the fingertip must move 0.15 m along world +z from its current pose, keep the same orientation, and remain open. The directional_move encodes the explicit +z retract distance and 0.01 m completion tolerance; manipulator_low_effort is included to represent the required free-space/low-contact-effort feedback during the retract. freeze_orientation keeps the current fingertip orientation fixed within the requested 0.05 rad, preserving the prior tool +z and +y directions. open_gripper represents both fingers remaining fully open. Unrepresented clauses: the API has no supported way to constrain an ungripped passive object such as cube_2 to remain at cube_1 + [0,0,0.05], no minimum-distance/separation operator to require final panda_fingertip-to-cube_2 distance >= 0.125 m, and no explicit monitoring constraints for raw feedback streams; these are therefore omitted from the Constraints list.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

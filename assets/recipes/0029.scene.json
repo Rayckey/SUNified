@@ -1,0 +1,195 @@
+{
+  "name": "0029 - bamboo tray with white pull",
+  "summary": "A shallow rectangular open bamboo tray with straight thin walls, a flat closed floor, and one centered white projecting grip on the long front wall.",
+  "scale_basis": "estimated",
+  "assumptions": [
+    "Shape inferred by the interactive assistant from 16 sampled frames; no standalone model API request was made.",
+    "No measurements or known metric reference were supplied. Dimensions are uncalibrated nominal estimates based on proportions and object-size priors, not a metric scan.",
+    "The object is represented as one rigid assembly. No articulation or internal mechanism is inferred.",
+    "Materials use approximate flat PBR colors. Lighting is not calibrated and image textures are not recovered.",
+    "Mass and friction are simulation assumptions; these are not determined by the visible video dynamics.",
+    "Nominal wooden tray is 280 x 160 x 60 mm. The white handle projects approximately 24 mm beyond the front face; all sizes are uncalibrated.",
+    "The white grip is treated as a fixed solid rounded pull lip. Underside details and any hidden mounting clearance are not resolved; no through-loop is established by the video.",
+    "The floor and four walls are separate convex colliders, preserving the entire open interior.",
+    "Wood grain, laminate strips and joints are not recovered as image textures. The flat floor and underside thickness are inferred.",
+    "Nominal mass is assumed to be 0.35 kg; friction 0.5 and restitution 0 are assumptions.",
+    "Second candidate was refined by comparing renders to video crops; no calibrated image registration or metric accuracy score is claimed."
+  ],
+  "parts": [
+    {
+      "name": "tray_floor",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.28,
+          "y": 0.16,
+          "z": 0.005
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0025
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.88,
+        "g": 0.76,
+        "b": 0.51
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "front_wall",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.28,
+          "y": 0.0055,
+          "z": 0.055
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.07725,
+        "z": 0.0325
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.84,
+        "g": 0.69,
+        "b": 0.43
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "back_wall",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.28,
+          "y": 0.0055,
+          "z": 0.055
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.07725,
+        "z": 0.0325
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.84,
+        "g": 0.69,
+        "b": 0.43
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "left_wall",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.0055,
+          "y": 0.149,
+          "z": 0.055
+        }
+      },
+      "position": {
+        "x": -0.13725,
+        "y": 0.0,
+        "z": 0.0325
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.84,
+        "g": 0.69,
+        "b": 0.43
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "right_wall",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.0055,
+          "y": 0.149,
+          "z": 0.055
+        }
+      },
+      "position": {
+        "x": 0.13725,
+        "y": 0.0,
+        "z": 0.0325
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.84,
+        "g": 0.69,
+        "b": 0.43
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "white_pull_grip",
+      "geometry": {
+        "kind": "rounded_box",
+        "size": {
+          "x": 0.14,
+          "y": 0.025,
+          "z": 0.014
+        },
+        "radius": 0.0065
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.0915,
+        "z": 0.031
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.88,
+        "g": 0.93,
+        "b": 0.92
+      },
+      "roughness": 0.42,
+      "metallic": 0.0,
+      "evidence": "Broad white lip-style grip projects from the center of one long side. Its top/front edges are rounded. Refined to a rounder white grip and a position proportional to the taller observed wall."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage keeps the end-effector pose fixed while opening the gripper. freeze_position enforces the current fully open handle-release position of panda_fingertip within 0.01 m. freeze_orientation keeps the current panda_fingertip orientation within 0.05 rad without adding any +z or +y axis relation. open_gripper commands the gripper to the fully open state, with success represented by gripper_opened feedback. The requirement to verify release using gripper finger effort/contact dropping toward free-space levels cannot be represented directly because the available effort condition labels are for manipulator/TCP effort, not finger squeeze effort. Continuous monitoring and fail/pause behavior are represented only insofar as the freeze constraints define the allowable pose deviations during the stage.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

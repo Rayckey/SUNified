@@ -1,0 +1,1 @@
+[Manipulate] Move cube_2 with the gripper closed until cube_2 is aligned for placement on cube_1.

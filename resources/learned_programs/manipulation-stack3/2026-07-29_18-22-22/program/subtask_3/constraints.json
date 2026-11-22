@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage keeps cube_2 physically held while lifting it upward. The gripped object cube_2 is commanded to move along world +z by 0.15 m, which encodes the requested vertical clearance distance using the stated origin-separation requirement. The panda_fingertip orientation is frozen to preserve the current end-effector quaternion during the lift. The object_grasped constraint with gripper_closed condition represents maintaining the closed gripper and firm grasp/no-slip requirement. The manipulator_low_effort condition on the lift represents monitoring for no unexpected contact or effort spike during the motion. The API cannot exactly encode the dynamic 'smallest positive distance needed' relative to both cube_1 and cube_3, cannot directly encode simultaneous distance-to-two-objects stopping, finger joint position/effort monitoring, or an explicit fixed relative pose constraint between panda_fingertip and cube_2 beyond object_grasped.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

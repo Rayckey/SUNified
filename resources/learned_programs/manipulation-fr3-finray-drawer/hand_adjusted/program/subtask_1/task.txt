@@ -1,0 +1,1 @@
+[Approach] Move the open gripper into contact with the top_drawer_handle_frame while keeping the gripper orientation fixed.

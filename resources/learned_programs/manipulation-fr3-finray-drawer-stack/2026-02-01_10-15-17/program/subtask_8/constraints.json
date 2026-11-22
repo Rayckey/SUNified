@@ -1,0 +1,37 @@
+{
+    "Reasoning": "Success for this subtask means the gripper fingers close on the strawberry (from open to closed), establishing a secure grasp, while strictly maintaining both the tool (end-effector) position and orientation exactly as achieved at the end of the previous approach; position/orientation must not be allowed to drift during the grasp. The closure stops immediately upon detecting sufficient effort/force indicating a secure hold (either by contact resistance sensed in the gripper or no further finger movement). Only one position constraint may be used, so 'freeze_position' and 'freeze_orientation' encode the requirements to keep the gripper fixed during closing. 'close_gripper' expresses the secure grasp is achieved. All are joined by 'and', as all must hold for success and the text gives no alternatives.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

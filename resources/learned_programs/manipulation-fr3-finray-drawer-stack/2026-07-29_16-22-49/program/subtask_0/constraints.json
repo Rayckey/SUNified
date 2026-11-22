@@ -1,0 +1,67 @@
+{
+    "Reasoning": "This stage is an open-gripper, non-contact pregrasp approach to a point 0.10 m along top_drawer_handle_frame local -y from the handle origin, with 0.01 m positional tolerance. The two axis_align constraints establish the requested tool-axis orientation relations relative to the handle frame. The open_gripper constraint represents keeping the gripper open using finger-state feedback. The reach_point condition includes manipulator_low_effort to represent monitoring for no unintended arm/TCP contact during the non-contact approach. Continuous 'throughout' enforcement and detailed finger-joint feedback are represented only by the open_gripper constraint and cannot be encoded more specifically with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+z",
+                "reference_axis": "-y",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.1,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

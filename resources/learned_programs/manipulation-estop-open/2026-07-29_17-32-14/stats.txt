@@ -1,0 +1,13 @@
+status: succeeded
+reason: All tasks completed
+iterations: 0
+correction_iterations: 0
+control_steps: 578
+current_count: 578
+completed_subtasks: 5
+total_constraints: 18
+stall_detection_enabled: False
+llm_vlm_calls: 13
+prompt_tokens: 35995
+completion_tokens: 13151
+total_tokens: 49146

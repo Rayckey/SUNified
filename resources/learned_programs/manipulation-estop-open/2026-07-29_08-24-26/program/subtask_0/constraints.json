@@ -1,0 +1,50 @@
+{
+    "Reasoning": "This approach stage is represented by opening the gripper, aligning panda_fingertip tool +z antiparallel to estop_cap_center +z, and moving the panda_fingertip origin to the object-frame standoff point 0.12 m along estop_cap_center +z with 0.01 m tolerance. The reach condition also includes manipulator_low_effort to reflect the non-contact/clearance requirement as representable feedback metadata. The free yaw symmetry about estop_cap_center +z is preserved by not adding any constraint on panda_fingertip +y. Finger joint values near 1.0 and finger effort monitoring/abort behavior are not directly representable by the available terms beyond open_gripper; unexpected finger effort/collision abort logic is therefore omitted except for the representable low manipulator effort condition.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

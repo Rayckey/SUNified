@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage moves the open panda_fingertip into contact with estop_cap_center while preserving the current tool orientation. The reach_point term drives the panda_fingertip origin to the estop_cap_center origin with 0.01 m contact-approach tolerance, using estop_cap_center as the object reference frame. Its condition includes manipulator_high_effort to represent the specified contact/rising-effort feedback alternative associated with contact at the cap. The freeze_orientation term keeps the panda_fingertip at its start-of-stage orientation with a 5 degree tolerance. The open_gripper term keeps the gripper open throughout the approach. No axis_align or point_toward term is emitted because the stage explicitly says not to impose a new tool +z approach-axis or +y finger-axis relation. The API cannot explicitly encode object-specific allowed contact with estop_cap_center or avoidance/effort monitoring specifically against estop_base_frame and table, so that safety-monitoring clause is noted but not represented as a separate constraint.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

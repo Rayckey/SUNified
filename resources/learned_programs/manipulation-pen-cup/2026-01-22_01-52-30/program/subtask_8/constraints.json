@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The subtask is to retract the open gripper upward after releasing the marker into the pen_holder. Success requires the gripper to stay open, the tool to move upward along world +z by a clearance distance, and the tool orientation to remain fixed exactly as established at the release pose. This is not a new orientation alignment target, so freeze_orientation is the correct orientation operator. Only one positional operator is allowed, so directional_move is used for the upward clearance motion. The low-effort condition is attached as metadata on the motion term to reflect the non-contact monitoring requirement; there is no standalone low-effort operator. All constraints use 'and' because the gripper must be open, the upward retract must complete, and the fixed tool orientation must hold together.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

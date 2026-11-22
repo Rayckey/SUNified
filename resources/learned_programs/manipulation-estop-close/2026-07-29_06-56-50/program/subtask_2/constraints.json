@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is a pressing manipulation from the current contact pose. A directional_move encodes translating panda_fingertip 0.03 m along estop_cap_tip local -z with 0.01 m tolerance; its condition includes both geometry and manipulator_high_effort to represent stopping either on geometric completion or a firm pressed-stop effort/contact indication. freeze_orientation keeps the current panda_fingertip orientation fixed without imposing any new tool axis relation. close_gripper keeps the fingers mechanically closed and does not require an object grasp. Continuous contact and exact gripper joint value 0.0 are not directly expressible beyond the press-direction move, effort condition, and close_gripper metadata.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "axis": "-z",
+                "travel_distance_m": 0.03,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

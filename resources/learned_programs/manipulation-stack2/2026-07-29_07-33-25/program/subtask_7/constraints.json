@@ -1,0 +1,41 @@
+{
+    "Reasoning": "Use a single directional_move because the stage explicitly requires translating the panda_fingertip origin 0.15 m along world +z, with 0.02 m completion tolerance. Preserve the current end-effector orientation using freeze_orientation with the specified 0.05 rad tolerance; no new axis relation is imposed. Keep the gripper fully open using open_gripper. The requested non-contact separation from cube_1, explicit no-grasp/free-space gripper contact feedback, and monitoring of cube/gripper feedback are runtime monitoring requirements not directly representable with the available constraint ops, so they are omitted from Constraints and noted here.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

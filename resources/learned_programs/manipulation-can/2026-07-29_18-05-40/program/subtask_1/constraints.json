@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage keeps the gripper open, preserves the current panda_fingertip orientation, and moves the panda_fingertip origin to the can_center_frame origin for contact. The reach_point term uses a 0.01 m tolerance for contact approach and includes both geometry and manipulator_high_effort condition labels to represent stopping either when the target is reached or when arm/TCP effort indicates contact with the can. Numeric finger joint targets near 1.0 and explicit monitoring of pose, gripper joints, and effort feedback are not directly representable beyond open_gripper and the condition labels.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "can_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage keeps the panda_fingertip pose fixed while establishing a real grasp. freeze_position enforces the start-of-stage world position with the requested 0.01 m tolerance. freeze_orientation preserves the start-of-stage tool orientation with a 5 degree tolerance and intentionally adds no new +z or +y axis relation. object_grasped represents successful physical holding of the current target cube_1, rather than merely commanding finger closure. The API has no explicit finger-joint symmetry, finger-position target, cube-specific grasp argument, or sustained finger effort/contact feedback term; those details, including the alternative stop condition based on inability to close further without increased effort, are therefore represented only indirectly by object_grasped and noted here as not explicitly encodable.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0873
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

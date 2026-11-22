@@ -1,0 +1,42 @@
+# Static Kinova point-cloud crop reference for collection scripts.
+#
+# This file is informational only. The collection scripts do not load it,
+# write it into dataset outputs, or apply the table plane during collection.
+# Zarr postprocessing uses Kuafu2Real/configs/pointcloud_clip.kinova_gen3.tableplane.yaml.
+kind: kinova_point_cloud_crop_reference
+robot: kinova_gen3
+frame: robot_base
+calculated_from:
+  # Paths relative to the external deployment output directory.
+  samples: rgbd_calibration_sets/kinova_depth_calibration_20260703_1233/samples.yaml
+  calibration: kinova_pair_rgbd_calibration_20260703_1345/matlab/calibration.matlab.rgb_robot_depth.d415_1__d415_2.yaml
+  intrinsics: kinova_pair_rgbd_calibration_20260703_1345/matlab/intrinsics/camera_intrinsics.matlab_combined_charuco.yaml
+
+point_cloud_clip:
+  workspace_min: [0.10, -0.60, -0.10]
+  workspace_max: [0.65, 0.60, 0.50]
+
+table_plane_filter:
+  enabled_during_collection: false
+  mode: predefined
+  object_clearance_m: 0.01
+  plane:
+    normal: [0.011712141335010529, 0.002187682781368494, 0.9999290108680725]
+    d: 0.0318163274753991
+  fit_report:
+    source_data: latest_saved_rgbd_depth_calibration_scenes
+    candidate_points_total: 2156991
+    fit_points_used: 500000
+    inlier_count_total: 1768610
+    inlier_pct_total: 81.99431522894625
+    distance_threshold_m: 0.006
+    mean_abs_error_mm_total: 1.769059592049299
+    p95_abs_error_mm_total: 4.354153809468452
+    pixel_stride: 4
+    workspace_for_fit:
+      min_x: 0.0
+      max_x: 0.9
+      min_y: -0.6
+      max_y: 0.6
+      min_z: -0.08
+      max_z: 0.18

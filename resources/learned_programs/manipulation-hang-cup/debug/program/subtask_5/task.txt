@@ -1,0 +1,1 @@
+[Manipulate] Align the mug_handle_hole_frame with cup_hanger_branch_1_tip_frame so that the mug handle opening is aligned with the branch axis for insertion with the gripper closed.

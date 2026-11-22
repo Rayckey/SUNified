@@ -1,0 +1,1 @@
+[Approach] Move the panda_fingertip into contact with estop_cap_tip while keeping the gripper orientation fixed.

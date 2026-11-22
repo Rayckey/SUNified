@@ -1,0 +1,37 @@
+{
+    "Reasoning": "The stage requires maintaining the current panda_fingertip pose while establishing a grasp on the top_drawer_handle_frame. The fixed end-effector position is represented with freeze_position at the explicit 0.01 m tolerance, and the fixed orientation is represented with freeze_orientation at the explicit 0.05 rad tolerance. The intended physical grasp is represented with object_grasped; per the operator rules, close_gripper is not emitted together with object_grasped because this stage requires a real held object rather than just mechanical closure. The API cannot explicitly encode symmetric finger motion along the tool +y axis, the fully closed joint value 0.0, the target name inside object_grasped, or finger-specific effort feedback/blocked-closure alternatives, so those details are omitted from Constraints and noted here.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+{
+    "Reasoning": "The subtask is to retract the gripper upward along world +z by 0.15 m from the current position (at cube_1 center on top of cube_2), with the gripper open and orientation fixed (tool +z antiparallel to world +z).\n\nConstraints needed:\n1. **open_gripper**: Gripper must remain fully open throughout (finger state = 1.0). This is the gripper state constraint.\n2. **directional_move**: The subtask explicitly specifies motion along world +z by 0.15 m. The reference_origin is the current tool frame (panda_fingertip), and the axis is +z in world frame. Since the motion is strictly along one axis with a specified distance, directional_move is appropriate.\n3. **axis_align**: Tool +z (panda_fingertip +z) must remain antiparallel to world +z throughout (top-down configuration). This encodes the orientation constraint.\n\nNote: freeze_orientation could also encode \"keep orientation fixed\", but axis_align directly encodes the required orientation relationship (tool +z antiparallel to world +z). I'll use axis_align since it directly captures the required orientation state.\n\nThe logic chain: open_gripper (first, establishes gripper state) AND directional_move (motion constraint) AND axis_align (orientation constraint).\n\nFor directional_move: controlled_entity = robot_frame, controlled_target = panda_fingertip, reference_basis = world, reference_origin = world, axis = +z, travel_distance_m = 0.15, tolerance_m = 0.01.\n\nFor axis_align: controlled_entity = robot_frame, controlled_target = panda_fingertip, controlled_axis = +z (tool pointing direction), reference_axis = +z (world), alignment = antiparallel (tool +z antiparallel to world +z means tool points downward in world frame, which is the top-down configuration), tolerance_rad = 0.2.\n\nThe manipulator_low_effort condition is noted in the subtask (effort should remain at free-space levels), but there is no op that directly encodes \"low effort\" as a success condition in the TermAPI \u2014 it's a monitoring condition. I'll attach it as a condition label on the directional_move constraint to capture this monitoring intent.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.4
+            }
+        }
+    ]
+}

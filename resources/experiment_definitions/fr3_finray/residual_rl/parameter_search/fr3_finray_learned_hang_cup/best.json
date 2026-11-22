@@ -1,0 +1,172 @@
+{
+  "kind": "initial_constraint_sweep",
+  "stages": {
+    "0": {
+      "diagnosis": "{\"0\": \"gripper state validity; must remain open during non-contact approach\", \"1\": \"precision_setup orientation for pre-grasp standoff approach; broad top-down/approach axis alignment, not yet contact/fit; use ordinary orientation tolerance_rad=0.50\", \"2\": \"precision_setup orientation for pre-grasp standoff approach; broad pre-grasp finger-axis orthogonality, no narrow fit/contact yet; use ordinary orientation tolerance_rad=0.50\", \"3\": \"precision_setup reach_point to non-contact standoff target with offset [0,0,0.1]; standoff target is not movement-progress-scaled and not direct fit/contact; use tolerance_m=0.03\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        },
+        "3": {
+          "tolerance_m": 0.03
+        }
+      },
+      "reasoning": "This stage is a non-contact pre-grasp setup of the robot/tool pose near a broad virtual handle frame on the mug rim. The controlled quantity is robot/tool pose, contact state is non_contact, and the positional target is an explicit standoff point 0.10 m away from the frame origin along the local approach axis. By policy, reach_point to a non-contact pre-contact/pre-grasp standoff is precision_setup with tolerance_m=0.03; the 0.10 m offset is a target definition, not a movement amount to progress-scale, and there is no direct fit/contact metric here. The two axis_align terms are also pre-contact orientation setup. Although the text states an axis approach, this is still broad pose preparation rather than a narrow receiver/opening fit, small/slender-body grasp lock, constrained-feature manipulation, or final object pose validity. Therefore ordinary orientation tolerance_rad=0.50 applies to both alignment terms rather than the authored tighter values. Weights are set semantically: open_gripper is important but simple state validity (1.5); the reach_point is the primary progress term for this stage (1.5); the two orientation setup terms support successful transition into the next contact approach but are still non-contact maintenance/setup terms, so keep them moderate (1.0 each) and not above the primary positional progress term.",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.5
+      }
+    },
+    "1": {
+      "diagnosis": "{\"0\": \"contact_engagement reach_point to first contact / centered contact at mug_rim_frame_0 origin; direct contact size cap from relevant rim thickness 0.01 m gives tolerance_m = max(0.01, min(0.03, 0.01/2)) = 0.01\", \"1\": \"freeze_orientation as pose_hold during contact approach to a small/slender contact feature used for immediate grasp setup; axis/orientation is critical for rim contact stability, use task-critical alignment tolerance_rad = 0.20\", \"2\": \"open_gripper state validity throughout approach; losing open state invalidates the stage but is not geometry-tunable\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.01
+        },
+        "1": {
+          "tolerance_rad": 0.2
+        }
+      },
+      "reasoning": "The controlled quantity is robot tool pose. This is first_contact / immediate contact approach, not loose transport or standoff, because the target is the rim-frame origin with zero offset and the stage stops on proximity or fingertip contact. The positional metric directly targets contact with a narrow grasp feature: the rim virtual handle thickness is 0.01 m, so the direct fit/contact cap applies and clamps the nominal contact tolerance to 0.01 m. The orientation term preserves the previously established approach while moving into contact with a small/slender feature that immediately precedes grasp closing, so broad 0.50 rad maintenance would be too loose; use 0.20 rad. For weights, position-to-contact is primary, so slightly highest. Open-gripper is also important because closing early defeats the stage. Freeze-orientation matters for maintaining the established rim-contact geometry, but should not exceed the primary contact-reaching term.",
+      "weights": {
+        "0": 2.0,
+        "1": 1.5,
+        "2": 1.5
+      }
+    },
+    "2": {
+      "diagnosis": "{\"0\": \"pose_hold on robot/tool position while grasp_closing on a small_or_slender_body contact feature; mug rim virtual handle thickness is 0.01 m, so small/slender grasp-lock cap applies: tolerance_m = max(0.01, min(0.03, 0.01/2)) = 0.01.\", \"1\": \"pose_hold on robot/tool orientation during grasp_closing on a small/slender grasp feature; orientation is grasp-stability-critical, so task-critical axis/frame maintenance uses tolerance_rad = 0.20.\", \"2\": \"gripper/object state validity for grasp acquisition; no tunable tolerance.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.01
+        },
+        "1": {
+          "tolerance_rad": 0.2
+        }
+      },
+      "reasoning": "This stage is not broad free-space motion; it is grasp acquisition while the tool pose must stay fixed during finger closing. The relevant grasp feature is the mug rim virtual handle with thickness 0.01 m, which makes the contact feature small/slender. Therefore the position hold must be capped by the grasp cross-section policy, yielding 0.01 m after lower-bound clamping. Orientation is already established, but preserving it is still critical to maintain stable bilateral contact on the slender rim feature, so 0.20 rad is appropriate. For weights, grasp validity is primary because without sustained grasp the stage fails, so component 2 gets the highest weight. Position hold is next because drift larger than the rim cross-section would lose the grasp geometry. Orientation hold matters, but should not exceed the grasp-state term; keep it moderately high.",
+      "weights": {
+        "0": 2.0,
+        "1": 1.5,
+        "2": 2.5
+      }
+    },
+    "3": {
+      "diagnosis": "{\"0\": \"object_grasped: grasp/state validity during force-transmitting lift; losing grasp invalidates the stage.\", \"1\": \"freeze_orientation: pose_hold for a broad-body carry/lift orientation already established during grasp; ordinary broad-body orientation maintenance, tolerance_rad=0.50.\", \"2\": \"directional_move: task_critical_progress for upward lift distance of 0.20 m; progress-scaled tolerance_m=0.04 (20% of travel distance).\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_m": 0.04
+        }
+      },
+      "reasoning": "The manipulated quantity is robot/tool pose while carrying a grasped mug upward with the gripper closed, so this is force-transmitting manipulation rather than release or setup. The mug body is broad relative to ordinary hold thresholds, and this stage does not involve a narrow receiver/opening fit or final object pose validity; therefore the orientation hold is broad pose maintenance, not task-critical axis alignment, so 0.50 rad is appropriate. The upward translation amount itself is the completion condition, with known travel distance 0.20 m, so the directional_move tolerance follows task-critical progress scaling: 0.20*0.20 = 0.04 m, within allowed bounds. For weights, the lift progress and maintained grasp are the two core stage-validity terms, so both are emphasized equally at 2.0. Orientation maintenance matters but is a broad-body hold term and should not outweigh primary progress, so it stays moderate at 1.0.",
+      "weights": {
+        "0": 2.0,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "4": {
+      "diagnosis": "{\"0\": \"grasp/object state validity during broad-body carry; no tunable tolerance\", \"1\": \"freeze_orientation on a broad-body carry pose hold; semantic_role=pose_hold; ordinary orientation maintenance, tolerance_rad=0.50\", \"2\": \"reach_point to a non-contact outward standoff near the branch tip for safe approach/clearance, not direct contact or fit; semantic_role=precision_setup; standoff nominal tolerance_m=0.03\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_m": 0.03
+        }
+      },
+      "reasoning": "The mug is already grasped and this stage is a non-contact carry toward an outward offset target, with explicit intent to keep clearance from the hanger and branches. The reach_point checks arrival to a pre-engagement standoff, not insertion, contact, or a measured travel amount, so it should use precision_setup rather than task-critical progress or contact engagement. Per standoff policy, tolerance_m=0.03. The orientation term is only preserving the grasp-established tool pose during transport of a broad body; there is no narrow receiver fit or small/slender grasp-axis requirement in this stage, so ordinary pose-hold orientation tolerance_rad=0.50 applies. Weighting keeps the primary transport target highest, grasp state next because losing grasp invalidates progress, and orientation maintenance slightly lower as a broad carry hold term.",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "5": {
+      "diagnosis": "{\"0\": \"reach_point on mug_handle_hole_frame to a pre-insertion standoff point relative to the branch tip; semantic_role=precision_setup. The metric is non-contact alignment/setup to place the handle hole just beyond the tip for the next insertion stage, so use nominal 0.03 m standoff tolerance and do not tighten by the 0.10 m offset.\", \"1\": \"axis_align between handle-hole axis and branch axis; semantic_role=contact_engagement / task-critical axis alignment for upcoming receiver-opening engagement. The hole opening diameter is 0.03 m, so the branch-to-hole axis relation is narrow-feature critical; use 0.20 rad per policy floor for task-critical alignment.\", \"2\": \"object_grasped; grasp validity during transport/setup of a grasped mug. Losing grasp invalidates the stage, so weight above ordinary maintenance but below extreme narrow-fit emphasis.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.2
+        }
+      },
+      "reasoning": "This stage is insertion readiness, not the insertion itself. Component 0 is a non-contact setup pose for immediate engagement with a narrow receiver feature, so precision_setup applies: 0.03 m is the correct generalized tolerance, and the offset value is a target definition, not a progress amount to scale. Component 1 aligns the handle opening axis with the branch axis; because subsequent success depends on a 0.03 m opening accepting the branch, this is primary narrow-feature alignment and should stay at 0.20 rad. Component 2 must remain important because grasp loss destroys all progress. Weight ratios therefore prioritize the pre-insertion point and axis alignment over baseline state validity, while avoiding inflating every term: reach/setup 2.0, axis alignment 2.0, grasp state 1.5.",
+      "weights": {
+        "0": 2.0,
+        "1": 2.0,
+        "2": 1.5
+      }
+    },
+    "6": {
+      "diagnosis": "{\"0\": \"object_grasped; grasp/state validity during force-transmitting manipulation of a small/slender grasp feature (mug rim virtual handle thickness 0.01), so state loss invalidates the stage.\", \"1\": \"freeze_orientation on robot/tool during insertion-like force-transmitting manipulation through a narrow receiver/opening (handle hole diameter 0.03 around branch thickness 0.01); semantic_role=contact_engagement/task-critical axis hold; use task-critical alignment tolerance_rad=0.20.\", \"2\": \"directional_move along branch -y by known 0.15 m while branch passes through the mug handle opening; semantic_role=task_critical_progress. Progress scaling gives 0.20*0.15=0.03 m, which also matches the opening size cap from handle hole diameter 0.03 -> s/2=0.015 only for direct fit/contact metrics, but this component checks travel amount, not direct fit, so keep 0.03 m.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.2
+        },
+        "2": {
+          "tolerance_m": 0.03
+        }
+      },
+      "reasoning": "The stage is force-transmitting manipulation with the mug already grasped and the branch being driven through the handle opening, so the primary term is the inward translation progress and it should carry the largest weight. The grasped-state term is also important because losing grasp destroys all progress; because the grasp feature is small/slender, give it a strong but not dominant weight. Orientation is not broad free-space maintenance here: holding the previously established orientation preserves the hole/branch alignment during engagement, so keep the strict nominal task-critical axis tolerance of 0.20 rad and a moderate-high weight. For the directional_move tolerance, the operator measures required travel amount with known distance 0.15 m, so apply the progress rule: 20% of travel = 0.03 m. Do not tighten it to the opening half-size because that cap applies to metrics directly checking fit/contact/seating, while this component checks manipulation progress distance. Weight ratios therefore prioritize motion progress, then grasp validity, then orientation hold.",
+      "weights": {
+        "0": 2.0,
+        "1": 1.5,
+        "2": 2.5
+      }
+    },
+    "7": {
+      "diagnosis": "{\"0\": \"freeze_position on robot/tool during gripper opening at a hooked, mechanically supported release state; semantic_role=release_guard; mug is already supported by the hanger branch, so this is a disturbance guard rather than final object pose validity; set tolerance_m to loose release nominal 0.05.\", \"1\": \"freeze_orientation on robot/tool during the same supported release; semantic_role=release_guard; this is broad pose maintenance, not a new critical alignment or final object orientation check; set tolerance_rad to ordinary maintenance 0.50.\", \"2\": \"open_gripper defines release completion/state validity during this stage; no tunable tolerance; weight kept above pose-hold terms because release must occur for stage completion.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "The current stage is a release while the mug is already hooked on the hanger branch, so the controlled quantity is robot/tool pose during opening, with contact state captured_or_mechanically_supported. Because the object is mechanically supported by the branch through the handle opening, the tool pose constraints serve only to avoid disturbing the supported mug while opening, which matches release_guard rather than contact_engagement or final_object_pose_validity. Under the policy, robot/tool freeze_position for supported release uses tolerance_m=0.05, and freeze_orientation for broad release maintenance uses tolerance_rad=0.50. The mug/hanger geometry is narrow, but these constraints are on tool disturbance guard after support is achieved, not on direct fit/contact; therefore narrow-feature tightening should not be applied here. Weighting uses simple relative ratios: open_gripper is the primary stage-defining component, so it is highest at 1.5; release-guard position and orientation holds are important but secondary disturbance guards, so both remain at 1.0. This avoids inflating all terms while still prioritizing actual release success.",
+      "weights": {
+        "0": 1.0,
+        "1": 1.0,
+        "2": 1.5
+      }
+    },
+    "8": {
+      "diagnosis": "{\"0\": \"gripper state validity during free-space retract; no tunable tolerance\", \"1\": \"freeze_orientation on robot/tool during free_space_retract -> semantic_role=pose_hold with ordinary orientation maintenance tolerance 0.50 rad\", \"2\": \"directional_move upward by known 0.15 m during retract/back-away/clearance -> semantic_role=loose_progress, retraction exception applies, tolerance 0.05 m (do not 20%-scale retract distance)\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_m": 0.05
+        }
+      },
+      "reasoning": "This stage is a non-contact upward retraction after release with the gripper already open. The motion purpose is clearance, not task-critical manipulation of the mug or hanger geometry. The tool orientation is only being preserved during retreat, not establishing a new narrow alignment, so ordinary freeze-orientation maintenance uses 0.50 rad. The directional_move target is an explicit 0.15 m upward retreat, but because it is retract/clearance progress after release, the policy uses loose_progress tolerance 0.05 m rather than task-progress scaling. Weighting keeps the retract term primary but modest, with open_gripper also important because the stage requires continued release validity; orientation maintenance remains supportive and not larger than the progress term.",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 1.5
+      }
+    }
+  },
+  "task": "FR3-FinRay-Table-Hang-Cup"
+}

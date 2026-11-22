@@ -1,0 +1,50 @@
+{
+    "Reasoning": "This approach stage is represented by a tight reach_point to the non-contact pre-press pose: the panda_fingertip origin is commanded to the estop_cap_tip origin offset by +0.10 m along estop_cap_tip +z, with 0.01 m tolerance. The axis_align constraint orients panda_fingertip tool +z antiparallel to estop_cap_tip +z. close_gripper encodes the requirement that the gripper remain closed during the approach; no object_grasped term is used because no object is being held. manipulator_low_effort is included with the geometric approach term to represent non-contact / unexpected-contact monitoring during the approach. Exact maintenance of both individual finger joint positions at 0.0 and explicit gripper-effort feedback monitoring are not directly representable beyond the gripper_closed condition and close_gripper operator.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.1
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

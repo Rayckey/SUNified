@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage keeps the gripper open, preserves the panda_fingertip orientation from the stage start, and moves the panda_fingertip origin to the marker frame origin for contact. The reach tolerance is 0.01 m as explicitly required for contact. The fixed-orientation tolerance is set to the required 0.05 rad. Contact/effort monitoring for intended contact is represented with the manipulator_high_effort condition label on the reach/contact term; raw continuous monitoring of pose, joint feedback, and finger effort cannot be separately encoded beyond these constraints and labels.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "marker",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

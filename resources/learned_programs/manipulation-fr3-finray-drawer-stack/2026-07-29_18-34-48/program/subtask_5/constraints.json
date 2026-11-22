@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage retracts the released, open panda_fingertip from the handle to a concrete non-contact offset point: 0.10 m along top_drawer_handle_frame -y, with a 0.01 m positional tolerance. The gripper is kept fully open using an open_gripper constraint with gripper_opened feedback metadata. The end-effector orientation is frozen at the stage-start orientation with a 5 degree tolerance. Non-contact / no push-pull behavior is represented by adding manipulator_low_effort to the retract reach constraint. There is no separate operator for gripper effort contact sensing, so that feedback is only represented indirectly through the open gripper state and low manipulator effort condition.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.1,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

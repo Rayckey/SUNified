@@ -1,0 +1,1 @@
+[Manipulate] Close the gripper to grasp the top_drawer_handle_frame while keeping both the gripper position and orientation fixed.

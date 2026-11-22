@@ -1,0 +1,42 @@
+{
+    "Reasoning": "Use one position operator for the required 0.15 m world +z lift of panda_fingertip from the start-of-stage pose, with 0.01 m tolerance. Freeze panda_fingertip orientation to maintain the start-of-stage orientation with no commanded rotation. Require cube_3 to remain physically grasped, representing the closed stable grasp and rigid carry assumption. The directional lift also carries a manipulator_low_effort condition to represent monitoring for no unintended external contact during the lift, in addition to the geometric completion condition. Unrepresented details: exact left/right gripper joint values near 0.0, opposing-finger squeeze force, explicit no-slip transform maintenance, specific collision avoidance against cube_1 and cube_2, and clearance from the original support contact cannot be directly encoded beyond the upward geometry and grasp/effort conditions.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

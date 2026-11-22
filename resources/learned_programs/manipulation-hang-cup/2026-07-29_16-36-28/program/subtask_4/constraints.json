@@ -1,0 +1,32 @@
+{
+    "Reasoning": "The stage is represented as carrying the already-grasped mug so the mug_center_frame reaches the staging point 0.18 m along cup_hanger_branch_1_tip_frame +y, with 0.01 m stopping tolerance. The object_grasped term represents continued physical holding of the mug with the gripper remaining closed, rather than issuing a new close_gripper command. The fixed fingertip-to-mug transform, no-slip requirement, firm opposing gripper effort/contact feedback, and final stable-grasp checks are only partially representable through object_grasped; the API has no explicit relative rigid-transform or gripper effort/contact feedback operator. The continuous non-contact clearance requirements from the branch tip, table, and cup_hanger are not directly representable because the API has no minimum-distance/avoidance constraint; the branch-tip staging offset is encoded by the reach target.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_center_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.18,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+{
+  "artifact": "assets/configs/experiments/stage_dp3.yaml",
+  "description": "Point-cloud episodes, measured robot state and action conventions",
+  "path_base": "repository root"
+}

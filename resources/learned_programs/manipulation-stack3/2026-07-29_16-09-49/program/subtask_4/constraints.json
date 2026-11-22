@@ -1,0 +1,56 @@
+{
+    "Reasoning": "The stage goal is encoded as carrying the currently gripped cube_2 to the point 0.15 m above cube_1 in the world +z direction with 0.01 m tolerance, while keeping the fingertip orientation fixed from the start of the stage. object_grasped represents that cube_2 must remain physically held with the gripper closed during the relocation, and cube_2 orientation is also frozen to reflect no slip / preserved relative pose with the fixed-orientation gripper. The final vertical standoff is represented by the target offset; continuous non-contact separation along the entire path, exact gripper joint command values, and detailed finger effort thresholds are not directly expressible beyond object_grasped and the gripper_closed condition label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

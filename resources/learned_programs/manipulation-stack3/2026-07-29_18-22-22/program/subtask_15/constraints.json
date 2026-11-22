@@ -1,0 +1,42 @@
+{
+    "Reasoning": "Use a single strict directional_move to retract the panda_fingertip origin 0.10 m along world +z with 0.01 m tolerance, which also represents no intentional lateral translation. Keep the gripper open with open_gripper, and preserve the current end-effector orientation with freeze_orientation. The directional move is labeled with manipulator_low_effort to reflect the required free-space/non-contact effort monitoring during retract. The API cannot directly encode individual finger joint numeric targets, finger effort thresholds, object contact-signal monitoring, cube_3 support on cube_2, or no slipping/toppling/no unexpected contact with cube_1/cube_2/cube_3, so those clauses are noted but omitted as explicit constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

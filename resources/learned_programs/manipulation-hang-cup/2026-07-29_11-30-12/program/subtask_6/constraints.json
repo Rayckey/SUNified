@@ -1,0 +1,43 @@
+{
+    "Diagnosis": "The failure is caused by the controller rejecting simultaneous orientation constraints: the previous list included both axis_align and freeze_orientation, and the error explicitly says mixing freeze_orientation with other orientation constraints is not allowed. To make the smallest corrective change, the direct axis_align term is removed and the freeze_orientation term is kept, because this stage explicitly requires keeping panda_fingertip orientation fixed while inserting from an already aligned standoff.",
+    "Reasoning": "The directional_move constraint still encodes the required 0.10 m insertion travel of mug_handle_hole_frame along cup_hanger_branch_1_tip_frame -y with 0.01 m tolerance, while including manipulator_high_effort in the same condition list to represent the supported early-stop/failure alternative for excessive insertion resistance. The freeze_orientation constraint keeps panda_fingertip at its start-of-stage world orientation, which is the representable orientation requirement retained after the runtime rejected combining it with axis_align. Because the previous completed stage established the handle-hole/branch alignment, keeping the gripper orientation fixed while maintaining a sustained grasp is the available proxy for preserving that alignment; the direct axis_align success check cannot be included in this same controller stage due to the reported API restriction. The object_grasped constraint preserves the closed, real-object grasp without issuing a close_gripper command. Detailed finger joint monitoring, slip thresholds, and contact/effort distinctions beyond object_grasped and manipulator_high_effort are not directly representable in this TermAPI.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

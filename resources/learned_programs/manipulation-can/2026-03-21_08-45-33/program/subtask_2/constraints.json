@@ -1,0 +1,37 @@
+{
+    "Reasoning": "The current subtask is to close the gripper fingers to grasp the can while holding the tool pose fixed at the can_center_frame origin. \n\nSuccess conditions:\n1. Tool position: keep panda_fingertip fixed at can_center_frame origin (freeze_position, tolerance 0.01 m as specified).\n2. Tool orientation: keep orientation fixed as established (freeze_orientation).\n3. Gripper command: close the gripper (close_gripper).\n4. Stop when effort feedback on both gripper fingers rises above firm-contact threshold \u2014 this is the gripper closing effort/grasp state, represented by close_gripper (gripper_closed condition). The effort stop signal for gripper fingers is part of the close_gripper semantics (gripper_closed = grasp established).\n\nNote: The \"stop when effort rises above threshold\" for gripper fingers is captured by the close_gripper op with gripper_closed condition. The position drift monitor (within 0.01 m) is captured by freeze_position. The orientation hold is captured by freeze_orientation.\n\nAll conditions must hold simultaneously (AND logic):\n- freeze_position: tool frame stays at can_center_frame origin within 0.01 m\n- freeze_orientation: tool orientation stays fixed\n- close_gripper: fingers close until firm grasp achieved\n\nThe axis_align constraints from prior steps (tool +z antiparallel to world +z, tool +y orthogonal to can +y) are maintained via freeze_orientation, so no separate axis_align terms are needed here since freeze_orientation covers the full orientation hold.\n\nLogic: all \"and\" since all must hold together.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

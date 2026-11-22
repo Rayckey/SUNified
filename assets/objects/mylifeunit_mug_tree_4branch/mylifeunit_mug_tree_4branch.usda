@@ -1,0 +1,12 @@
+#usda 1.0
+(
+    defaultPrim = "MugTree"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "MugTree" (
+    prepend references = @mylifeunit_mug_tree_4branch_static.usda@</MugTree>
+)
+{
+}

@@ -1,0 +1,69 @@
+# SAC + RLPD configuration for Open-FR3FinRay-Drawer
+#
+# RLPD (RL with Prior Data): the replay buffer is seeded with expert
+# demonstrations before training begins. The actor can optionally be
+# warm-started from a robomimic BC checkpoint.
+
+seed: 42
+
+# ── MPC / reward-shaping ────────────────────────────────────────────────────
+# Mirrors the settings in rl_games_ppo_cfg_v2.yaml so reward behaviour is
+# identical when switching from PPO to SAC.
+mpc:
+  use_absolute_progress_rewards: false
+  use_relative_progress_rewards: true
+  use_velocity_penalty: true
+  use_time_penalty: true
+  regularize_velocity_scale: 0.03
+  regularize_time_scale: 0.0
+  progress_rewards_scale: 1000.0
+
+# ── RLPD paths ───────────────────────────────────────────────────────────────
+rlpd:
+  # Path to the HDF5 demo file (relative to repo root or absolute).
+  demo_dataset: "src/kuafu/data/datasets/fr3_finray_table_drawer.hdf5"
+  # Key inside each demo's obs/ group that holds the flat state vector.
+  obs_key: "state"
+  # Optional: path to a robomimic .pth BC checkpoint for actor warm-start.
+  # Set to null to skip (actor initialised randomly).
+  bc_checkpoint: null
+
+# ── SAC hyperparameters ──────────────────────────────────────────────────────
+sac:
+  # Number of gradient steps per environment step.
+  gradient_steps: 1
+  # Minibatch size for each gradient step.
+  batch_size: 4096
+  # Per-env-slot capacity of the replay buffer.
+  # Total transitions stored = memory_size × num_envs.
+  memory_size: 100000
+  # Reward discount factor.
+  discount_factor: 0.99
+  # Soft-update coefficient for target critics (Polyak averaging).
+  polyak: 0.005
+  # Learning rates.
+  actor_lr: 3.0e-4
+  critic_lr: 3.0e-4
+  entropy_lr: 3.0e-4
+  # Entropy regularisation.
+  learn_entropy: true
+  initial_entropy: 1.0
+  # Gradient clipping (0 = disabled).
+  grad_norm_clip: 0.5
+  # Start learning after this many transitions have been collected.
+  # Set to 0 when pre-seeding with demos so training begins immediately.
+  learning_starts: 0
+
+# ── Training schedule ────────────────────────────────────────────────────────
+train:
+  timesteps: 3000000
+  log_interval: 1000        # write TensorBoard scalars every N steps
+  checkpoint_interval: 50000  # save SKRL checkpoint every N steps
+
+# ── Experiment / logging ─────────────────────────────────────────────────────
+agent:
+  experiment:
+    directory: "Open-FR3FinRay-Drawer-SAC"
+    experiment_name: ""
+    write_interval: 1000
+    checkpoint_interval: 50000

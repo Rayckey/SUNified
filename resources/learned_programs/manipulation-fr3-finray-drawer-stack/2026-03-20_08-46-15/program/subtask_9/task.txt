@@ -1,0 +1,1 @@
+[Manipulate] Lift the grasped strawberry_center_frame upward to create clearance above the surface, with the gripper closed.

@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "id": "stack3",
+  "title": "Stack three cubes",
+  "status": "registered",
+  "task": "stack the cubes",
+  "environments": [
+    {
+      "robot_id": "fr3_finray",
+      "gym_id": "FR3-FinRay-Table-Stack-3",
+      "registration_module": "kuafu.isaac.learned",
+      "entry_point": "kuafu.isaac.learned.fr3_finray_stack3_env_learned:FR3FinRayStack3EnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.fr3_finray_stack3_env_learned:FR3FinRayStack3EnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/fr3_finray_stack3_env_learned.py",
+      "variants": [
+        "FR3-FinRay-Table-Stack-3-Long-Long-U",
+        "FR3-FinRay-Table-Stack-3-f",
+        "FR3-FinRay-Table-Stack-3-l",
+        "FR3-FinRay-Table-Stack-3-c",
+        "FR3-FinRay-Table-Stack-3-lf",
+        "FR3-FinRay-Table-Stack-3-ff",
+        "FR3-FinRay-Table-Stack-3-fff3",
+        "FR3-FinRay-Table-Stack-3-fff",
+        "FR3-FinRay-Table-Stack-3-ffff3",
+        "FR3-FinRay-Table-Stack-3-ffff",
+        "FR3-FinRay-Table-Stack-3-fffff3",
+        "FR3-FinRay-Table-Stack-3-fffff",
+        "FR3-FinRay-Table-Stack-3-ffffff3",
+        "FR3-FinRay-Table-Stack-3-ffffff"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/fr3_ft_robotiq_2f_85_finrays_tcp/usd/fr3_ft_robotiq_2f_85_finrays.usd",
+          "table": "assets/objects/table/table_flattened_instanceable_meshes.usd",
+          "cube_1": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/blue_block.usd",
+          "cube_2": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/red_block.usd",
+          "cube_3": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/green_block.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-stack3/2026-03-25_19-53-05",
+        "interaction_frames": {
+          "cube_2": {
+            "description": "mesh of a green cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_2"
+          },
+          "cube_1": {
+            "description": "mesh of a red cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_1"
+          },
+          "cube_3": {
+            "description": "mesh of a green cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_3"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "franka_panda",
+      "gym_id": "Panda-Table-Stack-3",
+      "registration_module": "kuafu.isaac.learned.panda",
+      "entry_point": "kuafu.isaac.learned.panda.panda_stack3_env_learned:PandaStack3EnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.panda.panda_stack3_env_learned:PandaStack3MPCEnvCfg",
+      "source": "src/kuafu/isaac/learned/panda/panda_stack3_env_learned.py",
+      "variants": [
+        "Panda-Table-Stack-3-Long-Long-U",
+        "Panda-Table-Stack-3-f",
+        "Panda-Table-Stack-3-l",
+        "Panda-Table-Stack-3-c",
+        "Panda-Table-Stack-3-lf",
+        "Panda-Table-Stack-3-ff",
+        "Panda-Table-Stack-3-fff3",
+        "Panda-Table-Stack-3-fff",
+        "Panda-Table-Stack-3-ffff3",
+        "Panda-Table-Stack-3-ffff",
+        "Panda-Table-Stack-3-fffff3",
+        "Panda-Table-Stack-3-fffff",
+        "Panda-Table-Stack-3-ffffff3",
+        "Panda-Table-Stack-3-ffffff",
+        "Panda-Table-Stack-3-f3",
+        "Panda-Table-Stack-3-ff3"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd",
+          "cube_1": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/blue_block.usd",
+          "cube_2": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/red_block.usd",
+          "cube_3": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/green_block.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-stack3/2026-11-05_panda",
+        "interaction_frames": {
+          "cube_2": {
+            "description": "mesh of a green cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_2"
+          },
+          "cube_1": {
+            "description": "mesh of a red cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_1"
+          },
+          "cube_3": {
+            "description": "mesh of a green cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_3"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "kinova_gen3",
+      "gym_id": "Kinova-Table-Gen3-Stack-3",
+      "registration_module": "kuafu.isaac.learned.kinova",
+      "entry_point": "kuafu.isaac.learned.kinova.kinova_stack3_env_learned:KinovaStack3EnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.kinova.kinova_stack3_env_learned:KinovaStack3EnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/kinova/kinova_stack3_env_learned.py",
+      "variants": [
+        "Kinova-Table-Gen3-Stack-3-Long-Long-U",
+        "Kinova-Table-Gen3-Stack-3-f",
+        "Kinova-Table-Gen3-Stack-3-f3",
+        "Kinova-Table-Gen3-Stack-3-l",
+        "Kinova-Table-Gen3-Stack-3-c",
+        "Kinova-Table-Gen3-Stack-3-lf",
+        "Kinova-Table-Gen3-Stack-3-ff",
+        "Kinova-Table-Gen3-Stack-3-ff3",
+        "Kinova-Table-Gen3-Stack-3-fff3",
+        "Kinova-Table-Gen3-Stack-3-fff",
+        "Kinova-Table-Gen3-Stack-3-ffff3",
+        "Kinova-Table-Gen3-Stack-3-ffff",
+        "Kinova-Table-Gen3-Stack-3-fffff3",
+        "Kinova-Table-Gen3-Stack-3-fffff",
+        "Kinova-Table-Gen3-Stack-3-ffffff3",
+        "Kinova-Table-Gen3-Stack-3-ffffff"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/kinova/usd/kinova_gen3_7dof_robotiq_2f85_vision_official_contact_stable.usd",
+          "cube_1": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/blue_block.usd",
+          "cube_2": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/red_block.usd",
+          "cube_3": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/green_block.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-stack3/2026-03-25_19-53-05",
+        "interaction_frames": {
+          "cube_2": {
+            "description": "mesh of a green cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_2"
+          },
+          "cube_1": {
+            "description": "mesh of a red cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_1"
+          },
+          "cube_3": {
+            "description": "mesh of a green cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_3"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "ur5_robotiq",
+      "gym_id": "UR5-Table-Stack-3",
+      "registration_module": "kuafu.isaac.learned.ur5",
+      "entry_point": "kuafu.isaac.learned.ur5.tasks:UR5Stack3Env",
+      "config_entry_point": "kuafu.isaac.learned.ur5.tasks:UR5Stack3EnvCfg",
+      "source": "src/kuafu/isaac/learned/ur5/tasks.py",
+      "variants": [],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/ur5_robotiq/ur5_robotiq.usd",
+          "cube_1": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/blue_block.usd",
+          "cube_2": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/red_block.usd",
+          "cube_3": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/green_block.usd"
+        },
+        "controller_inputs": {
+          "urdf_path": "assets/robots/ur5_robotiq/ur5_controller.urdf",
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-stack3/2026-03-25_19-53-05",
+        "interaction_frames": {
+          "cube_2": {
+            "description": "mesh of a green cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_2"
+          },
+          "cube_1": {
+            "description": "mesh of a red cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_1"
+          },
+          "cube_3": {
+            "description": "mesh of a green cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+            "prim_path": "/World/envs/env_*/Cube_3"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    }
+  ],
+  "object_assets": [
+    "assets/objects/table/table_flattened_instanceable_meshes.usd"
+  ],
+  "scene_source": "src/kuafu/isaac/learned/fr3_finray_stack3_env_learned.py",
+  "interaction_frames_source": "src/kuafu/isaac/learned/fr3_finray_stack3_env_learned.py:detectable_objects",
+  "interaction_frames": {
+    "cube_2": {
+      "description": "mesh of a green cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+      "prim_path": "/World/envs/env_*/Cube_2"
+    },
+    "cube_1": {
+      "description": "mesh of a red cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+      "prim_path": "/World/envs/env_*/Cube_1"
+    },
+    "cube_3": {
+      "description": "mesh of a green cube, symmetric on all axes, size: (0.05, 0.05, 0.05)",
+      "prim_path": "/World/envs/env_*/Cube_3"
+    },
+    "panda_link4": {
+      "description": "frame of robot link 4",
+      "prim_path": "/Visuals/panda_link4_frame"
+    },
+    "panda_fingertip": {
+      "description": "frame of robot tool frame",
+      "prim_path": "/Visuals/panda_hand_frame"
+    }
+  },
+  "success_check": {
+    "summary": "Cube 2 is on cube 1 and cube 3 is on cube 2; the gripper releases and clears the stack.",
+    "source": "src/kuafu/isaac/learned/fr3_finray_stack3_env_learned.py",
+    "method": "_external_get_dones",
+    "thresholds": "Use the selected robot configuration and implementation."
+  },
+  "formulation": [
+    {
+      "gym_id": "Formulate-Panda-Stack-3-v0",
+      "runner": "src/kuafu/programs/stack3_learn_programs.py"
+    }
+  ],
+  "program_families": [
+    "resources/learned_programs/manipulation-stack3"
+  ],
+  "saved_programs": [
+    {
+      "path": "resources/learned_programs/manipulation-stack3/2026-01-09_07-09-06",
+      "stages": 16,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-stack3/2026-01-09_07-09-06_loose",
+      "stages": 16,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-stack3/2026-03-25_19-53-05",
+      "stages": 15,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-stack3/2026-07-29_10-21-59",
+      "stages": 16,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-stack3/2026-07-29_10-36-50",
+      "stages": 16,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-stack3/2026-07-29_16-09-49",
+      "stages": 16,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-stack3/2026-07-29_18-22-22",
+      "stages": 16,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-stack3/2026-07-29_18-22-26",
+      "stages": 16,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-stack3/2026-11-05_panda",
+      "stages": 15,
+      "recorded_success": "True"
+    }
+  ],
+  "example_program": {
+    "path": "resources/learned_programs/manipulation-stack3/2026-07-29_18-22-26",
+    "stages": 16,
+    "recorded_success": "True"
+  },
+  "agent_interface": {
+    "discovery": [
+      "kuafu_list_tasks",
+      "kuafu_get_task"
+    ],
+    "learning": "kuafu_start_stage with a compatible task manifest",
+    "scene_verification": "Use the task-specific scene and success implementation. The exported-video cabinet tool has its own task entry."
+  },
+  "object_geometry": "NVIDIA Isaac block USDs; select a robot configuration for asset URLs, dimensions and reset poses.",
+  "robot_setup": {
+    "default": "docs/INSTALL.md",
+    "ur5_robotiq": "docs/UR5.md"
+  },
+  "related_sources": [
+    "src/kuafu/isaac/base/manipulation/stack3_env.py",
+    "src/kuafu/isaac/tasks/stack_three/stack3_env_learned.py"
+  ],
+  "external_assets": [
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/blue_block.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/green_block.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Blocks/red_block.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+  ]
+}

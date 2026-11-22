@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Success for this subtask requires retracting the gripper with the gripper open, while keeping its orientation fixed in the agent (robot) frame, until the tool origin (panda_fingertip) is at least 0.15 m from the top_drawer_handle_frame origin and there is no collision/contact. Only one positional constraint is allowed; since the subtask requires moving until at least 0.15 m of distance (regardless of path, only the safety distance matters), 'reach_distance' is correct. The gripper must remain fully open, so 'open_gripper' is required. The orientation of the tool must not change relative to agent (robot) frame during retraction, so 'freeze_orientation' is required. 'and' is used throughout because all constraints must be satisfied simultaneously.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0,
+                    0,
+                    0
+                ],
+                "distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

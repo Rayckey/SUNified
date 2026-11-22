@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage is represented as a conjunctive release/retraction controller stage. The gripper is kept open with open_gripper. The panda_fingertip orientation is frozen to preserve its start-of-stage world-frame orientation, using the requested 5 degree tolerance. The fingertip is commanded to translate 0.17 m along the pen_holder +z axis with 0.01 m tolerance, which encodes the required retraction away from the inserted marker and opening; the manipulator_low_effort condition on this motion represents non-contact/low-interaction-effort monitoring during retraction. Unrepresented clauses: exact left/right finger joint-state equality to the start-of-stage open positions, paired finger effort feedback near free-space levels, explicit collision avoidance against marker/pen_holder/table, explicit marker-pose monitoring, explicit marker-stays-inserted verification, and the computed 0.17 m fingertip-to-marker separation are not directly expressible with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "axis": "+z",
+                "travel_distance_m": 0.17,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

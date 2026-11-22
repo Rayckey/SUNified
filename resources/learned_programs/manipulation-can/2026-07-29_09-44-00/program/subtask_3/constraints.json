@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage lifts the currently grasped can upward while maintaining the grasp. A directional_move on the gripped can_center_frame encodes the required world +z translation of 0.15 m with 0.01 m final tolerance. A freeze_orientation on the gripped can_center_frame encodes preserving the start-of-stage can orientation within 5 degrees. object_grasped encodes that the can must remain physically held with the gripper closed throughout the lift and at success; close_gripper is not also emitted because object_grasped is the required held-object condition. The exact finger joint coordinates, finger effort feedback magnitude, continuous monitoring signals, and exact start-of-stage panda_fingertip-to-can_center_frame relative transform are not directly parameterizable in the available operators; they are represented only indirectly by object_grasped and the gripped_object motion semantics.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "tolerance_rad": 0.087266
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

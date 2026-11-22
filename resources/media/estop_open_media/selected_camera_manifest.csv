@@ -1,0 +1,2 @@
+sensor,view,eye_x,eye_y,eye_z,target_x,target_y,target_z,focal_length
+table_cam_0,front_close_estop_open_action,0.5461747050285339,-0.7588058114051819,0.618384599685669,0.4461747109889984,0.011194232851266861,0.16838456690311432,28.0

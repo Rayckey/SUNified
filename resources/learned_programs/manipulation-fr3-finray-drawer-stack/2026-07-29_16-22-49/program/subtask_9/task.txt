@@ -1,0 +1,1 @@
+[Manipulate] Move the grasped strawberry_center_frame to a clearance configuration while keeping the gripper closed.

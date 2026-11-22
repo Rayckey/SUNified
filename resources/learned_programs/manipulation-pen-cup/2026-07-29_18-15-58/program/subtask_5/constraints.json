@@ -1,0 +1,44 @@
+{
+    "Reasoning": "This carry stage is encoded as a conjunctive controller stage. The gripped marker is commanded to reach the non-contact carry goal at the pen_holder origin plus 0.25 m along pen_holder +x, with the specified 0.02 m stop tolerance. The panda_fingertip orientation is frozen to preserve the stage-start world-frame gripper orientation within 5 degrees. The marker must remain physically grasped, representing the closed held state without issuing an additional close_gripper command. The final target distance of 0.25 m with 0.02 m tolerance keeps the marker origin at least about 0.23 m from the pen_holder origin at success, satisfying the stated 0.2235 m non-contact separation at the goal. Continuous path-wide separation monitoring, exact holding of stage-start left/right finger joint positions, sustained finger contact/effort feedback, slip-detection-triggered extra closing, and explicit feedback monitoring streams are not directly representable with the available operators; these are captured only indirectly by object_grasped and the frozen fingertip orientation.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "offset_from_origin_xyz": [
+                    0.25,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.087266
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

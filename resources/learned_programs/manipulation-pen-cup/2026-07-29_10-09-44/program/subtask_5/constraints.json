@@ -1,0 +1,50 @@
+{
+    "Reasoning": "The stage carries the already-grasped marker to a point 0.224 m above the pen_holder center in the world +z direction, using 0.01 m final position tolerance. With marker length 0.137 m and pen_holder height 0.11 m, this center-to-center +z offset gives about 0.224 - 0.0685 - 0.055 = 0.1005 m clearance, satisfying the requested 0.10 m margin. The marker upright requirement is represented by aligning marker local +y bipolar with world +z. The continued closed, firm grasp/no-slip requirement is represented by object_grasped rather than close_gripper, because the object must remain physically held. The reach_point term also includes manipulator_high_effort as an early-stop condition for unexpected collision effort. Exact bilateral finger effort/contact feedback, explicit no-slip rigid transform between marker and panda_fingertip, and continuous collision-free path avoidance relative to table/pen_holder cannot be directly represented beyond object_grasped, the above-goal clearance, and the high-effort stop label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "pen_holder",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.224
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

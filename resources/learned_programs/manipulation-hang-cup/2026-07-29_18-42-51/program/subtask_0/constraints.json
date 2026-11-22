@@ -1,0 +1,67 @@
+{
+    "Reasoning": "This stage moves the open panda_fingertip to the specified non-contact top-down standoff above mug_rim_frame_0. The reach_point term encodes the final standoff point 0.10 m above mug_rim_frame_0 along world +z with the required 0.01 m tolerance, and includes manipulator_low_effort to represent no arm/TCP contact effort during the approach. The two axis_align terms encode the top-down orientation: panda_fingertip +z antiparallel to world +z, and panda_fingertip +y orthogonal to mug_rim_frame_0 local +x. The open_gripper term keeps the gripper open. The exact path-wide requirement to maintain at least 0.10 m separation throughout the whole approach is not directly representable with the available operators; only the final 0.10 m standoff and low-effort/no-contact feedback are represented. Finger/gripper effort feedback confirming no grasp force is also not directly represented beyond the open_gripper state.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "mug_rim_frame_0",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.1
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "mug_rim_frame_0",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

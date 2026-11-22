@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This subtask requires:\n1. Gripper closed (maintaining grasp on mug_rim_frame_0) - close_gripper constraint\n2. Orientation fixed as established during grasp - freeze_orientation on panda_fingertip\n3. Translation: move along cup_hanger_branch_1_tip_frame -y in object frame by 0.15 m total - directional_move constraint\n4. Stop conditions (primary: 0.15 m travel; secondary: high effort) - the secondary stop is an OR condition with manipulator_high_effort\n5. Lateral alignment: mug_handle_hole_frame must stay within 0.03 m of cup_hanger_branch_1_tip_frame in the orthogonal plane - this is a tolerance on the directional_move\n6. Monitor gripper effort for slip (manipulator_low_effort on gripper channels) - encoded via condition metadata\n7. Monitor translational effort for unexpected resistance - encoded via condition metadata\n\nThe primary motion is directional_move along cup_hanger_branch_1_tip_frame -y in object frame by 0.15 m. The controlled entity is the gripped object (mug, via mug_handle_hole_frame), but since we're controlling the robot frame (panda_fingertip) which carries the mug, I'll use robot_frame with panda_fingertip as controlled_target, with reference_basis=object, reference_origin=cup_hanger_branch_1_tip_frame, axis=-y.\n\nThe orientation constraint: the task says \"hold tool orientation fixed as established during the grasp\" - this is freeze_orientation on panda_fingertip.\n\nThe stop condition secondary (high effort) creates an OR with the primary travel distance condition. The primary directional_move is the geometry condition, and the secondary stop is manipulator_high_effort. These are OR'd together as stopping conditions.\n\nFor the gripper closed constraint: this is AND with the motion.\n\nFor the lateral alignment (mug_handle_hole_frame within 0.03 m of cup_hanger_branch_1_tip_frame in orthogonal plane): this is a tolerance constraint on the directional_move - I'll encode it as a reach_point... but I can only use ONE position constraint. The directional_move already covers the primary motion. The lateral alignment is a tolerance aspect of that motion (tolerance_m=0.03 m captures the lateral constraint). I'll set tolerance_m=0.03 on the directional_move to reflect the lateral alignment requirement.\n\nStructure:\n1. close_gripper (and, gripper_closed) - maintain grasp\n2. freeze_orientation (and, geometry) - hold tool orientation fixed\n3. directional_move (and/or, geometry + manipulator_high_effort) - move along -y by 0.15 m, stop on high effort OR distance reached\n\nThe OR logic for the stop condition: the directional_move succeeds when 0.15 m is traveled OR when high effort is detected. I'll make the directional_move constraint with \"and\" logic (it must be satisfied), but the stop condition secondary is an OR. Since the TermAPI doesn't have a separate \"stop on effort\" operator, I'll encode the secondary stop via the condition field on the directional_move as [\"geometry\", \"manipulator_high_effort\"] and use \"or\" logic to indicate either condition triggers success/stop.\n\nActually, re-reading the rules: \"Use 'or' in logic only when the stage requirements explicitly imply alternatives\". The stage says \"stop immediately if effort feedback... indicates sustained resistance\" - this IS an explicit alternative stop condition. So the directional_move should have an OR with a manipulator_high_effort condition.\n\nBut I can only have one position constraint. Let me structure it as:\n1. close_gripper - and\n2. freeze_orientation - and  \n3. directional_move with condition [\"geometry\"] - and (primary stop: 0.15 m)\n4. A separate constraint with condition [\"manipulator_high_effort\"] that ORs... but there's no op for \"stop on effort\" alone.\n\nThe manipulator_high_effort and manipulator_low_effort are conditions, not ops. The logic field combines constraints. I think the best approach is to put the directional_move with condition [\"geometry\", \"manipulator_high_effort\"] to indicate both conditions apply, and note in reasoning that the secondary stop cannot be fully represented.\n\nLet me finalize:\n- Constraint 1: close_gripper, logic=and, condition=[gripper_closed]\n- Constraint 2: freeze_orientation on panda_fingertip, logic=and, condition=[geometry]\n- Constraint 3: directional_move along cup_hanger_branch_1_tip_frame -y by 0.15 m, logic=and, condition=[geometry, manipulator_high_effort] (the high_effort condition signals the secondary stop)\n\nThe gripper slip monitoring (manipulator_low_effort on gripper) - I'll add a note in reasoning that this cannot be represented as a separate constraint op but is captured via condition metadata.\n\nFor the directional_move: controlled_entity=robot_frame, controlled_target=panda_fingertip, reference_basis=object, reference_origin=cup_hanger_branch_1_tip_frame, axis=-y, travel_distance_m=0.15, tolerance_m=0.03 (lateral alignment tolerance).",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.03
+            }
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is encoded as a conjunctive retract controller stage. directional_move commands the panda_fingertip frame to move 0.15 m along world +z from its stage-start pose with 0.01 m completion tolerance, representing the specified retract target and moving away from cube_2. The manipulator_low_effort condition on that motion represents the required free-space/no-contact feedback during the retract as far as the API supports. freeze_orientation preserves the panda_fingertip world-frame orientation from the start of this stage, including the preceding tool +z and +y directions without introducing a new axis relation. open_gripper keeps the gripper commanded fully open with no intentional re-closing. The exact numeric finger joint value 1.0 throughout, gripper-specific effort/contact thresholds, explicit minimum 0.15 m fingertip-to-cube_2 separation, continuous monitoring requirements, and the requirement that released cube_2 remain within 0.01 m of cube_1 plus world +z 0.05 m cannot be directly represented with the available operators, especially because cube_2 is no longer the gripped_object and there is no general ungripped-object pose constraint.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

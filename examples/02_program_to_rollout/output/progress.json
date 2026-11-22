@@ -1,0 +1,8 @@
+{
+  "phase": "complete",
+  "stage": "subtask_5",
+  "control_steps": 240,
+  "mpc_solves": 49,
+  "updated_at_unix": 1793807462.3953831,
+  "error": null
+}

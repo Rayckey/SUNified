@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This grasp stage keeps the panda_fingertip contact pose fixed while establishing a real grasp on strawberry_center_frame. freeze_position enforces the no-more-than-0.01 m fixed fingertip origin requirement. freeze_orientation enforces the current orientation hold with the requested 0.05 rad tolerance and does not impose any extra tool +z or +y relation. object_grasped is used instead of close_gripper because the stage requires a successful physical hold of strawberry_center_frame, not merely mechanical finger closure; the gripper_closed condition records the intended closed gripper state. No-slip contact is represented by requiring the object to be grasped while the end-effector pose is frozen. The API has no explicit fields for simultaneous left/right finger commands, individual joint-state feedback, gripper squeeze-effort thresholds, or fail/pause monitoring logic; those are therefore noted as unrepresented beyond the object_grasped success requirement and pose tolerances.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

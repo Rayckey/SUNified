@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is encoded as a conjunctive release/retract controller stage. The fingertip must move 0.10 m along its own tool -z axis with 0.01 m tolerance, while maintaining its start-of-stage orientation and keeping the gripper open. Low-effort/free-space behavior is represented by adding manipulator_low_effort to the retract motion condition. The open-gripper term represents keeping both fingers open and not re-grasping the mug. Unrepresented clauses: direct monitoring of finger contact effort separately from arm/TCP effort, preservation of mug_handle_hole_frame hooked engagement around cup_hanger_branch_1_tip_frame, avoiding outward pull of the released mug handle along hanger +y, table clearance monitoring, and observed feedback requirements for mug/hanger/table poses cannot be directly encoded with the available operators because the released mug is no longer a gripped_object and the API has no arbitrary-object distance/contact inequality monitor.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "robot_frame",
+                "reference_origin": "panda_fingertip",
+                "axis": "-z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+{
+  "Constraints": [
+    {
+      "logic": "and",
+      "condition": [
+        "geometry"
+      ],
+      "op": "directional_move",
+      "args": {
+        "controlled_entity": "gripped_object",
+        "controlled_target": "strawberry_center_frame",
+        "reference_basis": "world",
+        "reference_origin": "world",
+        "axis": "+z",
+        "travel_distance_m": 0.15,
+        "tolerance_m": 0.01
+      }
+    },
+    {
+      "logic": "and",
+      "condition": [
+        "geometry"
+      ],
+      "op": "freeze_orientation",
+      "args": {
+        "controlled_entity": "robot_frame",
+        "controlled_target": "panda_fingertip",
+        "tolerance_rad": 0.2
+      }
+    },
+    {
+      "logic": "and",
+      "condition": [
+        "gripper_closed",
+        "manipulator_high_effort"
+      ],
+      "op": "object_grasped",
+      "args": {}
+    }
+  ]
+}

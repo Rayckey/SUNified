@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This grasp stage must keep the panda_fingertip pose fixed while establishing a physical grasp on top_drawer_handle_frame. freeze_position keeps the current fingertip origin fixed in the robot base/world frame with a tight fixed-pose tolerance. freeze_orientation preserves the current fingertip orientation, including the existing tool +z and +y directions, during closure. object_grasped represents the required stable physical grasp of the handle; close_gripper is not emitted because the API forbids emitting both close_gripper and object_grasped, and the task requires a real held object rather than merely reaching a closed joint command. Symmetric finger closure along the fingertip +y finger-axis pair and detailed finger contact/effort thresholds are not separately representable beyond the object_grasped requirement and gripper_closed condition metadata.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

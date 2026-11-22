@@ -1,0 +1,66 @@
+{
+    "Reasoning": "The subtask is a non-contact approach to a pre-grasp pose near the top_drawer_handle_frame. Let me analyze each constraint:\n\n1. **Gripper state**: Fingers fully open throughout \u2192 `open_gripper`\n\n2. **Orientation - tool +z antiparallel with top_drawer_handle_frame -y in object frame**: The handle's local -y is the pulling/open direction. \"tool +z antiparallel with object -y\" means tool +z aligns antiparallel to the -y axis of the object frame. Antiparallel to -y means tool +z points in the +y direction of the object frame. So: controlled_axis = \"+z\" (panda_fingertip), reference_axis = \"-y\" (top_drawer_handle_frame object frame), alignment = \"antiparallel\". This means tool +z is antiparallel to object -y, i.e., tool +z points in +y direction of object frame. \u2192 `axis_align`\n\n3. **Orientation - tool +y orthogonal to top_drawer_handle_frame +x**: Fingers clamp across the handle bar (not along it). \u2192 `axis_align` with orthogonal alignment.\n\n4. **Positional goal**: Reach the point defined as top_drawer_handle_frame origin translated along object -y by 0.10 m. In the object frame, -y is the pulling direction (outward from drawer). So the pre-grasp point is 0.10 m in front of the handle (in the -y direction of the object frame). The offset_from_origin_xyz in object frame is [0, -0.10, 0]. \u2192 `reach_point`\n\n5. **Stop when within 0.01 m** \u2192 tolerance_m = 0.01\n\n6. **Monitor distance only; non-contact approach** \u2192 no effort constraints needed.\n\nFor the axis_align constraints:\n- Constraint 2: tool +z (panda_fingertip +z) antiparallel to top_drawer_handle_frame -y. Reference_basis = \"object\", reference_origin = \"top_drawer_handle_frame\", controlled_axis = \"+z\", reference_axis = \"-y\", alignment = \"antiparallel\".\n- Constraint 3: tool +y (panda_fingertip +y) orthogonal to top_drawer_handle_frame +x. Reference_basis = \"object\", reference_origin = \"top_drawer_handle_frame\", controlled_axis = \"+y\", reference_axis = \"+x\", alignment = \"orthogonal\".\n\nAll constraints are combined with \"and\" since they all must hold simultaneously.\n\nThe controlled_entity for panda_fingertip is \"robot_frame\" since it's a robot frame.\n\nFor reach_point: controlled_entity = \"robot_frame\", controlled_target = \"panda_fingertip\", reference_basis = \"object\", reference_origin = \"top_drawer_handle_frame\", offset_from_origin_xyz = [0, -0.10, 0], tolerance_m = 0.01.\n\nFor axis_align: controlled_entity = \"robot_frame\", controlled_target = \"panda_fingertip\".",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+z",
+                "reference_axis": "-y",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.1,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

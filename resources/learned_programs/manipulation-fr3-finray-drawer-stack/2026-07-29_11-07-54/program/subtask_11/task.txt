@@ -1,0 +1,1 @@
+[Manipulate] Lower strawberry_center_frame with the gripper closed to top_drawer_center_frame while keeping the gripper orientation fixed.

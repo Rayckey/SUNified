@@ -1,0 +1,47 @@
+{
+    "Reasoning": "Use one axial position constraint for the insertion because the stage explicitly specifies translating the grasped marker along pen_holder -z by 0.210 m from the aligned standoff; this also encodes the required lateral path restriction, assuming the start-of-stage standoff is already aligned so the move reaches the target at pen_holder +z offset 0.0135 m within 0.01 m. The directional move condition includes both geometry and manipulator_high_effort to represent the supported stop alternative: reach the geometric insertion depth, or stop early if insertion contact/effort indicates a firm stop. Axis alignment keeps marker local +y bipolar with pen_holder +z within 5 degrees. object_grasped represents keeping the gripper closed while maintaining a firm grasp rather than relying only on finger position. Unrepresented in this API: exact finger joint command near 0.0, explicit fingertip-marker relative pose preservation within 0.01 m/5 degrees, and detailed stable/non-increasing pen_holder contact feedback beyond the high-effort stop label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "axis": "-z",
+                "travel_distance_m": 0.21,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.0872665
+            }
+        }
+    ]
+}

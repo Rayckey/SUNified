@@ -1,0 +1,44 @@
+{
+    "Reasoning": "This single carry stage is represented conjunctively. object_grasped preserves the stable closed physical grasp on cube_1 without issuing an opening/loosening command. freeze_orientation keeps the current panda_fingertip world orientation fixed within the requested 0.05 rad tolerance. reach_point moves the gripped cube_1 center directly to the cube_2 center plus 0.16 m in world +z with 0.01 m stopping tolerance, without decomposing the motion into sequential vertical/lateral moves. The required continuous minimum cube_1-to-cube_2 separation of 0.15 m throughout the path, explicit bilateral finger effort/slip monitoring details, and monitoring of all listed sensors are not directly representable by the available constraint operators; object_grasped is the closest supported grasp-feedback abstraction.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.16
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

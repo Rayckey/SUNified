@@ -1,0 +1,5 @@
+{
+  "artifact": "examples/01_video_to_rollout/output/verification.json",
+  "description": "Structured responses, job IDs and accepted programs",
+  "path_base": "repository root"
+}

@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage keeps the panda_fingertip gripper open, preserves its current world-frame orientation, and moves the panda_fingertip frame origin to the cube_2 object-frame origin as the contact target. The reach_point tolerance is 0.01 m for contact setup. The reach_point condition includes both geometry and manipulator_high_effort to represent the supported stop alternatives: reaching within 0.01 m of cube_2 or detecting contact/high effort during the approach. No tool +z or +y axis alignment constraint is added. End-effector pose and gripper joint-state feedback are represented by the reach/freeze and open-gripper terms; gripper/contact effort feedback is represented only through the available manipulator_high_effort condition label, since there is no separate gripper-effort signal-selection operator.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is a single pressing controller stage. The position requirement is represented as a strict 0.03 m directional move of the panda_fingertip along estop_cap_tip -z in the estop_cap_tip frame. Its condition includes both geometry and manipulator_high_effort to encode the allowed stop alternative: completion of commanded displacement or effort indicating the mechanical stop. The gripper tool orientation is kept fixed using freeze_orientation, matching the orientation measured at the start of this stage and avoiding any new axis-alignment goal. The closed finger state is represented with close_gripper/gripper_closed, since no object is being grasped and the requirement is to keep the fingertips closed. Continuous contact during the press is implied by starting from the completed contact stage and executing the constrained directional move; exact origin-to-origin contact maintenance and continuous monitoring of pose/orientation/joint/effort feedback are not separately expressible beyond the geometry, gripper_closed, and manipulator_high_effort condition labels.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "axis": "-z",
+                "travel_distance_m": 0.03,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

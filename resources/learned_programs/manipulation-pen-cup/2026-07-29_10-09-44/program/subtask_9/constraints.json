@@ -1,0 +1,43 @@
+{
+    "Diagnosis": "The parser failed because the same stage/atomic action included both manipulator_low_effort and manipulator_high_effort, which the runtime reports as conflicting. The smallest valid repair is to keep the expected non-contact/free-space effort condition, manipulator_low_effort, and remove manipulator_high_effort from the directional_move condition.",
+    "Reasoning": "Use directional_move because the stage explicitly requires translating panda_fingertip 0.10 m along pen_holder local +z, with 0.01 m completion tolerance. Use freeze_orientation to preserve the start-of-stage panda_fingertip world orientation during the retract. Use open_gripper to keep the fingers commanded open throughout and at success. The directional motion condition keeps geometry for normal retract completion and manipulator_low_effort for the required free-space/non-contact arm effort behavior. The requested early stop on unexpected high effort is not encoded because the runtime explicitly rejects combining manipulator_high_effort with manipulator_low_effort in one stage, and the success criteria require low/free-space effort. Unrepresented clauses: exact 0.10 m clearance margins to marker, pen_holder, and table are not directly expressible with the available operators; gripper finger contact/effort free-space feedback and explicit negative grasp state that the marker is not held are also not directly expressible except indirectly by commanding open_gripper and omitting object_grasped.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

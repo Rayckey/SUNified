@@ -1,0 +1,1 @@
+[Manipulate] Press the end-effector against estop_cap_tip by moving along the pressing direction to depress the e-stop button, keeping the gripper orientation fixed throughout the motion.

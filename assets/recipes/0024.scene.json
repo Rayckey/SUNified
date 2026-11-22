@@ -1,0 +1,392 @@
+{
+  "name": "0024 - emergency stop button box",
+  "summary": "Red mushroom emergency-stop button on a grey and black square enclosure, yellow legend disc, four corner fastener wells and one pale cable gland.",
+  "scale_basis": "estimated",
+  "assumptions": [
+    "Shape inferred by the interactive assistant from 16 sampled frames; no standalone model API request was made.",
+    "No measurements or known metric reference were supplied. Dimensions are uncalibrated nominal estimates based on proportions and object-size priors, not a metric scan.",
+    "The object is represented as one rigid assembly. No articulation or internal mechanism is inferred.",
+    "Materials use approximate flat PBR colors. Lighting is not calibrated and image textures are not recovered.",
+    "Mass and friction are simulation assumptions; these are not determined by the visible video dynamics.",
+    "Nominal enclosure width and depth are 75 mm. The red head is roughly 42 mm across; total nominal height is 80 mm.",
+    "The button is fixed in its observed raised state; electrical function, travel and push/twist behavior are not implemented.",
+    "Emergency-stop lettering, embossed arrows, fine knurling and screw-well depth are omitted in this first geometric candidate.",
+    "The cable gland opening is modeled, but it terminates at the solid enclosure approximation; no internal electronics are reconstructed.",
+    "Nominal mass is assumed to be 0.20 kg; friction 0.5 and restitution 0 are assumptions.",
+    "Second candidate was refined by comparing renders to video crops; no calibrated image registration or metric accuracy score is claimed."
+  ],
+  "parts": [
+    {
+      "name": "black_lower_enclosure",
+      "geometry": {
+        "kind": "rounded_box",
+        "size": {
+          "x": 0.075,
+          "y": 0.075,
+          "z": 0.024
+        },
+        "radius": 0.003
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.012
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.09,
+        "g": 0.1,
+        "b": 0.1
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "grey_upper_enclosure",
+      "geometry": {
+        "kind": "rounded_box",
+        "size": {
+          "x": 0.075,
+          "y": 0.075,
+          "z": 0.03
+        },
+        "radius": 0.003
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0385
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.8,
+        "g": 0.84,
+        "b": 0.84
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "yellow_legend_plate",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.031,
+        "height": 0.0007
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.05385
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.94,
+        "g": 0.97,
+        "b": 0.05
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Bright circular yellow legend surrounds the pushbutton; lettering omitted."
+    },
+    {
+      "name": "black_button_lock_ring",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.0155,
+        "height": 0.004
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.056
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.09,
+        "g": 0.1,
+        "b": 0.1
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "button_stem",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.014,
+        "height": 0.01
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0615
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.61,
+        "g": 0.16,
+        "b": 0.12
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "red_mushroom_cap",
+      "geometry": {
+        "kind": "lathe",
+        "profile": [
+          {
+            "radius": 0.0,
+            "z": 0.0
+          },
+          {
+            "radius": 0.014,
+            "z": 0.0
+          },
+          {
+            "radius": 0.019,
+            "z": 0.009
+          },
+          {
+            "radius": 0.021,
+            "z": 0.011
+          },
+          {
+            "radius": 0.021,
+            "z": 0.0145
+          },
+          {
+            "radius": 0.0195,
+            "z": 0.016
+          },
+          {
+            "radius": 0.0,
+            "z": 0.016
+          }
+        ]
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.064
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.88,
+        "g": 0.12,
+        "b": 0.16
+      },
+      "roughness": 0.38,
+      "metallic": 0.0,
+      "evidence": "Large red mushroom head with a rounded overhanging cap, seen from above and the side. Second visual review shortens the exposed stem and cap shoulder to match the compact head."
+    },
+    {
+      "name": "gland_base_nut",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.0105,
+        "height": 0.005
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.039,
+        "z": 0.016
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.8,
+        "g": 0.84,
+        "b": 0.84
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Visible manufactured component in the sampled video views."
+    },
+    {
+      "name": "hollow_cable_gland",
+      "geometry": {
+        "kind": "lathe",
+        "profile": [
+          {
+            "radius": 0.0095,
+            "z": 0.0
+          },
+          {
+            "radius": 0.0105,
+            "z": 0.009
+          },
+          {
+            "radius": 0.009,
+            "z": 0.017
+          },
+          {
+            "radius": 0.006,
+            "z": 0.019
+          },
+          {
+            "radius": 0.0045,
+            "z": 0.019
+          },
+          {
+            "radius": 0.0045,
+            "z": 0.0
+          }
+        ]
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.041,
+        "z": 0.016
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.82,
+        "g": 0.88,
+        "b": 0.86
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Pale cable gland projects from one lower side. The dark outlet is visibly hollow."
+    },
+    {
+      "name": "corner_fastener_recess_0",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.0041,
+        "height": 0.00015
+      },
+      "position": {
+        "x": -0.03,
+        "y": -0.03,
+        "z": 0.05355
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.46,
+        "g": 0.56,
+        "b": 0.59
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Four recessed corner fastener wells; shallow visual approximation."
+    },
+    {
+      "name": "corner_fastener_recess_1",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.0041,
+        "height": 0.00015
+      },
+      "position": {
+        "x": 0.03,
+        "y": -0.03,
+        "z": 0.05355
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.46,
+        "g": 0.56,
+        "b": 0.59
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Four recessed corner fastener wells; shallow visual approximation."
+    },
+    {
+      "name": "corner_fastener_recess_2",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.0041,
+        "height": 0.00015
+      },
+      "position": {
+        "x": -0.03,
+        "y": 0.03,
+        "z": 0.05355
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.46,
+        "g": 0.56,
+        "b": 0.59
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Four recessed corner fastener wells; shallow visual approximation."
+    },
+    {
+      "name": "corner_fastener_recess_3",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.0041,
+        "height": 0.00015
+      },
+      "position": {
+        "x": 0.03,
+        "y": 0.03,
+        "z": 0.05355
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.46,
+        "g": 0.56,
+        "b": 0.59
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Four recessed corner fastener wells; shallow visual approximation."
+    }
+  ]
+}

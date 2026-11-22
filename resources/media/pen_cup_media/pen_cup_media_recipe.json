@@ -1,0 +1,80 @@
+{
+  "name": "pen_cup_best_true_success_front_close_screenshot",
+  "date_created": "2026-05-16",
+  "purpose": "Recreate the final clean and debug-frame screenshots for the FR3FinRay Pen-Cup task with a close front camera that makes the inserted pen, cup holder, and gripper readable.",
+  "task": "FR3-FinRay-Table-Pen-Cup-ff",
+  "seed": 5,
+  "deterministic_policy": true,
+  "camera_bank": "best",
+  "selected_view": "front_close_pen_cup_success",
+  "camera_spec": {
+    "offset_xyz": [
+      0.08,
+      -0.92,
+      0.58
+    ],
+    "target_bias_xyz": [
+      0.0,
+      0.1,
+      0.05
+    ],
+    "focal_length": 18.0
+  },
+  "resolved_camera_pose_from_final_run": {
+    "eye_xyz": [
+      0.3652058243751526,
+      -1.2065521478652954,
+      0.6499999761581421
+    ],
+    "target_xyz": [
+      0.2852058410644531,
+      -0.18655213713645935,
+      0.12000000476837158
+    ],
+    "focal_length": 18.0
+  },
+  "policy_inputs": {
+    "checkpoint": "Residuals/FR3-FinRay-Table-Pen-Cup-ff/2026-04-29_20-41-13/rl_runs/2026-04-29_20-43-38_Run-3/nn/last_pen-cup_ep_1500_rew__20532.975__np126.pth",
+    "prior_checkpoint": "Priors/aws/pen_cup_noise_state_random/pen_cup_chunking_15_ff_damped_noise_state/best.pth",
+    "prior_mode": "residual_rl",
+    "weights_params_json": "Residuals/FR3-FinRay-Table-Pen-Cup-ff/2026-04-29_20-40-07/best.json"
+  },
+  "render_settings": {
+    "capture_backend": "viewport",
+    "headless": true,
+    "device": "cuda:0",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "max_steps": 350,
+    "video_every": 1,
+    "no_video": true,
+    "viewport_settle_frames": 0,
+    "screenshot_steps": "0,80,120,160,200,220,235,240,245,246,247"
+  },
+  "final_outputs": {
+    "clean_run_dir": "outputs/media/pen_cup_best_true_success/2026-05-16_15-30-30_best_clean_seed5",
+    "clean_final_screenshot": "outputs/media/pen_cup_best_true_success/2026-05-16_15-30-30_best_clean_seed5/screenshots/front_close_pen_cup_success/final.png",
+    "debugframes_run_dir": "outputs/media/pen_cup_best_true_success/2026-05-16_15-31-46_best_debugframes_seed5",
+    "debugframes_final_screenshot": "outputs/media/pen_cup_best_true_success/2026-05-16_15-31-46_best_debugframes_seed5/screenshots/front_close_pen_cup_success/final.png",
+    "success_policy_step": 246
+  },
+  "capture_notes": {
+    "seed_search": "Seeds 20260516, 0, and 1 timed out at stage 0; seeds 2-4 were not selected after timeout checks. Seed 5 reached true success; the final best clean and debug runs both printed Successfully finished #: 1 and ended at policy step 246.",
+    "video_capture": "The final recipe is screenshot-only by default. The task screenshot was verified with viewport still captures; MP4 capture was not needed for the show artifact.",
+    "final_still_cache": "capture_pen_cup_best_true_success_media.py caches the last scheduled pre-step capture so final.png is not overwritten by an auto-reset pose after done."
+  },
+  "candidate_sweeps": {
+    "front_close_seed20260516_timeout": "outputs/media/pen_cup_best_true_success/2026-05-16_15-11-18_front_pen_cup_close_clean_seed20260516",
+    "front_close_success_window": "outputs/media/pen_cup_best_true_success/2026-05-16_15-25-39_front_pen_cup_close_clean_seed5",
+    "side_pen_cup_comparison": "outputs/media/pen_cup_best_true_success/2026-05-16_15-27-02_side_pen_cup_clean_seed5",
+    "best_clean_verified": "outputs/media/pen_cup_best_true_success/2026-05-16_15-30-30_best_clean_seed5",
+    "best_debug_verified": "outputs/media/pen_cup_best_true_success/2026-05-16_15-31-46_best_debugframes_seed5",
+    "seed_search_logs": "outputs/media/pen_cup_best_true_success/seed_search_logs"
+  },
+  "source_scripts": {
+    "capture_python": "src/kuafu/data/collection/capture_pen_cup_best_true_success_media.py",
+    "capture_wrapper": "src/kuafu/data/collection/capture_pen_cup_best_true_success_media.sh",
+    "recreate_wrapper": "resources/media/pen_cup_media/recreate_pen_cup_media.sh"
+  }
+}

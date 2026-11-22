@@ -1,0 +1,54 @@
+{
+    "Reasoning": "This stage keeps the already grasped top_drawer_handle_frame held with the gripper closed, keeps panda_fingertip orientation fixed, and pulls the grasped drawer handle 0.10 m along the top_drawer_center_frame -y opening direction. The directional move is applied to the gripped top_drawer_handle_frame using top_drawer_center_frame as the object-frame reference, so the attached top_drawer_center_frame reaches the requested open displacement. Exact left/right finger effort, slip detection, excessive pulling resistance thresholds, and failure monitoring are not directly representable beyond requiring object_grasped, gripper_closed, and fixed orientation.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "top_drawer_handle_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_center_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        }
+    ],
+    "TolerancePolicy": {
+        "version": "operator_geometry_v2",
+        "profile": "mpc",
+        "source": "receiver",
+        "decisions": {
+            "1": {
+                "tolerance_rad": "MPC angular default; ordinary angular-maintenance tolerance"
+            },
+            "2": {
+                "tolerance_m": "MPC precision cap; 20% directional-progress rule"
+            }
+        }
+    }
+}

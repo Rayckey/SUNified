@@ -1,0 +1,38 @@
+{
+    "Reasoning": "The stage is a grasp-closure stage with the end-effector pose held fixed. `freeze_position` keeps the panda_fingertip origin fixed within the required 0.01 m. `freeze_orientation` keeps the panda_fingertip tool-frame orientation fixed within the required 0.05 rad. `object_grasped` is used instead of `close_gripper` because the requirement is not merely mechanical closure to joint value 0.0 but an actual firm grasp of the can. The `gripper_closed` condition label records the intended gripper closure state, while the `geometry` label reflects that the success condition is the object being physically held. The API does not directly represent symmetric left/right finger joint commands toward 0.0, explicit per-finger contact, or gripper squeeze effort feedback, so those details are omitted beyond the higher-level `object_grasped` requirement.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

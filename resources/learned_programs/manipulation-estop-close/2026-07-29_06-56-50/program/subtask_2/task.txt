@@ -1,0 +1,1 @@
+[Manipulate] Perform the required pressing motion on estop_cap_tip to achieve the desired pressed state while keeping the end-effector orientation fixed.

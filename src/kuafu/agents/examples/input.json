@@ -1,0 +1,5 @@
+{
+  "artifact": "examples/01_video_to_rollout/input/program.json",
+  "description": "Agent tool arguments and scene/program proposals",
+  "path_base": "repository root"
+}

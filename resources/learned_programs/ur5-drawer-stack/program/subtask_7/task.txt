@@ -1,0 +1,1 @@
+[Approach] Move the open gripper into contact with strawberry_center_frame while keeping the gripper orientation fixed.

@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage retracts the panda_fingertip from the pressed pose along estop_cap_tip +z by 0.15 m, corresponding to motion from about -0.03 m to +0.12 m in the estop_cap_tip frame, with 0.01 m tolerance. The directional move is labeled with both geometry and manipulator_low_effort because success requires reaching the retract clearance and contact/effort dropping toward free-space levels. The fingertip orientation is frozen to preserve the current pressed-stage orientation without imposing any new tool-axis relation. The gripper is commanded closed, representing the required fully closed gripper joints without requiring a grasp. The final non-contact clearance is represented by the +z retract distance/target and low-effort condition. Continuous monitoring of end-effector state and feedback is not separately expressible beyond these constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+[Release] Retract the end-effector away from estop_cap_tip to a non-contact configuration, preserving continuity with the immediately preceding interaction.

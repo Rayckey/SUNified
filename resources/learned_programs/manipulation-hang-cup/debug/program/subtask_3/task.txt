@@ -1,0 +1,1 @@
+[Manipulate] Lift the grasped mug_center_frame upward from the table to create clearance with the gripper closed.

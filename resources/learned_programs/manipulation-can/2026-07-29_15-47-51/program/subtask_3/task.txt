@@ -1,0 +1,1 @@
+[Manipulate] Lift can to create clearance from contact while keeping the gripper closed and the gripper orientation fixed.

@@ -1,0 +1,22 @@
+{
+  "mode": "replay",
+  "program_passed": true,
+  "physical": {
+    "passed": true,
+    "target_travel_m": 0.1,
+    "tolerance_m": 0.01,
+    "actual_travel_m": 0.09586818293741572,
+    "other_drawer_max_motion_m": 1.2288225725853863e-07,
+    "finite_states": true
+  },
+  "passed": true,
+  "solver_passed": true,
+  "control_steps": 240,
+  "mpc_solves": 49,
+  "model_requests": 0,
+  "error": null,
+  "recorded_date": "2026-11-04",
+  "passed_stages": 6,
+  "source_run": "runs/release-cabinet-final-20261104/steps/05-verify-program/11c5107707204e76af7ec554063aa46e/jobs/3a5dd938b5a340ceba92580f6d25f684/output",
+  "scope": "Recorded simulation replay of the bundled SUN Program; no model requests."
+}

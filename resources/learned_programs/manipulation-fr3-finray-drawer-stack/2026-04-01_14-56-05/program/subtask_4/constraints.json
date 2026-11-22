@@ -1,0 +1,38 @@
+{
+    "Reasoning": "The current subtask is to open the gripper to release the top_drawer_handle_frame while keeping the tool pose (position and orientation) fixed.\n\nSuccess conditions:\n1. Tool position must remain fixed at its current position (co-located with top_drawer_handle_frame origin) \u2014 use freeze_position on panda_fingertip.\n2. Tool orientation must remain fixed as established during grasp/pull \u2014 use freeze_orientation on panda_fingertip.\n3. Gripper must open (command both finger joints toward 1.0) \u2014 use open_gripper.\n4. Stop when fingers reach fully open OR effort drops to free-space baseline \u2014 the \"or\" condition for stopping is between reaching full open AND effort dropping, but both are confirmation of the same event (release). The primary action constraint is open_gripper; the effort drop is a monitoring/confirmation condition, not a separate geometric constraint. The open_gripper op captures the gripper state goal.\n\nAll three constraints (freeze_position, freeze_orientation, open_gripper) must hold simultaneously, so they are all combined with \"and\".\n\nThe manipulator_low_effort condition is noted as a stop/confirmation signal (effort drops after release), which I'll attach to the open_gripper constraint as a condition label alongside gripper_opened, since it's a confirmation of release.\n\nNote: freeze_position and freeze_orientation are both geometry constraints. open_gripper is the gripper action. The effort monitoring is a condition label, not a separate op (no TermAPI op for monitoring effort alone without a geometric constraint).",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened",
+                "manipulator_low_effort"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+[Approach] Use an axis approach to move the open gripper near top_drawer_handle_frame, with fingers oriented to close across the handle bar, without touching it.

@@ -1,0 +1,41 @@
+{
+    "Reasoning": "Success for this subtask means the robot must lift the grasped cube_1 (currently held in the closed gripper) strictly upward along the world +z axis by 0.075 meters (as specified) while maintaining the gripper's orientation fixed (no rotation) and keeping the gripper closed to maintain the grasp throughout the lift. In addition, it must monitor that the grasp remains secure (implied by requiring the gripper to be closed at the end of the subtask). The action concludes when the lifting distance is reached. All requirements must be satisfied simultaneously, so 'and' logic is used for all constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.075,
+                "tolerance_m": 0.03
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

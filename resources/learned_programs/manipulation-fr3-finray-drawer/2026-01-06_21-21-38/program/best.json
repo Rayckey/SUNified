@@ -1,0 +1,79 @@
+{
+  "global": null,
+  "stages": {
+    "0": {
+      "checkpoint": "/home/zhi/isaac/IsaacLab/logs/residual_rl/open-fr3-finray-drawer/2026-02-09_23-50-35/checkpoints/best_stage_0.pth",
+      "iter": 3,
+      "parameters": {
+        "0": {
+          "tolerance_rad": 0.2
+        },
+        "1": {
+          "tolerance_rad": 0.2
+        },
+        "2": {
+          "tolerance_m": 0.05
+        }
+      },
+      "success_metric": 1.983298659324646,
+      "weights": {
+        "0": 4.0,
+        "1": 2.0,
+        "2": 6.0
+      }
+    },
+    "1": {
+      "checkpoint": "/home/zhi/isaac/IsaacLab/logs/residual_rl/open-fr3-finray-drawer/2026-02-09_23-50-35/checkpoints/best_stage_1.pth",
+      "iter": 5,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.2
+        },
+        "2": {}
+      },
+      "success_metric": 2.8481438159942627,
+      "weights": {
+        "0": 4.0,
+        "1": 1.0,
+        "2": 1.0
+      }
+    },
+    "2": {
+      "checkpoint": "/home/zhi/isaac/IsaacLab/logs/residual_rl/open-fr3-finray-drawer/2026-02-09_23-50-35/checkpoints/best_stage_2.pth",
+      "iter": 8,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.2
+        },
+        "2": {}
+      },
+      "success_metric": 2.950277328491211,
+      "weights": {
+        "0": 3.0,
+        "1": 1.0,
+        "2": 8.0
+      }
+    },
+    "3": {
+      "checkpoint": "/home/zhi/isaac/IsaacLab/logs/residual_rl/open-fr3-finray-drawer/2026-02-09_23-50-35/checkpoints/best_stage_3.pth",
+      "iter": 10,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {}
+      },
+      "success_metric": 3.7291603088378906,
+      "weights": {
+        "0": 6.0,
+        "1": 1.5
+      }
+    }
+  }
+}

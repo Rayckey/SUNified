@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The current subtask is to lift the grasped can upward along world +z by 0.15 m while keeping the gripper closed and orientation fixed.\n\nSuccess conditions:\n1. **Motion**: Translate along world +z by 0.15 m from the grasp position (can_center_frame origin). This is an explicit directional move along +z with a specified distance \u2192 use `directional_move` with axis=\"+z\", travel_distance_m=0.15, reference_basis=\"world\".\n2. **Orientation**: Keep tool orientation fixed and invariant throughout the lift \u2192 use `freeze_orientation` on panda_fingertip.\n3. **Gripper state**: Keep gripper closed (grasping the can) \u2192 use `close_gripper`.\n4. **Effort monitoring**: Sustained effort on both fingers confirms the can is being carried. This maps to `manipulator_high_effort` condition on the close_gripper constraint (the gripper is maintaining a firm grasp). The subtask says \"if effort drops on either finger, halt and re-evaluate\" \u2014 this is a monitoring/halt condition, not an alternative success path, so it's combined with \"and\" logic. However, the TermAPI doesn't have a direct \"halt on low effort\" operator; the closest representation is tagging the close_gripper constraint with `manipulator_high_effort` condition to indicate sustained effort is required.\n\nConstraints:\n1. `directional_move` (geometry): Move panda_fingertip along world +z by 0.15 m. The controlled entity is robot_frame (panda_fingertip), reference_basis=world, reference_origin=can_center_frame (the grasp position origin), axis=\"+z\", travel_distance_m=0.15, tolerance_m=0.01.\n2. `freeze_orientation` (geometry): Keep panda_fingertip orientation fixed throughout.\n3. `close_gripper` (gripper_closed, manipulator_high_effort): Gripper remains closed, and sustained effort confirms the can is being carried.\n\nAll three must hold simultaneously \u2192 all use \"and\" logic.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "can_center_frame",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed",
+                "manipulator_high_effort"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

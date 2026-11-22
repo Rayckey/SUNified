@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is a single upward lift of the currently grasped strawberry. The position goal is represented as a 0.12 m directional move of the gripped strawberry_center_frame along world +z with 0.01 m tolerance, which encodes the clearance target and stop threshold. The strawberry orientation is kept fixed with 0.05 rad tolerance. The continued closed, firm grasp is represented by object_grasped with gripper_closed feedback rather than a free-space close_gripper command. Low-effort monitoring is attached to the lift constraint to represent avoiding unintended environmental contact where possible. Exact preservation of the full panda_fingertip-to-strawberry relative transform and detailed slip/contact-effort thresholds are not directly expressible beyond object_grasped plus gripped_object motion. Explicit collision avoidance against top_drawer_handle_frame and cabinet, pause/fail behavior, and continuous feedback monitoring are also not directly representable as separate Constraint ops.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "strawberry_center_frame",
+                "axis": "+z",
+                "travel_distance_m": 0.12,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

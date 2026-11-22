@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage approaches cube_3 with the panda_fingertip while preserving the current end-effector orientation and keeping the gripper fully open. The reach_point term moves the panda_fingertip frame origin to the observed cube_3 object-frame origin with the required 0.01 m contact tolerance; its condition labels include geometry and manipulator_high_effort to represent geometric arrival plus contact/effort feedback for the intended contact with cube_3. The freeze_orientation term preserves the panda_fingertip world-frame orientation from the start of the stage without imposing any new tool-axis relation. The open_gripper term maintains the gripper in the fully open state and avoids intentional closing or grasping. Non-contact clearance from cube_1 and cube_2, explicit exclusion of unintended contact with those cubes, individual finger joint value 1.0, and monitoring of specific feedback streams cannot be directly represented with the available operators, so they are omitted from the Constraints while being noted here.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "cube_3",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

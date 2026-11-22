@@ -1,0 +1,1 @@
+[Manipulate] Carry the grasped mug_rim_frame_0 to a position near cup_hanger_branch_1_tip_frame, preparing for alignment, with the gripper closed.

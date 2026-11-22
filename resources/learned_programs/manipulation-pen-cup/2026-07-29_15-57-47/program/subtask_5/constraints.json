@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage keeps the marker physically held with the gripper closed, freezes the panda_fingertip origin at its start-of-stage position within 0.01 m, and reorients the grasped marker so its local +y length axis is bipolar with world +z within 5 degrees. The fixed fingertip origin plus marker axis alignment represents rotating the held marker about the held fingertip position. The stable grasp and no-slip relative pose are represented as the supported object_grasped constraint with gripper_closed metadata; the API cannot explicitly encode finger joint position near 0.0, finger effort/contact thresholds, or preservation of the exact fingertip-to-marker relative pose. The required table clearance and pen_holder separation inequalities are also not representable with the available operators, so they are omitted and noted here. The stop condition is satisfied by the listed geometric alignment/freeze constraints plus the represented grasp condition; unrepresented clearance and detailed effort/contact checks would need runtime monitoring outside these terms.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.087266
+            }
+        }
+    ]
+}

@@ -1,0 +1,66 @@
+{
+    "Reasoning": "The subtask requires moving the open gripper to a pre-grasp pose above can_center_frame. Let me analyze each constraint:\n\n1. **Orientation - top-down**: tool +z (panda_fingertip +z) must be antiparallel to world +z. This is an axis_align constraint.\n\n2. **Finger axis alignment**: tool +y (panda_fingertip +y) must be orthogonal to can_center_frame's long axis (can local -y is the long axis, so can +y in object frame). This is an axis_align constraint with orthogonal alignment.\n\n3. **Positional goal**: reach a point 0.15 m above can_center_frame origin along world +z. The offset is [0, 0, 0.15] in world frame from can_center_frame origin. This is a reach_point constraint. Tolerance is 0.01 m as specified in constraint 5.\n\n4. **Gripper state**: both fingers fully open \u2192 open_gripper constraint.\n\nThe logic is \"and\" for all constraints since all must hold simultaneously for success.\n\nFor the finger axis orthogonality: can_center_frame local -y is the long axis. The constraint says tool +y should be orthogonal to can +y (object frame). I'll use axis_align with controlled_axis=\"+y\" for panda_fingertip, reference_axis=\"+y\" for can_center_frame (object basis), alignment=\"orthogonal\".\n\nFor reach_point: reference_basis=\"world\", reference_origin=\"can_center_frame\", offset_from_origin_xyz=[0, 0, 0.15], tolerance_m=0.01.\n\nNote: The subtask says \"tool +z antiparallel to world +z\" - so panda_fingertip +z should be antiparallel to world +z (pointing downward). axis_align: controlled_axis=\"+z\", reference_basis=\"world\", reference_axis=\"+z\", alignment=\"antiparallel\".\n\nFor finger axis: tool +y orthogonal to can long axis (can -y in object frame, or equivalently can +y). I'll express this as panda_fingertip +y orthogonal to can_center_frame +y in object basis. alignment=\"orthogonal\".",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "can_center_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+y",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "can_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

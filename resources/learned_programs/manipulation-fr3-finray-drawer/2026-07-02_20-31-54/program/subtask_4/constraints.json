@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage is encoded conjunctively. freeze_position holds the panda_fingertip origin at its stage-start position within the requested 0.01 m tolerance. freeze_orientation holds the current panda_fingertip quaternion/orientation fixed without adding any new axis relationship. open_gripper represents simultaneous commanded opening of both gripper fingers and the success condition that the gripper is open. I did not emit object_grasped because the stage requires loss of grasp, and the API has no negated object_grasped term. The requested reduction of opposing finger contact/effort cannot be represented directly because available condition labels only include manipulator arm/TCP effort, not finger squeeze effort. Holding both top_drawer_handle_frame and top_drawer_center_frame fixed during release also cannot be fully represented because the stage already requires the single allowed position op for the panda_fingertip, and freeze_position does not support multiple object frames here.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

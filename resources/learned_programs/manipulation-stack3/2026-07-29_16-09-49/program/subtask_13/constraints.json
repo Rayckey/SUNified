@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage lowers the already-grasped cube_3 onto cube_2 while keeping the panda_fingertip orientation fixed. The reach_point term commands the gripped cube_3 origin to the stacking target: cube_2 origin plus world +z 0.05 m, with 0.01 m tolerance; its condition includes geometry for the placement target and manipulator_high_effort to represent the intended final cube_3-on-cube_2 contact/effort feedback. The freeze_orientation term keeps the panda_fingertip orientation fixed at its start-of-stage orientation. The object_grasped term represents maintaining the closed, stable grasp of cube_3 without slip. Unrepresented due to the available flat API and the one-position-op limit: the exact commanded world -z travel of 0.10 m from the start pose, the continuous no-slip rigid transform between cube_3 and panda_fingertip, explicit lateral-path restriction except alignment, opposing-finger effort details, and explicit avoidance of cube_1 or unintended gripper contact with cube_2.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.05
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

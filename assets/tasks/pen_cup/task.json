@@ -1,0 +1,320 @@
+{
+  "schema_version": 1,
+  "id": "pen_cup",
+  "title": "Insert marker into holder",
+  "status": "registered",
+  "task": "pick up the fallen over marker, stick it upright, and insert it into the pen holder",
+  "environments": [
+    {
+      "robot_id": "fr3_finray",
+      "gym_id": "FR3-FinRay-Table-Pen-Cup",
+      "registration_module": "kuafu.isaac.learned",
+      "entry_point": "kuafu.isaac.learned.fr3_finray_pen_cup_env_learned:FR3FinRayPenCupEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.fr3_finray_pen_cup_env_learned:FR3FinRayPenCupEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/fr3_finray_pen_cup_env_learned.py",
+      "variants": [
+        "FR3-FinRay-Table-Pen-Cup-Long-Long-U",
+        "FR3-FinRay-Table-Pen-Cup-f",
+        "FR3-FinRay-Table-Pen-Cup-l",
+        "FR3-FinRay-Table-Pen-Cup-c",
+        "FR3-FinRay-Table-Pen-Cup-lf",
+        "FR3-FinRay-Table-Pen-Cup-ff"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/fr3_ft_robotiq_2f_85_finrays_tcp/usd/fr3_ft_robotiq_2f_85_finrays.usd",
+          "table": "assets/objects/table/table_flattened_instanceable_meshes.usd",
+          "marker": "assets/objects/boardmaster/boardmaster.usdc",
+          "pen_holder": "assets/objects/pen_holder/pen_holder.usdc"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-pen-cup/2026-01-22_01-52-30",
+        "interaction_frames": {
+          "marker": {
+            "description": "center frame of cyclindrical marker/pen lying on its side, local y axis is the length axis, size: (0.02, 0.137, 0.02)",
+            "prim_path": "/World/envs/env_*/Marker"
+          },
+          "pen_holder": {
+            "description": "center frame of pen holder, cyclindrical object with openings along local +z axis for pens, size: (0.08, 0.08, 0.11)",
+            "prim_path": "/World/envs/env_*/PenHolder"
+          },
+          "table": {
+            "description": "center frame of table, size: (0.3, 0.9, 0.4)",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "franka_panda",
+      "gym_id": "Panda-Table-Pen-Cup",
+      "registration_module": "kuafu.isaac.learned.panda",
+      "entry_point": "kuafu.isaac.learned.panda.panda_pen_cup_env_learned:PandaPenCupEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.panda.panda_pen_cup_env_learned:PandaPenCupEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/panda/panda_pen_cup_env_learned.py",
+      "variants": [
+        "Panda-Table-Pen-Cup-Long-Long-U",
+        "Panda-Table-Pen-Cup-f",
+        "Panda-Table-Pen-Cup-l",
+        "Panda-Table-Pen-Cup-c",
+        "Panda-Table-Pen-Cup-lf",
+        "Panda-Table-Pen-Cup-ff",
+        "Panda-Table-Pen-Cup-fff3",
+        "Panda-Table-Pen-Cup-ff3",
+        "Panda-Table-Pen-Cup-f3"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "marker": "assets/objects/boardmaster/boardmaster.usdc",
+          "pen_holder": "assets/objects/pen_holder/pen_holder.usdc",
+          "robot": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-pen-cup/2026-01-22_01-52-30",
+        "interaction_frames": {
+          "marker": {
+            "description": "center frame of cyclindrical marker/pen lying on its side, local y axis is the length axis, size: (0.02, 0.137, 0.02)",
+            "prim_path": "/World/envs/env_*/Marker"
+          },
+          "pen_holder": {
+            "description": "center frame of pen holder, cyclindrical object with openings along local +z axis for pens, size: (0.08, 0.08, 0.11)",
+            "prim_path": "/World/envs/env_*/PenHolder"
+          },
+          "table": {
+            "description": "center frame of table, size: (0.3, 0.9, 0.4)",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "kinova_gen3",
+      "gym_id": "Kinova-Table-Gen3-Pen-Cup",
+      "registration_module": "kuafu.isaac.learned.kinova",
+      "entry_point": "kuafu.isaac.learned.kinova.kinova_pen_cup_env_learned:KinovaPenCupEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.kinova.kinova_pen_cup_env_learned:KinovaPenCupEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/kinova/kinova_pen_cup_env_learned.py",
+      "variants": [
+        "Kinova-Table-Gen3-Pen-Cup-Long-Long-U",
+        "Kinova-Table-Gen3-Pen-Cup-f",
+        "Kinova-Table-Gen3-Pen-Cup-l",
+        "Kinova-Table-Gen3-Pen-Cup-c",
+        "Kinova-Table-Gen3-Pen-Cup-lf",
+        "Kinova-Table-Gen3-Pen-Cup-ff",
+        "Kinova-Table-Gen3-Pen-Cup-fff",
+        "Kinova-Table-Gen3-Pen-Cup-f3",
+        "Kinova-Table-Gen3-Pen-Cup-ff3",
+        "Kinova-Table-Gen3-Pen-Cup-fff3"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/kinova/usd/kinova_gen3_7dof_robotiq_2f85_vision_official_contact_stable.usd",
+          "marker": "assets/objects/boardmaster/boardmaster.usdc",
+          "pen_holder": "assets/objects/pen_holder/pen_holder.usdc"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-pen-cup/2026-01-22_01-52-30",
+        "interaction_frames": {
+          "marker": {
+            "description": "center frame of cyclindrical marker/pen lying on its side, local y axis is the length axis, size: (0.02, 0.137, 0.02)",
+            "prim_path": "/World/envs/env_*/Marker"
+          },
+          "pen_holder": {
+            "description": "center frame of pen holder, cyclindrical object with openings along local +z axis for pens, size: (0.08, 0.08, 0.11)",
+            "prim_path": "/World/envs/env_*/PenHolder"
+          },
+          "table": {
+            "description": "center frame of table, size: (0.3, 0.9, 0.4)",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "ur5_robotiq",
+      "gym_id": "UR5-Table-Pen-Cup",
+      "registration_module": "kuafu.isaac.learned.ur5",
+      "entry_point": "kuafu.isaac.learned.ur5.tasks:UR5PenCupEnv",
+      "config_entry_point": "kuafu.isaac.learned.ur5.tasks:UR5PenCupEnvCfg",
+      "source": "src/kuafu/isaac/learned/ur5/tasks.py",
+      "variants": [],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/ur5_robotiq/ur5_robotiq.usd",
+          "marker": "assets/objects/boardmaster/boardmaster.usdc",
+          "pen_holder": "assets/objects/pen_holder/pen_holder.usdc"
+        },
+        "controller_inputs": {
+          "urdf_path": "assets/robots/ur5_robotiq/ur5_controller.urdf",
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-pen-cup/2026-01-22_01-52-30",
+        "interaction_frames": {
+          "marker": {
+            "description": "center frame of cyclindrical marker/pen lying on its side, local y axis is the length axis, size: (0.02, 0.137, 0.02)",
+            "prim_path": "/World/envs/env_*/Marker"
+          },
+          "pen_holder": {
+            "description": "center frame of pen holder, cyclindrical object with openings along local +z axis for pens, size: (0.08, 0.08, 0.11)",
+            "prim_path": "/World/envs/env_*/PenHolder"
+          },
+          "table": {
+            "description": "center frame of table, size: (0.3, 0.9, 0.4)",
+            "prim_path": "/World/envs/env_*/Table"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    }
+  ],
+  "object_assets": [
+    "assets/objects/boardmaster/boardmaster.usdc",
+    "assets/objects/pen_holder/pen_holder.usdc",
+    "assets/objects/table/table_flattened_instanceable_meshes.usd"
+  ],
+  "scene_source": "src/kuafu/isaac/learned/fr3_finray_pen_cup_env_learned.py",
+  "interaction_frames_source": "src/kuafu/isaac/learned/fr3_finray_pen_cup_env_learned.py:detectable_objects",
+  "interaction_frames": {
+    "marker": {
+      "description": "center frame of cyclindrical marker/pen lying on its side, local y axis is the length axis, size: (0.02, 0.137, 0.02)",
+      "prim_path": "/World/envs/env_*/Marker"
+    },
+    "pen_holder": {
+      "description": "center frame of pen holder, cyclindrical object with openings along local +z axis for pens, size: (0.08, 0.08, 0.11)",
+      "prim_path": "/World/envs/env_*/PenHolder"
+    },
+    "table": {
+      "description": "center frame of table, size: (0.3, 0.9, 0.4)",
+      "prim_path": "/World/envs/env_*/Table"
+    },
+    "panda_link4": {
+      "description": "frame of robot link 4",
+      "prim_path": "/Visuals/panda_link4_frame"
+    },
+    "panda_fingertip": {
+      "description": "frame of robot tool frame",
+      "prim_path": "/Visuals/panda_hand_frame"
+    }
+  },
+  "success_check": {
+    "summary": "The marker is upright and near the holder opening; the configured release and program-stage conditions apply.",
+    "source": "src/kuafu/isaac/learned/fr3_finray_pen_cup_env_learned.py",
+    "method": "_external_get_dones",
+    "thresholds": "Use the selected robot configuration and implementation."
+  },
+  "formulation": [
+    {
+      "gym_id": "Formulate-Panda-Pen-Cup-v0",
+      "runner": "src/kuafu/programs/pen_cup_learn_programs.py"
+    }
+  ],
+  "program_families": [
+    "resources/learned_programs/manipulation-pen-cup"
+  ],
+  "saved_programs": [
+    {
+      "path": "resources/learned_programs/manipulation-pen-cup/2026-01-22_01-52-30",
+      "stages": 9,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-pen-cup/2026-01-22_01-52-30_loose",
+      "stages": 8,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-pen-cup/2026-07-29_09-55-27",
+      "stages": 9,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-pen-cup/2026-07-29_10-09-44",
+      "stages": 10,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-pen-cup/2026-07-29_15-57-47",
+      "stages": 10,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-pen-cup/2026-07-29_18-15-58",
+      "stages": 10,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-pen-cup/2026-07-29_18-22-20",
+      "stages": 10,
+      "recorded_success": "True"
+    }
+  ],
+  "example_program": {
+    "path": "resources/learned_programs/manipulation-pen-cup/2026-07-29_18-22-20",
+    "stages": 10,
+    "recorded_success": "True"
+  },
+  "agent_interface": {
+    "discovery": [
+      "kuafu_list_tasks",
+      "kuafu_get_task"
+    ],
+    "learning": "kuafu_start_stage with a compatible task manifest",
+    "scene_verification": "Use the task-specific scene and success implementation. The exported-video cabinet tool has its own task entry."
+  },
+  "robot_setup": {
+    "default": "docs/INSTALL.md",
+    "ur5_robotiq": "docs/UR5.md"
+  },
+  "related_sources": [
+    "src/kuafu/isaac/base/manipulation/pen_cup_env.py",
+    "src/kuafu/isaac/tasks/pen_cup/pen_cup_env_learned.py"
+  ],
+  "external_assets": [
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This grasp stage keeps the panda_fingertip pose fixed while requiring a successful physical grasp of mug_rim_frame_0. freeze_position represents holding the current fingertip origin within 0.01 m and commanding no intentional translation. freeze_orientation represents holding the current fingertip orientation and therefore preserving the current world-frame directions of the tool +z and +y axes with no intentional rotation. object_grasped is used instead of close_gripper because the stage requires a firm single-object grasp rather than mere mechanical closure; per the API rule, close_gripper and object_grasped are not emitted together. Direct rising finger effort/contact feedback and symmetric finger motion are not separately representable by the available condition labels or ops; manipulator_high_effort is not used because it refers to arm/TCP effort, not finger squeeze. The intended stop condition is represented by object_grasped, meaning the object is physically held rather than only the gripper being closed.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

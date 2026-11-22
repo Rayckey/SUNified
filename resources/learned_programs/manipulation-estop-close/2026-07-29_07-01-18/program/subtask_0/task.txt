@@ -1,0 +1,1 @@
+[Approach] Use an axis approach to move the panda_fingertip near estop_cap_tip without touching it, with the gripper closed.

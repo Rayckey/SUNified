@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage is a stationary grasp-establishment stage: the panda_fingertip position is frozen within 0.01 m and its start-of-stage orientation is frozen while the gripper establishes a real physical grasp. The object_grasped term is used instead of close_gripper because the task requires firm contact/held-object feedback, not merely mechanical finger closure; by context the intended contacted object is top_drawer_handle_frame, though object_grasped has no object-name argument. Simultaneous finger closing, bilateral grasp verification, and detailed monitoring of gripper effort/joint feedback are not separately parameterizable in the available terms, but are captured at the supported level by requiring object_grasped rather than gripper_closed alone.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

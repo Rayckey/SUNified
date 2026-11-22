@@ -1,0 +1,1 @@
+[Approach] Move the end-effector into contact with estop_cap_tip while keeping the gripper orientation fixed.

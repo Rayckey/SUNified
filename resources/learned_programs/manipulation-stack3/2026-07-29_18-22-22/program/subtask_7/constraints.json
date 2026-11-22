@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage retracts the panda_fingertip 0.10 m along its current tool -z direction with a 0.01 m completion tolerance, keeps the gripper open, and preserves the current end-effector orientation. The directional move is also labeled with manipulator_low_effort to represent the requirement to avoid unexpected contact or effort spikes during retract. cube_2 stationarity in the stack pose cannot be directly encoded because the available position operators only control a robot_frame or currently gripped_object, and cube_2 has been released; also only one position op is allowed and it is needed for the retract. Finger-joint position/effort feedback details and the explicit absence of object_grasped for cube_2 are not directly representable beyond using open_gripper and not emitting object_grasped.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "robot_frame",
+                "reference_origin": "panda_fingertip",
+                "axis": "-z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

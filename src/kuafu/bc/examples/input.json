@@ -1,0 +1,5 @@
+{
+  "artifact": "examples/03_demonstrations_to_policy/input/train.yaml",
+  "description": "Recorded observations/actions and training configuration",
+  "path_base": "repository root"
+}

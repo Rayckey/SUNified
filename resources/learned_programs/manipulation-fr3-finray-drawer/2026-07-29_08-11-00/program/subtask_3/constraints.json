@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage keeps the already grasped top_drawer_handle_frame held while pulling it open. The object_grasped term represents maintaining the physical closed grasp on the handle; close_gripper is not also emitted because object_grasped is the appropriate held-object constraint. The directional_move term commands the grasped handle/drawer motion 0.14 m along top_drawer_handle_frame local -y, with 0.01 m tolerance, representing the requested open displacement; its condition includes geometry for reaching the displacement and manipulator_high_effort to encode the supported early-stop alternative for excessive resistance or jamming. The freeze_orientation term keeps panda_fingertip orientation fixed within 5 degrees during the pull. Direct bilateral finger effort/contact sensing, slip detection from gripper effort, explicit gripper joint position monitoring, and direct top_drawer_center_frame displacement control cannot be represented by the available operators; the center-frame open state is approximated through the rigidly grasped handle moving along the drawer opening direction.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "top_drawer_handle_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.087266
+            }
+        }
+    ]
+}

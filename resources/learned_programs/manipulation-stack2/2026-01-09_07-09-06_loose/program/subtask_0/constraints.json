@@ -1,0 +1,42 @@
+{
+    "Reasoning": "Success for this subtask means positioning the end-effector (panda_fingertip) above the center of cube_1 in a top-down configuration, with the tool frame origin offset by 0.075 m along the world +z axis from cube_1's center, without making contact and with at least this standoff distance maintained. Additionally, the orientation constraints require the tool +z axis (agent frame) to be antiparallel to the world +z axis (i.e., pointing down), and the tool +y (agent frame) to be explicitly orthogonal to tool +z (direction of +y is unconstrained as long as orthogonality holds). Only geometry conditions are relevant (monitor distance, not effort/contact or gripper state), and all must be satisfied together, so \"and\" logic is used.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "distance_m": 0.075,
+                "tolerance_m": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.3
+            }
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+[Manipulate] Lift the grasped can_center_frame upward to create clearance from the surface with the gripper closed.

@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage is represented as a conjunctive fixed-pose gripper-opening stage. freeze_position keeps the panda_fingertip origin at its start-of-stage world position within the required 0.01 m tolerance. freeze_orientation keeps the panda_fingertip orientation fixed at the start-of-stage orientation, without adding any new tool-axis relation. open_gripper commands the gripper to open/release, representing both finger joints moving toward an open configuration. The API has no term for finger squeeze/contact-effort loss on mug_rim_frame_0 and no term for verifying that mug_handle_hole_frame remains supported by cup_hanger_branch_1_tip_frame rather than by the gripper, so those feedback requirements are omitted from Constraints and noted here as unrepresented.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+[Approach] Move the open gripper into contact with cube_3 while keeping the gripper orientation fixed.

@@ -1,0 +1,1 @@
+[Manipulate] Lift cube_1 upward to create clearance above the surface with the gripper closed.

@@ -1,0 +1,38 @@
+{
+    "Reasoning": "This stage keeps the panda_fingertip pose fixed while establishing a grasp on estop_cap_center. freeze_position holds the current panda_fingertip origin in the robot base/world frame with a tight translational tolerance. freeze_orientation holds the current panda_fingertip orientation, preserving its current +z and +y directions. object_grasped represents closing the fingers until estop_cap_center is physically held, rather than merely mechanically closing the gripper. The API cannot explicitly encode bilateral finger contact symmetry, sustained contact duration, individual finger joint/effort monitoring, stopping before the hard fully-closed limit, excessive finger effort aborts, or no-contact-before-limit aborts; those are noted as unrepresented runtime checks.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.005
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

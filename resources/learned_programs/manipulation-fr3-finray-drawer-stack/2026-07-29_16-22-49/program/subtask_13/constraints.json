@@ -1,0 +1,38 @@
+{
+    "Reasoning": "This release stage is represented as conjunctive constraints: keep panda_fingertip position fixed within 0.01 m, keep its current orientation fixed within 0.05 rad, and open the gripper. The open_gripper term is labeled with gripper_opened and manipulator_low_effort to encode success as fingers opening with low/free-space contact effort. No additional tool +z or +y axis relation is imposed. The API cannot explicitly encode simultaneous left/right finger joint feedback, continuous monitoring, pause/fail logic, or a separate strawberry_center_frame displacement threshold while also obeying the single-position-op limit; these are noted as unrepresented monitoring requirements.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened",
+                "manipulator_low_effort"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage is an approach-to-contact stage for panda_fingertip. The reach_point constraint drives the panda_fingertip origin to the cube_1 frame origin with the specified tight 0.015 m contact-position tolerance; its condition includes geometry and manipulator_high_effort to represent pose-based completion with contact/effort onset feedback at the intended end condition. The freeze_orientation constraint keeps the panda_fingertip start-of-stage orientation fixed within the requested 0.05 rad, covering the requirement to keep tool +z and +y fixed without adding any new top-down or leveled reorientation. The open_gripper constraint represents keeping the gripper open. Exact maintenance of both finger joints near value 1.0 using joint-state feedback, cube-specific contact permission, and distinguishing initial contact from a firm grasp are not directly expressible beyond open_gripper plus the contact/effort condition label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.015
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

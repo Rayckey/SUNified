@@ -1,0 +1,1 @@
+[Manipulate] Carry the grasped cube_1 above cube_2 with the gripper closed.

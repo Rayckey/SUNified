@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage is represented as a conjunctive fixed-pose gripper-opening controller stage. freeze_position keeps the panda_fingertip position fixed at the stage-start pose with the specified 0.01 m tolerance. freeze_orientation keeps the panda_fingertip orientation fixed, representing no intentional rotation during release. open_gripper commands the fingers to open to the released/open state. Finger joint symmetry, finger effort drop toward free-space levels, asymmetric finger effort/caught-object detection, and using tool +y only as a monitoring axis are required monitoring/stop details but are not directly representable with the available constraint operators or condition labels, since manipulator effort labels are not finger squeeze effort.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

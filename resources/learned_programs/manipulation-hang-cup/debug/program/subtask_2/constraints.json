@@ -1,0 +1,37 @@
+{
+    "Reasoning": "Success in this subtask means the gripper fingers close to grasp the mug_center_frame while the position and orientation of the tool (end-effector) are kept fixed; i.e., the gripper must not translate or rotate during this action. The gripper fingers must close from fully open to achieve a firm grasp, monitored via effort/contact feedback\u2014closure should stop when sufficient resistance signals a stable grasp. Therefore, position and orientation of the gripper are frozen, the gripper must close, and this closure should be halted based on feedback indicating a successful grasp. All constraints use 'and' because they must hold together for successful completion.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

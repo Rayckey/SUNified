@@ -1,0 +1,66 @@
+{
+    "Reasoning": "The subtask is to move the open gripper to a pre-grasp pose above cube_3 in a top-down configuration without touching it.\n\nSuccess conditions:\n1. Gripper must be open (open_gripper).\n2. Tool +z (panda_fingertip +z) must be antiparallel to world +z (top-down configuration).\n3. Tool +y (panda_fingertip +y) must be orthogonal to world +z (freely oriented in horizontal plane \u2014 this is automatically satisfied if +z is antiparallel to world +z, but we encode it explicitly as stated).\n4. Positional goal: panda_fingertip origin must reach cube_3 center + 0.125 m along world +z. The offset is [0, 0, 0.125] in world frame from cube_3 center.\n5. Stop when within 0.01 m of target point.\n\nConstraint ordering:\n- reach_point: move panda_fingertip to cube_3 center + [0, 0, 0.125] in world frame, tolerance 0.01 m.\n- axis_align: panda_fingertip +z antiparallel to world +z (top-down).\n- axis_align: panda_fingertip +y orthogonal to world +z (finger axis in horizontal plane).\n- open_gripper: gripper must be open.\n\nNote: freeze_orientation is NOT used here because the subtask says \"apply zero angular velocity\" which is a velocity constraint not directly representable, but the orientation goal (antiparallel +z) is encoded via axis_align. The \"apply zero finger velocity\" is also not directly representable in TermAPI.\n\nThe \"or\" logic is not needed; all conditions must hold simultaneously, so all use \"and\".\n\nThe first constraint gets the initial truth value, subsequent ones combine with \"and\".",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_3",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.125
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

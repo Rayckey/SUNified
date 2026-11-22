@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Use a tight reach_point goal to bring panda_fingertip origin directly to the top_drawer_handle_frame origin with zero offset and 0.015 m contact tolerance. The reach condition includes geometry plus manipulator_high_effort to represent the requested early stop if unexpected arm/TCP effort/contact occurs before the geometric contact goal. Freeze panda_fingertip orientation to its stage-start orientation with 5 degree tolerance, without adding any new tool-axis alignment constraints. Keep the gripper open using open_gripper. Finger joint positions near 1.0 are represented only by open_gripper; finger-specific unexpected effort/contact monitoring is not directly representable by the available condition labels, so only manipulator_high_effort is encoded.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.015
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

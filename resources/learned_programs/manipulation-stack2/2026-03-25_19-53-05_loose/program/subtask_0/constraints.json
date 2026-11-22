@@ -1,0 +1,49 @@
+{
+    "Reasoning": "The subtask is to move the open gripper to a pre-grasp pose above cube_1 in a top-down configuration. Success requires:\n\n1. **Orientation**: Tool +z (panda_fingertip +z) must be antiparallel to world +z (pointing downward). This is encoded with axis_align: controlled_axis=\"+z\", reference_axis=\"+z\", alignment=\"antiparallel\".\n\n2. **Position**: The fingertip frame origin must reach a point 0.125 m above cube_1's center in world frame. cube_1 center is at its origin; offset is [0, 0, 0.125] in world frame. This is encoded with reach_point using reference_basis=\"world\", reference_origin=\"cube_1\", offset_from_origin_xyz=[0.0, 0.0, 0.125], tolerance_m=0.05 (coarse approach, 0.1 m stop tolerance per constraint 5, but using 0.05 m as a reasonable tolerance for pre-grasp standoff).\n\n   Actually, constraint 5 says \"stop when within 0.1 m of the target standoff point\", so tolerance_m=0.1 is appropriate.\n\n3. **Gripper state**: Both fingers fully open \u2014 encoded with open_gripper.\n\nThe tool +y orthogonality constraint (constraint 2) is automatically satisfied if +z is antiparallel to world +z (any horizontal direction for +y is acceptable), so no additional axis_align is needed for +y.\n\nAll three constraints combine with \"and\" since all must hold simultaneously for success.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.6
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.125
+                ],
+                "tolerance_m": 0.1
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is encoded as a conjunctive retract controller: keep the gripper open, move the panda_fingertip 0.15 m along its own tool -z axis with 0.01 m tolerance, and freeze the tool orientation within 0.05 rad. The directional move carries both geometry and manipulator_low_effort conditions to reflect monitored free-space/non-contact effort during retract. The open_gripper term represents maintaining the fingers open and not squeezing. The can upright constraint and the explicit minimum 0.15 m panda_fingertip-to-can_center_frame separation cannot be directly represented with the available operators because there is no operator for constraining an ungripped object's pose or for enforcing an inter-frame distance inequality; they are therefore omitted from Constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "robot_frame",
+                "reference_origin": "panda_fingertip",
+                "axis": "-z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

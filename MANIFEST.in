@@ -1,0 +1,22 @@
+include README.md CONTRIBUTING.md AGENTS.md CITATION.cff LICENSE NOTICE
+graft LICENSES
+graft assets
+graft bin
+graft docs
+graft examples
+graft resources
+graft scripts
+graft src/kuafu
+graft tests
+prune docs/validation
+prune docs/analysis
+exclude docs/RELEASE_STATUS.md docs/SOURCE_SNAPSHOT.md
+recursive-exclude assets validation_report.json
+recursive-exclude resources verification.json *_eval_summary.json
+recursive-exclude src/kuafu/data/datasets init_cond_*.png quality_*.png
+global-exclude __pycache__ *.py[cod] .DS_Store
+global-exclude *.orig *.rej *.bak *.tmp *.swp *~ *.log .coverage .asset_hash *.metadata.pkl
+global-exclude .env .env.* creds.sh OPENAI_API_KEY ANTHROPIC_API_KEY DEEPSEEK_API_KEY GEMINI_API_KEY
+global-exclude */.git/* */.hydra/* */.pytest_cache/* */.ruff_cache/* */.mypy_cache/* */buffer/* */outputs/* */logs/*
+global-exclude */reports/* */test-results/* */validation/* */analysis/* */wandb/* */mlruns/*
+recursive-exclude assets/objects */renders/* */screenshots/* visual_check.html

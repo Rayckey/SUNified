@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This approach stage is encoded as a conjunctive set of requirements. The gripper is kept open using open_gripper with gripper_opened metadata. The current panda_fingertip orientation is preserved using freeze_orientation, without adding any new axis alignment. The fingertip origin is commanded to the estop_cap_center origin with zero offset in the estop_cap_center object frame and a 0.01 m tolerance for contact-precision approach. The reach condition also includes manipulator_high_effort to represent the required effort/contact stop feedback. Generic contact sensing and explicit finger joint positions near 1.0/no closing velocity are not directly expressible beyond the open_gripper condition.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

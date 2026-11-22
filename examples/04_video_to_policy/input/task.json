@@ -1,0 +1,15 @@
+{
+  "videos": [
+    "examples/01_video_to_rollout/input/IMG_0028.mov",
+    "examples/01_video_to_rollout/input/IMG_0029.mov"
+  ],
+  "object_description": "One cabinet with three sliding drawers: a large upper drawer and two small lower drawers.",
+  "task": "Open the top drawer by 10 cm.",
+  "scene_proposal": "assets/recipes/0028_0029.articulated.scene.json",
+  "program_proposal": "examples/01_video_to_rollout/input/program.json",
+  "episodes": 4,
+  "method": "nearest_neighbor",
+  "epochs": 300,
+  "seed": 42,
+  "target_travel_m": 0.1
+}

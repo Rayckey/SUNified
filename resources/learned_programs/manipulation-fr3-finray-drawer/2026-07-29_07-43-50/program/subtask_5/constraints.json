@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This release-retract stage moves the open panda_fingertip to the specified non-contact standoff point: the top_drawer_handle_frame origin offset by 0.11 m along the handle frame local -y pull/retract axis, with 0.01 m positional tolerance. The current end-effector orientation is preserved using freeze_orientation, with no new axis relation imposed. The gripper is commanded and required to remain open. Low manipulator/contact effort during the retract is represented as manipulator_low_effort on the geometric reach term, supporting the no-contact/free-space feedback requirement. Explicit monitoring of both individual finger joint states, individual finger effort signals, and exact clearance beyond half handle y-extent cannot be directly encoded as separate terms in the available API; the 0.11 m local -y target offset represents the requested non-contact clearance geometry.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.11,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

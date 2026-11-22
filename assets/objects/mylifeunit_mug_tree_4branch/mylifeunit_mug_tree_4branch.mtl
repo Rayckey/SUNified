@@ -1,0 +1,51 @@
+newmtl WoodLong
+Kd 0.025000 0.027000 0.030000
+Ka 0.000000 0.000000 0.000000
+Ks 0.120000 0.120000 0.120000
+Ns 290.000
+Pm 0.0000
+Pr 0.4200
+illum 2
+map_Kd textures/black_painted_wood_long_basecolor.png
+map_Pr textures/black_painted_wood_long_roughness.png
+map_Bump -bm 0.35 textures/black_painted_wood_long_normal.png
+
+newmtl WoodBase
+Kd 0.025000 0.027000 0.030000
+Ka 0.000000 0.000000 0.000000
+Ks 0.120000 0.120000 0.120000
+Ns 280.000
+Pm 0.0000
+Pr 0.4400
+illum 2
+map_Kd textures/black_painted_wood_base_basecolor.png
+map_Pr textures/black_painted_wood_base_roughness.png
+map_Bump -bm 0.35 textures/black_painted_wood_base_normal.png
+
+newmtl Rubber
+Kd 0.008000 0.009000 0.010000
+Ka 0.000000 0.000000 0.000000
+Ks 0.120000 0.120000 0.120000
+Ns 90.000
+Pm 0.0000
+Pr 0.8200
+illum 2
+
+newmtl SocketMetal
+Kd 0.030000 0.032000 0.036000
+Ka 0.000000 0.000000 0.000000
+Ks 0.120000 0.120000 0.120000
+Ns 340.000
+Pm 0.7200
+Pr 0.3200
+illum 2
+
+newmtl SocketRecess
+Kd 0.002000 0.002000 0.003000
+Ka 0.000000 0.000000 0.000000
+Ks 0.120000 0.120000 0.120000
+Ns 200.000
+Pm 0.0000
+Pr 0.6000
+illum 2
+

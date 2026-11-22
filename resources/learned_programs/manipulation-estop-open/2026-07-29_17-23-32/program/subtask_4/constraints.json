@@ -1,0 +1,38 @@
+{
+    "Reasoning": "This release stage keeps the panda_fingertip pose fixed while opening the gripper. The freeze_position term enforces the start-of-stage fingertip origin within 0.01 m and also carries manipulator_low_effort to represent monitoring for unintended hard contact with the estop base or table. The freeze_orientation term keeps the fingertip orientation fixed within 5 degrees. The open_gripper term commands the fingers to open and uses gripper_opened as the success condition. Finger-specific joint targets near 1.0, simultaneous left/right actuation, gripper finger contact-force drop, and direct monitoring that estop_cap_center remains unlocked without additional twist are not directly expressible with the available operators; they are represented only indirectly by open_gripper, fixed fingertip pose, and omission of any object-rotation command.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872664626
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

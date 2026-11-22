@@ -1,0 +1,1 @@
+[Manipulate] Move the grasped top_drawer_handle_frame to pull the top drawer toward the open position with the gripper closed.

@@ -1,0 +1,177 @@
+{
+  "bc_prior_rollout_stats": {
+    "false_complete_count": 73,
+    "stats_path": "/home/rocky/Kuafu/IsaacLab/logs/residual_rl/franka_panda/Panda-Table-EStop-Close-f3/2026-06-13_22-59-44/bc_prior_rollout_stats.json",
+    "timeout_count": 1864,
+    "total_episodes": 11134,
+    "total_steps": 360,
+    "true_success_count": 9197
+  },
+  "kind": "initial_weight_sweep",
+  "prior_checkpoint": "/home/rocky/Kuafu/IsaacLab/Priors/franka_panda/estop_close/estop_close_2026-06-12_07-22-13_chunking_10_f3/best.pth",
+  "stages": {
+    "0": {
+      "diagnosis": "{\"0\": \"Primary blocker. Position-to-standoff target is the only unsatisfied constraint in all timed-out stage-0 cases, indicating poor translational progress to the pre-approach point rather than orientation or gripper issues. Likely a weight tradeoff / poor progress issue, though the positional threshold may also be somewhat strict; cannot change parameters here.\", \"1\": \"Not a blocker. Antiparallel tool-Z alignment is already satisfied in all timed-out cases; current weight can be reduced relatively to free capacity for translation without harming semantic validity.\", \"2\": \"Not a blocker. Orthogonal tool-Y alignment is also already satisfied in all timed-out cases; keep enough weight to preserve valid approach-plane orientation but reduce relative emphasis.\", \"3\": \"Not a blocker. Gripper-closed constraint is universally satisfied in timed-out cases; reduce relative emphasis since it does not appear to limit completion.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"Stage semantics require a meaningful non-contact standoff pose above the cap before later press actions. Since components 1-3 are satisfied 100% of the time while component 0 is never satisfied in the stuck set, stage completion is dominated by reaching the offset point. Because reward is normalized by sum(weights), increasing component 0 relative to the others is the correct lever to bias the BC-prior-guided policy toward finishing the translational approach. Use the maximum allowed per-pass increase.\", \"1\": \"Orientation around tool Z is essential to ensure a proper approach axis, but the data show it is already achieved robustly. Lowering this weight modestly should not damage semantic validity because the component remains present and apparently easy for the prior. This frees normalized reward share for the true blocker.\", \"2\": \"This is a secondary orientation constraint within the symmetry plane. It matters less than component 1 for approach correctness and is already always satisfied, so it can be de-emphasized somewhat more aggressively while still retaining some guidance.\", \"3\": \"Closed gripper is semantically appropriate for a non-contact pre-approach, but since it is already always satisfied, its weight can be reduced modestly to prioritize positional completion. Keep it nontrivial so the agent does not learn to ignore hand posture.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 0,
+          "rate": 0.0,
+          "reward": 0.014854613499249372,
+          "total": 523
+        },
+        "1": {
+          "met": 523,
+          "rate": 1.0,
+          "reward": 2.3925538044814627e-05,
+          "total": 523
+        },
+        "2": {
+          "met": 523,
+          "rate": 1.0,
+          "reward": 0.004573298685865238,
+          "total": 523
+        },
+        "3": {
+          "met": 523,
+          "rate": 1.0,
+          "reward": 6.988808573288202e-09,
+          "total": 523
+        }
+      },
+      "weights": {
+        "0": 3.0,
+        "1": 0.75,
+        "2": 0.5,
+        "3": 0.75
+      }
+    },
+    "1": {
+      "diagnosis": "{\"0\": \"Primary blocker. The BC prior times out in Stage 1 because it fails to reach/contact the estop_cap_tip in every stuck case. This is a poor progress / control or possibly threshold issue on the reach/contact term, not an orientation or gripper issue.\", \"1\": \"Not a blocker. Orientation constraint is always satisfied in stuck cases, so its current relative emphasis is more than sufficient and likely over-allocates normalized reward away from approach/contact progress.\", \"2\": \"Not a blocker. Gripper closed is always satisfied; it only needs enough weight to preserve the invariant and should not compete strongly with the reach/contact objective.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.02
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"Component 0 is the semantic objective of this stage: make first contact or get within tolerance of the button tip center. Since 100% of timed-out episodes fail this component while all others are satisfied, increasing its relative weight is the clearest way to improve meaningful stage completion. Because reward is normalized by sum(weights), this must come mainly from shifting mass away from already-solved invariants. There may also be a parameter/threshold issue because current parameters show a looser 0.02 m tolerance than the intended 0.01 m, yet the prior still never satisfies it; however parameters cannot be changed here, so weight increase is the available intervention.\", \"1\": \"Component 1 encodes an invariant, not the stage's progress axis. Its timeout non-satisfaction rate is 0%, meaning the policy already maintains orientation reliably. Reducing this weight should not harm semantic validity much because the policy already satisfies it, and it frees normalized reward for the actual blocker.\", \"2\": \"Component 2 is another invariant with 0% non-satisfaction in stuck cases. Its weighted reward is near zero because the gripper is likely already fully closed, so high weight here contributes little useful learning signal. Lowering it modestly preserves the closed-gripper requirement while reallocating priority to contact acquisition.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 0,
+          "rate": 0.0,
+          "reward": 0.016167795604813826,
+          "total": 671
+        },
+        "1": {
+          "met": 671,
+          "rate": 1.0,
+          "reward": 0.3052659240813618,
+          "total": 671
+        },
+        "2": {
+          "met": 671,
+          "rate": 1.0,
+          "reward": 6.212513652380664e-09,
+          "total": 671
+        }
+      },
+      "weights": {
+        "0": 3.0,
+        "1": 0.6,
+        "2": 0.75
+      }
+    },
+    "2": {
+      "diagnosis": "{\"0\": \"Primary blocker. The press-travel requirement is almost never satisfied in timed-out stage-2 episodes (99.85% not satisfied), while orientation and gripper are already satisfied. This indicates poor progress on the required 3 cm press or a weight tradeoff that under-prioritizes committing to the press motion. Could also partly reflect stop-distance tolerance strictness, but the rollout evidence mainly says the motion component blocks completion.\", \"1\": \"Not a blocker. Orientation preservation is satisfied in essentially all timed-out cases. Current weight appears sufficient; overweighting it risks discouraging the needed press motion.\", \"2\": \"Not a blocker. Gripper-closed is always satisfied, so extra weight is unnecessary for stage completion. This component is semantically important but already reliably maintained.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.01
+        },
+        "1": {
+          "tolerance_rad": 0.3
+        }
+      },
+      "reasoning": "{\"0\": \"Since reward is normalized by sum(weights), increasing the relative weight on the directional press component is the most direct way to improve meaningful completion. The task semantics demand actual depression of the e-stop by ~3 cm or until hard stop; merely maintaining pose/gripper without advancing along cap -z is insufficient. Component 0 therefore should dominate this stage. I raise it to the maximum allowed step increase (2x) to shift policy preference toward completing the press travel.\", \"1\": \"Orientation freeze is semantically necessary, but the stats show it is already preserved almost universally. Keeping it too strong can create an avoidable tradeoff against translational progress, especially during contact-rich pressing. Reduce moderately, but not too far, so the tool still respects the intended fixed-orientation interaction.\", \"2\": \"Closed gripper is already perfectly maintained and is not informative for resolving the timeout bottleneck. Lowering its relative weight frees budget for the press component while preserving the semantic requirement because the BC prior already satisfies it robustly. Keep above minimum because it remains part of the stage definition.\", \"summary\": \"The evidence points to a weight-tradeoff / poor-progress issue centered on component 0, not on components 1 or 2. If completion still remains poor after this reweighting, the remaining issue is likely parameter/threshold related for the travel term or missing effort-stop observability, but on this pass only weights should change.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 1,
+          "rate": 0.0015267175572519084,
+          "reward": 1.6873751341841603,
+          "total": 655
+        },
+        "1": {
+          "met": 654,
+          "rate": 0.9984732824427481,
+          "reward": 0.20998945163406488,
+          "total": 655
+        },
+        "2": {
+          "met": 655,
+          "rate": 1.0,
+          "reward": 2.388466053592567e-07,
+          "total": 655
+        }
+      },
+      "weights": {
+        "0": 5.0,
+        "1": 1.2,
+        "2": 0.75
+      }
+    },
+    "3": {
+      "diagnosis": "{\"0\": \"Primary blocker. Positional retraction target is never satisfied in timed-out stage-3 rollouts, while orientation and gripper constraints are always satisfied. This indicates poor progress toward the retract point and/or a weight tradeoff issue under normalized reward, not evidence that orientation or gripper need more emphasis. Parameter tolerances may also be stricter than current editable context suggests, but parameters are not editable here.\", \"1\": \"Not a blocker. Orientation invariant is consistently satisfied on timeout cases, so its relative weight can be reduced without harming semantic validity.\", \"2\": \"Not a blocker. Gripper-closed constraint is consistently satisfied on timeout cases. Its weight can be reduced to free capacity for the retraction objective; zero shaped reward likely reflects already-satisfied/flat behavior rather than a need for more emphasis.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"Stage semantics are dominated by meaningful separation from the button into free space. Since component 0 is 100% unsatisfied on the small timeout sample and the other two are 100% satisfied, stage completion is being blocked by failure to reach the retract point. Because reward is normalized by total weight, increasing the relative weight on component 0 is the appropriate first-pass acquisition change to bias motion away from lingering near contact and toward the 0.12 m offset target.\", \"1\": \"The tool already preserves orientation in all timeout cases. Keeping some nontrivial weight is still useful to preserve the established anti-parallel pose during retraction, but current evidence says it is over-protected relative to the actual blocker. Lowering it should not reduce meaningful completion as long as it remains present.\", \"2\": \"Closed gripper is already maintained in all timeout cases and is not the cause of being stuck. Retaining a moderate but smaller weight preserves the intended interaction semantics while reallocating normalized reward mass toward the actual missing behavior: retracting to the free-space target.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 0,
+          "rate": 0.0,
+          "reward": 0.06657837118421282,
+          "total": 14
+        },
+        "1": {
+          "met": 14,
+          "rate": 1.0,
+          "reward": 0.0405856158052172,
+          "total": 14
+        },
+        "2": {
+          "met": 14,
+          "rate": 1.0,
+          "reward": 1.1773391861424898e-07,
+          "total": 14
+        }
+      },
+      "weights": {
+        "0": 3.0,
+        "1": 0.5,
+        "2": 0.75
+      }
+    }
+  },
+  "task": "Panda-Table-EStop-Close-f3"
+}

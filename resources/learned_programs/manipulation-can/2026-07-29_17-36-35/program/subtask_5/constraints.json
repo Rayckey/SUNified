@@ -1,0 +1,48 @@
+{
+    "Diagnosis": "The runtime error explicitly rejects mixing `freeze_orientation` with another orientation constraint in the same stage: `axis_align` and `freeze_orientation` were both present. The smallest valid repair is to remove the `freeze_orientation` term and keep the required `axis_align` term that represents the can-upright success criterion.",
+    "Reasoning": "This remains one conjunctive guarded-lowering stage. `object_grasped` with `gripper_closed` represents maintaining the can firmly held by the panda_fingertip gripper without commanding a new squeeze or opening. `directional_move` commands the panda_fingertip origin, carrying the grasped can, along world -z by up to 0.15 m with 0.01 m tolerance; its condition labels include both the geometric travel-limit stop and the `manipulator_high_effort` guarded-contact early-stop alternative in the same term, avoiding top-level OR. `axis_align` keeps the grasped can upright by maintaining can_center_frame local -y codirectional with world +z within 0.05 rad. The removed `freeze_orientation` was only supporting preservation of the start-of-stage grasp/tool relationship, but it cannot coexist with `axis_align` under the runtime constraint. Exact individual finger start joint positions, no-additional-squeeze limits, the exact can-to-tool start transform/no-slip relation, detailed gripper-effort thresholds, and continuous monitoring are not directly representable with the available terms.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "-y",
+                "reference_axis": "+z",
+                "alignment": "codirectional",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

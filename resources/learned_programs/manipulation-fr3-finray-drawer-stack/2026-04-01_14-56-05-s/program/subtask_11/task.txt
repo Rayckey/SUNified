@@ -1,0 +1,1 @@
+[Release] Open the gripper to release the strawberry inside the top drawer while keeping both the gripper position and orientation fixed.

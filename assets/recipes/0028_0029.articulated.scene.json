@@ -1,0 +1,1155 @@
+{
+  "name": "bamboo_three_drawer_desktop_cabinet",
+  "summary": "Honey-colored bamboo cabinet with a raised-edge top tray, one full-width middle drawer with a broad white pull, and two smaller lower drawers with dark metal ring pulls. All three drawers are independently sliding and shown closed.",
+  "scale_basis": "estimated",
+  "assumptions": [
+    "Estimated cabinet dimensions are 0.40 m wide, 0.22 m deep and 0.26 m high, excluding projecting handles; no measured dimension was supplied.",
+    "The detached white-handled drawer in the second clip is fitted into the full-width middle bay, as specified, rather than modeled beside the cabinet.",
+    "Both clips inform the reconstruction. The rounded upper-front corners of the side panels are approximated with short faceted curves; shelves are treated as horizontal.",
+    "The rear exterior, underside and lower drawer interiors are not directly visible. A simple continuous back panel, recessed lower divider and open-topped lower drawer boxes are inferred.",
+    "Bamboo panels are estimated at 5\u201310 mm thickness. The unseen lower drawer boxes have slightly rounded corners for robust hollow collision geometry.",
+    "Drawer guides are not visible. Ideal prismatic joints replace unseen sliding interfaces, with approximately 3 mm running clearance and travel limits that retain at least 56 mm of drawer depth inside the cabinet. Relative masses are estimates.",
+    "The white handle is approximated as a solid rounded lip grip because its underside and attachment details are unclear. Lower ring pulls retain their openings but are rigidly attached in hanging poses; independent ring motion is not reconstructed.",
+    "Bamboo grain and metal ornamentation are represented by coarse colors and materials without texture maps."
+  ],
+  "parts": [
+    {
+      "name": "left_profiled_side_panel",
+      "link": "frame",
+      "geometry": {
+        "kind": "convex_hull",
+        "points": [
+          {
+            "x": -0.005,
+            "y": -0.11,
+            "z": 0.0
+          },
+          {
+            "x": -0.005,
+            "y": 0.11,
+            "z": 0.0
+          },
+          {
+            "x": -0.005,
+            "y": 0.11,
+            "z": 0.26
+          },
+          {
+            "x": -0.005,
+            "y": -0.065,
+            "z": 0.26
+          },
+          {
+            "x": -0.005,
+            "y": -0.08222,
+            "z": 0.25657
+          },
+          {
+            "x": -0.005,
+            "y": -0.09682,
+            "z": 0.24682
+          },
+          {
+            "x": -0.005,
+            "y": -0.10657,
+            "z": 0.23222
+          },
+          {
+            "x": -0.005,
+            "y": -0.11,
+            "z": 0.215
+          },
+          {
+            "x": 0.005,
+            "y": -0.11,
+            "z": 0.0
+          },
+          {
+            "x": 0.005,
+            "y": 0.11,
+            "z": 0.0
+          },
+          {
+            "x": 0.005,
+            "y": 0.11,
+            "z": 0.26
+          },
+          {
+            "x": 0.005,
+            "y": -0.065,
+            "z": 0.26
+          },
+          {
+            "x": 0.005,
+            "y": -0.08222,
+            "z": 0.25657
+          },
+          {
+            "x": 0.005,
+            "y": -0.09682,
+            "z": 0.24682
+          },
+          {
+            "x": 0.005,
+            "y": -0.10657,
+            "z": 0.23222
+          },
+          {
+            "x": 0.005,
+            "y": -0.11,
+            "z": 0.215
+          }
+        ]
+      },
+      "position": {
+        "x": -0.195,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.74,
+        "g": 0.59,
+        "b": 0.36
+      },
+      "roughness": 0.48,
+      "metallic": 0.0,
+      "evidence": "First clip early left-oblique views show a continuous bamboo side extending above the tray with a rounded upper-front corner."
+    },
+    {
+      "name": "right_profiled_side_panel",
+      "link": "frame",
+      "geometry": {
+        "kind": "convex_hull",
+        "points": [
+          {
+            "x": -0.005,
+            "y": -0.11,
+            "z": 0.0
+          },
+          {
+            "x": -0.005,
+            "y": 0.11,
+            "z": 0.0
+          },
+          {
+            "x": -0.005,
+            "y": 0.11,
+            "z": 0.26
+          },
+          {
+            "x": -0.005,
+            "y": -0.065,
+            "z": 0.26
+          },
+          {
+            "x": -0.005,
+            "y": -0.08222,
+            "z": 0.25657
+          },
+          {
+            "x": -0.005,
+            "y": -0.09682,
+            "z": 0.24682
+          },
+          {
+            "x": -0.005,
+            "y": -0.10657,
+            "z": 0.23222
+          },
+          {
+            "x": -0.005,
+            "y": -0.11,
+            "z": 0.215
+          },
+          {
+            "x": 0.005,
+            "y": -0.11,
+            "z": 0.0
+          },
+          {
+            "x": 0.005,
+            "y": 0.11,
+            "z": 0.0
+          },
+          {
+            "x": 0.005,
+            "y": 0.11,
+            "z": 0.26
+          },
+          {
+            "x": 0.005,
+            "y": -0.065,
+            "z": 0.26
+          },
+          {
+            "x": 0.005,
+            "y": -0.08222,
+            "z": 0.25657
+          },
+          {
+            "x": 0.005,
+            "y": -0.09682,
+            "z": 0.24682
+          },
+          {
+            "x": 0.005,
+            "y": -0.10657,
+            "z": 0.23222
+          },
+          {
+            "x": 0.005,
+            "y": -0.11,
+            "z": 0.215
+          }
+        ]
+      },
+      "position": {
+        "x": 0.195,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.74,
+        "g": 0.59,
+        "b": 0.36
+      },
+      "roughness": 0.48,
+      "metallic": 0.0,
+      "evidence": "First clip at 3.8\u20136.433 s and later second-clip views expose the matching right side and curved tray guard."
+    },
+    {
+      "name": "rear_panel_and_tray_back",
+      "link": "frame",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.38,
+          "y": 0.01,
+          "z": 0.26
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.105,
+        "z": 0.13
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.73,
+        "g": 0.57,
+        "b": 0.33
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "A straight raised bamboo back borders the top tray throughout both clips; its lower continuation is inferred."
+    },
+    {
+      "name": "cabinet_bottom_panel",
+      "link": "frame",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.38,
+          "y": 0.21,
+          "z": 0.009
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.005,
+        "z": 0.0045
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.74,
+        "g": 0.59,
+        "b": 0.36
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "A narrow bottom frame edge is visible below both small drawer fronts; the underside is occluded."
+    },
+    {
+      "name": "middle_bay_support_shelf",
+      "link": "frame",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.38,
+          "y": 0.21,
+          "z": 0.009
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.005,
+        "z": 0.0975
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.77,
+        "g": 0.62,
+        "b": 0.38
+      },
+      "roughness": 0.48,
+      "metallic": 0.0,
+      "evidence": "The empty middle bay exposes a continuous horizontal floor above the two lower drawers in every first-clip view."
+    },
+    {
+      "name": "top_tray_floor",
+      "link": "frame",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.38,
+          "y": 0.21,
+          "z": 0.009
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.005,
+        "z": 0.1845
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.79,
+        "g": 0.65,
+        "b": 0.42
+      },
+      "roughness": 0.46,
+      "metallic": 0.0,
+      "evidence": "Broad exposed bamboo tray surface forms the roof of the middle drawer bay; its front edge has no raised rail."
+    },
+    {
+      "name": "lower_center_divider",
+      "link": "frame",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.008,
+          "y": 0.196,
+          "z": 0.084
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.002,
+        "z": 0.051
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.73,
+        "g": 0.57,
+        "b": 0.33
+      },
+      "roughness": 0.52,
+      "metallic": 0.0,
+      "evidence": "Two separate lower drawers require divided sliding bays; a thin recessed center partition is inferred behind their seam."
+    },
+    {
+      "name": "upper_drawer_floor",
+      "link": "upper_drawer",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.36,
+          "y": 0.189,
+          "z": 0.005
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.0055,
+        "z": 0.1075
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.79,
+        "g": 0.65,
+        "b": 0.41
+      },
+      "roughness": 0.48,
+      "metallic": 0.0,
+      "evidence": "All second-clip views show the detached large drawer's real flat bamboo floor and open interior."
+    },
+    {
+      "name": "upper_drawer_front",
+      "link": "upper_drawer",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.374,
+          "y": 0.01,
+          "z": 0.072
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.105,
+        "z": 0.141
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.74,
+        "g": 0.58,
+        "b": 0.34
+      },
+      "roughness": 0.48,
+      "metallic": 0.0,
+      "evidence": "Second clip shows a single full-width rectangular bamboo front carrying the centered white pull."
+    },
+    {
+      "name": "upper_drawer_left_wall",
+      "link": "upper_drawer",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.007,
+          "y": 0.196,
+          "z": 0.072
+        }
+      },
+      "position": {
+        "x": -0.1835,
+        "y": -0.002,
+        "z": 0.141
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.76,
+        "g": 0.61,
+        "b": 0.37
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Second clip at 0.267\u20132.0 s exposes a thin straight left wall with the same rim height as the drawer front."
+    },
+    {
+      "name": "upper_drawer_right_wall",
+      "link": "upper_drawer",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.007,
+          "y": 0.196,
+          "z": 0.072
+        }
+      },
+      "position": {
+        "x": 0.1835,
+        "y": -0.002,
+        "z": 0.141
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.76,
+        "g": 0.61,
+        "b": 0.37
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Second clip at 2.933\u20134.7 s clearly exposes the matching right wall and square box construction."
+    },
+    {
+      "name": "upper_drawer_back_wall",
+      "link": "upper_drawer",
+      "geometry": {
+        "kind": "box",
+        "size": {
+          "x": 0.36,
+          "y": 0.007,
+          "z": 0.072
+        }
+      },
+      "position": {
+        "x": 0.0,
+        "y": 0.0925,
+        "z": 0.141
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.74,
+        "g": 0.58,
+        "b": 0.33
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "A straight full-width rear wall is visible across the open detached drawer throughout the second clip."
+    },
+    {
+      "name": "upper_drawer_white_pull",
+      "link": "upper_drawer",
+      "geometry": {
+        "kind": "rounded_box",
+        "size": {
+          "x": 0.198,
+          "y": 0.03,
+          "z": 0.021
+        },
+        "radius": 0.003
+      },
+      "position": {
+        "x": 0.0,
+        "y": -0.123,
+        "z": 0.137
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.94,
+        "g": 0.95,
+        "b": 0.92
+      },
+      "roughness": 0.34,
+      "metallic": 0.0,
+      "evidence": "Second clip shows an off-white broad projecting pull, about half the drawer width, with softly rounded edges."
+    },
+    {
+      "name": "lower_left_drawer_box",
+      "link": "lower_left_drawer",
+      "geometry": {
+        "kind": "rounded_container",
+        "size": {
+          "x": 0.18,
+          "y": 0.196,
+          "z": 0.075
+        },
+        "corner_radius": 0.008,
+        "wall_thickness": 0.006,
+        "base_thickness": 0.005,
+        "bottom_inset": 0.0,
+        "edge_radius": 0.001
+      },
+      "position": {
+        "x": -0.097,
+        "y": -0.002,
+        "z": 0.012
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.76,
+        "g": 0.61,
+        "b": 0.37
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Left lower sliding drawer is identified by the first clip and description; its hidden floor and walls follow the visible larger drawer's bamboo construction."
+    },
+    {
+      "name": "lower_left_drawer_front",
+      "link": "lower_left_drawer",
+      "geometry": {
+        "kind": "rounded_box",
+        "size": {
+          "x": 0.186,
+          "y": 0.011,
+          "z": 0.078
+        },
+        "radius": 0.0006
+      },
+      "position": {
+        "x": -0.095,
+        "y": -0.1045,
+        "z": 0.051
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.73,
+        "g": 0.57,
+        "b": 0.33
+      },
+      "roughness": 0.48,
+      "metallic": 0.0,
+      "evidence": "First clip frontal views show a plain inset rectangular left drawer front with a narrow perimeter gap."
+    },
+    {
+      "name": "lower_left_pull_mount",
+      "link": "lower_left_drawer",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.009,
+        "height": 0.004
+      },
+      "position": {
+        "x": -0.095,
+        "y": -0.112,
+        "z": 0.052
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.18,
+        "g": 0.15,
+        "b": 0.11
+      },
+      "roughness": 0.42,
+      "metallic": 0.75,
+      "evidence": "A small dark circular ornamental mounting plate sits near the center of the left drawer front."
+    },
+    {
+      "name": "lower_left_ring_pull",
+      "link": "lower_left_drawer",
+      "geometry": {
+        "kind": "torus",
+        "major_radius": 0.0085,
+        "minor_radius": 0.0015
+      },
+      "position": {
+        "x": -0.095,
+        "y": -0.1148,
+        "z": 0.0445
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.2,
+        "g": 0.17,
+        "b": 0.12
+      },
+      "roughness": 0.38,
+      "metallic": 0.8,
+      "evidence": "First clip shows a small open metal ring hanging below the left circular mount."
+    },
+    {
+      "name": "lower_right_drawer_box",
+      "link": "lower_right_drawer",
+      "geometry": {
+        "kind": "rounded_container",
+        "size": {
+          "x": 0.18,
+          "y": 0.196,
+          "z": 0.075
+        },
+        "corner_radius": 0.008,
+        "wall_thickness": 0.006,
+        "base_thickness": 0.005,
+        "bottom_inset": 0.0,
+        "edge_radius": 0.001
+      },
+      "position": {
+        "x": 0.097,
+        "y": -0.002,
+        "z": 0.012
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.76,
+        "g": 0.61,
+        "b": 0.37
+      },
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "evidence": "Right lower sliding drawer is visible closed throughout the first clip; hidden floor and walls are inferred symmetrically."
+    },
+    {
+      "name": "lower_right_drawer_front",
+      "link": "lower_right_drawer",
+      "geometry": {
+        "kind": "rounded_box",
+        "size": {
+          "x": 0.186,
+          "y": 0.011,
+          "z": 0.078
+        },
+        "radius": 0.0006
+      },
+      "position": {
+        "x": 0.095,
+        "y": -0.1045,
+        "z": 0.051
+      },
+      "rotation_deg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.74,
+        "g": 0.58,
+        "b": 0.34
+      },
+      "roughness": 0.48,
+      "metallic": 0.0,
+      "evidence": "First clip frontal and right-oblique views show a matching lower-right bamboo front separated by a narrow center seam."
+    },
+    {
+      "name": "lower_right_pull_mount",
+      "link": "lower_right_drawer",
+      "geometry": {
+        "kind": "cylinder",
+        "radius": 0.009,
+        "height": 0.004
+      },
+      "position": {
+        "x": 0.095,
+        "y": -0.112,
+        "z": 0.052
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.18,
+        "g": 0.15,
+        "b": 0.11
+      },
+      "roughness": 0.42,
+      "metallic": 0.75,
+      "evidence": "Right drawer carries a matching dark circular mounting plate, clearly visible in the first clip."
+    },
+    {
+      "name": "lower_right_ring_pull",
+      "link": "lower_right_drawer",
+      "geometry": {
+        "kind": "torus",
+        "major_radius": 0.0085,
+        "minor_radius": 0.0015
+      },
+      "position": {
+        "x": 0.095,
+        "y": -0.1148,
+        "z": 0.0445
+      },
+      "rotation_deg": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "color": {
+        "r": 0.2,
+        "g": 0.17,
+        "b": 0.12
+      },
+      "roughness": 0.38,
+      "metallic": 0.8,
+      "evidence": "The right handle is also an open dark metal ring rather than a solid knob."
+    }
+  ],
+  "articulation": {
+    "root": "frame",
+    "fixed_base": true,
+    "links": [
+      {
+        "name": "frame",
+        "mass_fraction": 0.55
+      },
+      {
+        "name": "upper_drawer",
+        "mass_fraction": 0.21
+      },
+      {
+        "name": "lower_left_drawer",
+        "mass_fraction": 0.12
+      },
+      {
+        "name": "lower_right_drawer",
+        "mass_fraction": 0.12
+      }
+    ],
+    "joints": [
+      {
+        "name": "upper_drawer_joint",
+        "parent": "frame",
+        "child": "upper_drawer",
+        "kind": "prismatic",
+        "axis": "-Y",
+        "origin": {
+          "x": 0.0,
+          "y": 0.096,
+          "z": 0.141
+        },
+        "lower": 0.0,
+        "upper": 0.145,
+        "damping": 3.0,
+        "max_effort": 87.0
+      },
+      {
+        "name": "lower_left_drawer_joint",
+        "parent": "frame",
+        "child": "lower_left_drawer",
+        "kind": "prismatic",
+        "axis": "-Y",
+        "origin": {
+          "x": -0.097,
+          "y": 0.096,
+          "z": 0.051
+        },
+        "lower": 0.0,
+        "upper": 0.14,
+        "damping": 3.0,
+        "max_effort": 87.0
+      },
+      {
+        "name": "lower_right_drawer_joint",
+        "parent": "frame",
+        "child": "lower_right_drawer",
+        "kind": "prismatic",
+        "axis": "-Y",
+        "origin": {
+          "x": 0.097,
+          "y": 0.096,
+          "z": 0.051
+        },
+        "lower": 0.0,
+        "upper": 0.14,
+        "damping": 3.0,
+        "max_effort": 87.0
+      }
+    ]
+  },
+  "semantics": {
+    "name": "cabinet",
+    "description": "Wooden cabinet with one wide white-handled top drawer and two small lower drawers with ring pulls",
+    "axes": [
+      {
+        "name": "up",
+        "direction": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "description": "up"
+      },
+      {
+        "name": "forward",
+        "direction": {
+          "x": 0,
+          "y": -1,
+          "z": 0
+        },
+        "description": "the front of the cabinet"
+      }
+    ],
+    "frames": [
+      {
+        "body": "upper_drawer",
+        "rotation_deg": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "joint": "upper_drawer_joint",
+        "opening_direction": "positive",
+        "name": "top_drawer_handle_frame",
+        "role": "grasp",
+        "part": "upper_drawer_white_pull",
+        "description": "Grasp frame at the middle of the top drawer white handle bar",
+        "position": {
+          "x": 0,
+          "y": -0.123,
+          "z": 0.137
+        },
+        "axes": [
+          {
+            "name": "bar",
+            "direction": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "description": "the handle bar direction"
+          },
+          {
+            "name": "approach",
+            "direction": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "description": "the approach direction toward the cabinet"
+          }
+        ],
+        "evidence": "Located from the video-derived handle geometry; grasp position and dimensions remain estimates."
+      },
+      {
+        "body": "upper_drawer",
+        "rotation_deg": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "joint": "upper_drawer_joint",
+        "opening_direction": "positive",
+        "name": "top_drawer_center_frame",
+        "role": "center",
+        "part": null,
+        "description": "Center frame of the top drawer usable interior",
+        "position": {
+          "x": 0,
+          "y": -0.0055,
+          "z": 0.1435
+        },
+        "size": {
+          "x": 0.36,
+          "y": 0.189,
+          "z": 0.067
+        },
+        "axes": [
+          {
+            "name": "up",
+            "direction": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "description": "up from the drawer floor"
+          },
+          {
+            "name": "insertion",
+            "direction": {
+              "x": 0,
+              "y": 0,
+              "z": -1
+            },
+            "description": "the insertion direction into the open drawer"
+          }
+        ],
+        "evidence": "Computed from reconstructed inner walls and floor; usable dimensions are estimates, not measurements."
+      },
+      {
+        "body": "lower_left_drawer",
+        "rotation_deg": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "joint": "lower_left_drawer_joint",
+        "opening_direction": "positive",
+        "name": "lower_left_drawer_handle_frame",
+        "role": "grasp",
+        "part": "lower_left_ring_pull",
+        "description": "Grasp frame on the lower arc of the lower left drawer ring pull",
+        "position": {
+          "x": -0.095,
+          "y": -0.1148,
+          "z": 0.036
+        },
+        "axes": [
+          {
+            "name": "bar",
+            "direction": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "description": "the tangent of the ring at the grasp point"
+          },
+          {
+            "name": "approach",
+            "direction": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "description": "the approach direction toward the cabinet"
+          }
+        ],
+        "evidence": "Located from the video-derived handle geometry; grasp position and dimensions remain estimates."
+      },
+      {
+        "body": "lower_left_drawer",
+        "rotation_deg": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "joint": "lower_left_drawer_joint",
+        "opening_direction": "positive",
+        "name": "lower_left_drawer_center_frame",
+        "role": "center",
+        "part": null,
+        "description": "Center frame of the lower left drawer usable interior",
+        "position": {
+          "x": -0.097,
+          "y": -0.002,
+          "z": 0.052
+        },
+        "size": {
+          "x": 0.168,
+          "y": 0.184,
+          "z": 0.07
+        },
+        "axes": [
+          {
+            "name": "up",
+            "direction": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "description": "up from the drawer floor"
+          },
+          {
+            "name": "insertion",
+            "direction": {
+              "x": 0,
+              "y": 0,
+              "z": -1
+            },
+            "description": "the insertion direction into the open drawer"
+          }
+        ],
+        "evidence": "Computed from reconstructed inner walls and floor; usable dimensions are estimates, not measurements."
+      },
+      {
+        "body": "lower_right_drawer",
+        "rotation_deg": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "joint": "lower_right_drawer_joint",
+        "opening_direction": "positive",
+        "name": "lower_right_drawer_handle_frame",
+        "role": "grasp",
+        "part": "lower_right_ring_pull",
+        "description": "Grasp frame on the lower arc of the lower right drawer ring pull",
+        "position": {
+          "x": 0.095,
+          "y": -0.1148,
+          "z": 0.036
+        },
+        "axes": [
+          {
+            "name": "bar",
+            "direction": {
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            "description": "the tangent of the ring at the grasp point"
+          },
+          {
+            "name": "approach",
+            "direction": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "description": "the approach direction toward the cabinet"
+          }
+        ],
+        "evidence": "Located from the video-derived handle geometry; grasp position and dimensions remain estimates."
+      },
+      {
+        "body": "lower_right_drawer",
+        "rotation_deg": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "joint": "lower_right_drawer_joint",
+        "opening_direction": "positive",
+        "name": "lower_right_drawer_center_frame",
+        "role": "center",
+        "part": null,
+        "description": "Center frame of the lower right drawer usable interior",
+        "position": {
+          "x": 0.097,
+          "y": -0.002,
+          "z": 0.052
+        },
+        "size": {
+          "x": 0.168,
+          "y": 0.184,
+          "z": 0.07
+        },
+        "axes": [
+          {
+            "name": "up",
+            "direction": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "description": "up from the drawer floor"
+          },
+          {
+            "name": "insertion",
+            "direction": {
+              "x": 0,
+              "y": 0,
+              "z": -1
+            },
+            "description": "the insertion direction into the open drawer"
+          }
+        ],
+        "evidence": "Computed from reconstructed inner walls and floor; usable dimensions are estimates, not measurements."
+      }
+    ]
+  }
+}

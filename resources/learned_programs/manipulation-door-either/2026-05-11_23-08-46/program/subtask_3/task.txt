@@ -1,0 +1,1 @@
+[Manipulate] With the gripper closed on right_door_nob_frame, rotate the door fully open by sweeping the gripper in an arc around right_door_hinge_frame's local +z axis until the right cabinet door is fully open.

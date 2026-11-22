@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is a grasped-object pull: object_grasped with gripper_closed requires the handle to remain physically held with the gripper closed, freeze_orientation keeps the panda_fingertip orientation fixed at the stage-start orientation within 5 degrees, and directional_move commands the grasped top_drawer_handle_frame to move 0.14 m along its local -y opening direction. The directional_move condition includes both geometry and manipulator_high_effort to represent stopping either when the geometric opening displacement is reached or when high end-effector interaction effort indicates a hard drawer stop. Exact bilateral finger contact, sustained finger squeeze effort feedback, and the separate 0.01 m fingertip-to-handle origin coupling cannot be independently encoded without unsupported finger-effort terms or an additional position constraint; they are represented as far as possible by object_grasped and by moving the gripped object.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "top_drawer_handle_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

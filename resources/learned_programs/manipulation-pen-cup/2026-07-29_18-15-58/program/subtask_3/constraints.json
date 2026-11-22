@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This single stage lifts the currently grasped marker by commanding the panda_fingertip to move 0.15 m along world +z with a 0.02 m completion tolerance. The panda_fingertip orientation is frozen at the stage-start orientation with a 5 degree tolerance, representing preservation of its tool +z and +y directions. The grasp/closed-hold requirement is represented with object_grasped, rather than close_gripper, because the stage requires the marker to remain physically held with sustained grasp feedback. Marker motion with the gripper and no observed slip are represented only indirectly by object_grasped; explicit slip monitoring, marker/table feedback monitoring, and gripper contact/effort details are not separately expressible by the available operators. No marker-table longest-extent clearance constraint is emitted, consistent with the instruction to use only the 0.15 m lift as the clearance goal.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

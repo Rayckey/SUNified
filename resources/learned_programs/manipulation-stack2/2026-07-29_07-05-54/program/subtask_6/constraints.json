@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage is encoded as a conjunctive controller stage: hold the panda_fingertip pose fixed while opening the gripper. freeze_position represents keeping the fingertip origin at its start-of-stage position with 0.01 m tolerance. freeze_orientation represents keeping the current full fingertip orientation fixed; the requested 0.05 rad orientation preservation is encoded directly. open_gripper represents commanding the finger joints toward the open/released state and is labeled gripper_opened for success feedback. The requirement to avoid end-effector translation/rotation is covered by the freeze constraints. Unrepresented clauses: explicit monitoring is not an available constraint op; cube_1 resting/contact consistency with cube_2 and no intentional cube-relative motion cannot be directly expressed with the available ops without adding another position/contact relation; finger contact effort/loss of firm bilateral grasp is not represented because available effort labels are for manipulator/TCP effort, not finger squeeze/contact effort.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

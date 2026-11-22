@@ -1,0 +1,84 @@
+{
+  "name": "estop_open_best_ema_front_close_screenshot",
+  "date_created": "2026-05-16",
+  "purpose": "Recreate the final clean and debug-frame screenshots for FR3FinRay EStop-Open using the best EMA/success checkpoint and a close front camera on the released button.",
+  "task": "FR3-FinRay-Table-EStop-Open-ff",
+  "seed": 20260516,
+  "deterministic_policy": true,
+  "camera_bank": "best",
+  "selected_view": "front_close_estop_open_action",
+  "camera_spec": {
+    "offset_xyz": [
+      0.1,
+      -0.72,
+      0.5
+    ],
+    "target_bias_xyz": [
+      0.0,
+      0.05,
+      0.05
+    ],
+    "focal_length": 28.0
+  },
+  "resolved_camera_pose_from_final_run": {
+    "eye_xyz": [
+      0.5461747050285339,
+      -0.7588058114051819,
+      0.618384599685669
+    ],
+    "target_xyz": [
+      0.4461747109889984,
+      0.011194232851266861,
+      0.16838456690311432
+    ],
+    "focal_length": 28.0
+  },
+  "policy_inputs": {
+    "checkpoint": "Residuals/FR3-FinRay-Table-EStop-Open-ff/2026-04-30_12-01-28/rl_runs/2026-04-30_21-35-13_Run-0/nn/last_Open-FR3FinRay-EStop_ep_1100_rew__4772.532_.pth",
+    "prior_checkpoint": "Priors/thor/estop_open/estop_open_chunking_15_ff/best.pth",
+    "prior_mode": "residual_rl",
+    "weights_params_json": "Residuals/FR3-FinRay-Table-EStop-Open-ff/2026-04-30_12-01-28/best.json"
+  },
+  "render_settings": {
+    "capture_backend": "viewport",
+    "headless": true,
+    "device": "cuda:0",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "max_steps": 180,
+    "video_every": 1,
+    "no_video": true,
+    "viewport_settle_frames": 2,
+    "screenshot_steps": "137"
+  },
+  "final_outputs": {
+    "clean_run_dir": "outputs/media/estop_open_best_ema/2026-05-16_17-01-10_best_clean_seed20260516",
+    "clean_final_screenshot": "outputs/media/estop_open_best_ema/2026-05-16_17-01-10_best_clean_seed20260516/screenshots/front_close_estop_open_action/final.png",
+    "clean_step_screenshot": "outputs/media/estop_open_best_ema/2026-05-16_17-01-10_best_clean_seed20260516/screenshots/front_close_estop_open_action/step_0137.png",
+    "debugframes_run_dir": "outputs/media/estop_open_best_ema/2026-05-16_17-02-19_best_debugframes_seed20260516",
+    "debugframes_final_screenshot": "outputs/media/estop_open_best_ema/2026-05-16_17-02-19_best_debugframes_seed20260516/screenshots/front_close_estop_open_action/final.png",
+    "debugframes_step_screenshot": "outputs/media/estop_open_best_ema/2026-05-16_17-02-19_best_debugframes_seed20260516/screenshots/front_close_estop_open_action/step_0137.png",
+    "success_policy_step": 137
+  },
+  "capture_notes": {
+    "legacy_constraint_validation": "The EStop-Open program predates the current directional_rotate/axis_align conflict validator. capture_estop_open_best_ema_media.py applies a media-local compatibility patch only for EStop-Open playback so the checkpoint can load without editing the program base or global validator.",
+    "viewport_timing": "Repeated viewport screenshots can perturb this sensitive twist rollout. The final recipe captures one scheduled viewport still at policy step 137 with VIEWPORT_SETTLE_FRAMES=2; this preserves the verified done step and gives the close camera time to apply.",
+    "sensor_backend": "The sensor backend verifies the same seed/checkpoint reaches done, but the RGB task camera framing is not usable for the show artifact in this checkout.",
+    "video_capture": "The final recipe is screenshot-only by default. Enable NO_VIDEO=0 after confirming timing if a video is needed."
+  },
+  "candidate_sweeps": {
+    "sensor_quick_success_no_screenshots": "outputs/media/estop_open_best_ema/2026-05-16_16-52-11_best_clean_seed20260516",
+    "front_viewport_framing_sweep": "outputs/media/estop_open_best_ema/2026-05-16_16-53-06_front_estop_close_clean_seed20260516",
+    "sensor_close_success_bad_rgb_framing": "outputs/media/estop_open_best_ema/2026-05-16_16-54-56_front_estop_close_clean_seed20260516",
+    "viewport_no_screenshots_success": "outputs/media/estop_open_best_ema/2026-05-16_16-56-03_best_clean_seed20260516",
+    "best_clean_verified": "outputs/media/estop_open_best_ema/2026-05-16_17-01-10_best_clean_seed20260516",
+    "best_debug_verified": "outputs/media/estop_open_best_ema/2026-05-16_17-02-19_best_debugframes_seed20260516"
+  },
+  "source_scripts": {
+    "capture_python": "src/kuafu/data/collection/capture_estop_open_best_ema_media.py",
+    "capture_wrapper": "src/kuafu/data/collection/capture_estop_open_best_ema_media.sh",
+    "collection_loop": "src/kuafu/data/collection/collect_and_upload_loop_estop_open_best_ema.sh",
+    "recreate_wrapper": "resources/media/estop_open_media/recreate_estop_open_media.sh"
+  }
+}

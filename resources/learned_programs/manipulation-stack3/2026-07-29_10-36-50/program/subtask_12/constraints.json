@@ -1,0 +1,49 @@
+{
+    "Reasoning": "The stage is encoded conjunctively. The reach_point term moves the currently gripped cube_3 origin to the pre-placement alignment point 0.15 m above cube_2 in the world frame with the required 0.01 m tolerance. The axis_align term enforces the allowed bipolar relation between cube_3 +z and cube_2 +z for symmetric-cube placement orientation. The object_grasped term, labeled gripper_closed, represents maintaining the closed grasp state and requiring cube_3 to remain held by the gripper rather than merely commanding finger closure. Detailed bilateral finger effort/contact levels, exact stable finger joint positions, no commanded opening, continuous no-slip detection, continuous non-contact clearance inequalities from cube_1/cube_2, passive maintenance of cube_2 on cube_1, and explicit feedback-stream monitoring are not directly representable with the available term API. The final target implies the desired 0.15 m vertical separation from cube_2 at success, but pathwise clearance and cube_1 distance inequalities cannot be encoded.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "object",
+                "reference_origin": "cube_2",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

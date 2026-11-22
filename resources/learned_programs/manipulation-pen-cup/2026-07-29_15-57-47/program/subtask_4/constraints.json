@@ -1,0 +1,44 @@
+{
+    "Reasoning": "Use one position goal for the carried marker: its center must reach the non-contact staging point at pen_holder +z offset 0.2235 m in the pen_holder frame with 0.01 m tolerance. Maintain the marker in the gripper with the gripper closed by requiring object_grasped, rather than a simple close_gripper command. Freeze the marker orientation to avoid intentional reorientation during transport. Unrepresented details: the API cannot directly encode continuous table-clearance inequality along the whole path, continuous non-contact separation monitoring beyond the final offset target, exact 5 degree orientation tolerance because freeze_orientation has fixed supported tolerance, explicit finger joint position near 0.0, finger effort/contact feedback thresholds, or the exact start-of-stage relative pose constraint between panda_fingertip and marker.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.2235
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

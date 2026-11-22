@@ -1,0 +1,1 @@
+[Release] Open the gripper to release marker at pen_holder while keeping both the gripper position and orientation fixed.

@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is a single conjunctive retract controller step. The explicit 0.15 m world +z retract of the panda_fingertip is represented by a directional_move from the current pose, with 0.01 m tolerance and a manipulator_low_effort condition to reflect free-space/no unintended contact feedback during the retract. The previous release orientation is preserved with freeze_orientation at the requested 0.05 rad tolerance, without adding any new tool-axis alignment constraint. The gripper-open requirement is represented by open_gripper with the gripper_opened condition. The cube stack pose maintenance requirements, exact cube-to-cube support contact intent, object-pose feedback monitoring, explicit minimum separation inequalities from cube_3/cube_2/cube_1, individual finger joint value 1.0, and gripper effort/contact feedback relative to cube_3 cannot be directly represented with the available flat term API; they are therefore omitted rather than approximated with unsupported terms.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

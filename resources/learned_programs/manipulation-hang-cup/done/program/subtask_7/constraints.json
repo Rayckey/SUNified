@@ -1,0 +1,37 @@
+{
+    "Reasoning": "Success for this subtask is defined as releasing mug_rim_frame_0 by fully opening the gripper fingers, while explicitly keeping the end-effector (panda_fingertip) position and orientation fixed relative to the agent frame throughout the release. Continuous monitoring for loss of grip (effort/contact) is implied, but the subtask ends when the mug is disengaged and hanging only by its handle. Thus, the constraints are: (1) freeze the panda_fingertip position to prevent movement during the release; (2) freeze the orientation to prevent rotation; (3) open the gripper fingers. These constraints are combined with 'and' because all must be satisfied: the gripper can only release while the end-effector pose remains fixed. Constraint order reflects this: position and orientation freezing first, followed by the release action.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

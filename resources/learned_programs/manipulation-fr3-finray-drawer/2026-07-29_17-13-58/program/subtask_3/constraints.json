@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is a pull while maintaining an existing grasp. The directional_move encodes the 0.14 m outward pull along top_drawer_handle_frame -y with 0.01 m completion tolerance; its condition includes both geometry and manipulator_high_effort to represent the specified stop condition: complete geometrically, or stop if high effort indicates a mechanical stop before completion. freeze_orientation keeps panda_fingertip at its stage-start orientation within 0.05 rad. object_grasped represents continued physical holding of the grasped handle with the gripper closed. The API cannot explicitly encode opposing fingertip contact direction, finger effort feedback distinct from arm effort, continuous monitoring signals, or the 0.01 m no-slip relative transform between top_drawer_handle_frame and panda_fingertip; these are therefore represented only indirectly by object_grasped and noted here as unrepresented details. The coupled motion of top_drawer_center_frame is implied by pulling the grasped drawer handle but cannot be separately constrained because only one position op is allowed.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "top_drawer_handle_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

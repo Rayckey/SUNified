@@ -1,0 +1,1 @@
+[Manipulate] Lift marker away from table to create clearance with the gripper closed while keeping the gripper orientation fixed.

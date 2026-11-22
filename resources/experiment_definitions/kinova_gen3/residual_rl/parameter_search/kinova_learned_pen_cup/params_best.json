@@ -1,0 +1,176 @@
+{
+  "kind": "initial_constraint_sweep",
+  "stages": {
+    "0": {
+      "diagnosis": "{\"0\": \"reach_point to a specific non-contact pre-grasp standoff 0.11 m above the marker center; this is pre-contact setup for immediate top-down approach, so use setup positional tolerance rather than travel-distance scaling.\", \"1\": \"axis_align for top-down approach orientation relative to world; open-gripper pre-grasp setup where small rotation is acceptable for current-stage validity.\", \"2\": \"axis_align for tool-y orthogonal to marker long axis; pre-grasp alignment for later grasp setup, not current fit/insertion/contact validity.\", \"3\": \"open_gripper state validity during approach.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "Component 0 is a non-contact pre-contact/pre-grasp standoff target, not a free-space carry waypoint and not final contact/fit, so tolerance_m = 0.03 by the setup rule. Components 1 and 2 are angular setup constraints during open-gripper approach; a bit of hand rotation would still leave this stage physically valid because the current success is reaching the standoff above the marker without contact, so both use tolerance_rad = 0.50 rather than a mission-critical angular tolerance. Weights emphasize the positional pre-grasp target as primary progress, keep orientation terms moderate as supporting setup terms, and keep gripper-open validity important but not dominant.",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.5
+      }
+    },
+    "1": {
+      "diagnosis": "{\"0\": \"axis_align top-down approach orientation for open-gripper first-contact approach; angular maintenance is not mission-critical if the hand rotates a bit during this stage, so use broad angular tolerance 0.50 rad.\", \"1\": \"axis_align gripper-y orthogonal to marker length axis for grasp-preparation alignment during approach; still an open-gripper pre-contact alignment term, so use broad angular tolerance 0.50 rad.\", \"2\": \"open_gripper state-validity component; no tunable tolerance.\", \"3\": \"reach_distance to marker center serves as the stop-near-contact proximity condition for a top-down first-contact approach to a small/slender body (marker diameter about 0.024 m). Direct contact/approach size cap uses s/2 -> 0.012 m, clamped to 0.012 m.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_rad": 0.5
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "3": {
+          "tolerance_m": 0.012
+        }
+      },
+      "reasoning": "The marker is small/slender because its grasp-relevant cross-section is about 0.024 m. Component 3 is the only positional success check and corresponds to first-contact/near-contact approach toward the marker center, not a broad free-space waypoint and not receiver placement. By the direct first-contact rule with known relevant size s=0.024 m, tolerance_m=max(0.01,min(0.03,s/2))=0.012. For components 0 and 1, this stage is still physically valid if the hand rotates a bit: the goal is approaching in an open-gripper top-down configuration before grasp closing, and slight rotation does not by itself invalidate current-stage success. Therefore both angular tolerances should be 0.50 rad rather than a mission-critical 0.30. Weights prioritize the proximity/contact-progress term most, because it is the primary stage-completion condition. The open-gripper state is also important but not small-feature/final-fit critical. The two orientation terms are supportive setup constraints, kept moderate and below the main progress term.",
+      "weights": {
+        "0": 1.0,
+        "1": 1.0,
+        "2": 1.5,
+        "3": 2.0
+      }
+    },
+    "2": {
+      "diagnosis": "{\"0\": \"freeze_position on robot/tool during grasp_closing with active contact on a small_or_slender_body marker; relevant grasp cross-section s=0.024 m, so positional grasp-lock cap uses s/2 -> 0.012 m, clipped to 0.012 m.\", \"1\": \"freeze_orientation on robot/tool during grasp_closing of a long/thin marker; angular control is mission-critical because noticeable tool rotation during same-stage grasp acquisition can break grasp/contact validity, so use 0.30 rad.\", \"2\": \"object_grasped state validity; grasp detection is the primary completion condition for this stage.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.012
+        },
+        "1": {
+          "tolerance_rad": 0.3
+        }
+      },
+      "reasoning": "This stage is grasp_closing, not free-space motion or release. Component 0 is a tool-pose hold during active grasp acquisition on a long/thin object with smallest grasp-relevant cross-section 0.024 m, so the positional tolerance follows the small_or_slender_body freeze_position rule: max(0.01, min(0.03, s/2)) = 0.012 m. Component 1 asks whether the current stage would still be valid if the hand rotated a bit; here the object is slender and the stage explicitly requires holding orientation fixed while closing to avoid slip/missed grasp, so angular drift can invalidate same-stage grasp/contact, making 0.30 rad appropriate. Component 2 is the actual grasp-validity state and should carry the highest weight. The two pose-hold terms support grasp acquisition and slip prevention; position is slightly more critical than orientation because translational drift more directly breaks finger placement, while orientation is still important but secondary. We keep simple init-sweep ratios without inflating all terms.",
+      "weights": {
+        "0": 2.0,
+        "1": 1.5,
+        "2": 2.5
+      }
+    },
+    "3": {
+      "diagnosis": "{\"0\": \"directional_move on the gripped marker straight upward in free space; this is coarse lift/clearance progress rather than fit-sensitive placement, so use the free-space directional translation tolerance cap.\", \"1\": \"freeze_orientation of the gripped marker relative to the tool during lift to prevent same-stage slip/relative rotation; marker is a small_or_slender body by grasp cross-section 0.024 m, so angular validity is mission-critical for this stage.\", \"2\": \"object_grasped state validity during lift; losing grasp invalidates all progress.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.3
+        }
+      },
+      "reasoning": "Component 0 is a vertical lift to create table clearance. Although the stage states at least 0.31 m, this is a free-space lift/clearance motion, not insertion, seating, actuation, or narrow-fit placement; per policy, directional_move for free-space lift uses tolerance_m = 0.05 rather than a tighter distance-based value. Component 1 is not just broad free-space hand orientation maintenance: the current stage explicitly requires the marker-tool orientation to stay fixed so the grasp does not slip during the lift. The marker's relevant grasp cross-section is 0.024 m, making it small_or_slender; a bit of rotation would break the current same-stage grasp-validity requirement, so use the smaller allowed angular tolerance 0.30 rad. Component 2 has no tunable tolerance and should be weighted highest because grasp retention is binary stage validity. Weight ratios therefore prioritize grasp validity and slip-preventing orientation over coarse upward progress: move 1.5, orientation 2.0, grasped state 2.5.",
+      "weights": {
+        "0": 1.5,
+        "1": 2.0,
+        "2": 2.5
+      }
+    },
+    "4": {
+      "diagnosis": "{\"0\": \"reach_point on gripped marker to a specific non-contact pre-placement standoff directly above the pen-holder center; receiver-related setup above an opening, so use setup/engagement positional tolerance 0.03 m rather than free-space broad waypoint or insertion-fit cap\", \"1\": \"freeze_orientation of the gripped marker during free-space transport while preserving grasp no-slip relation; current stage validity is still acceptable with some rotation because final holder-axis alignment is not yet part of this stage, so use broad angular tolerance 0.50 rad\", \"2\": \"object_grasped state validity; grasp maintenance is essential because losing the marker invalidates all progress\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"The position target is directly above a receiver opening with an immediate next-stage alignment/placement role, so this is a specific pre-engagement standoff, not just a broad carry waypoint. Per policy, such setup uses tolerance_m = 0.03. This stage is not yet insertion/seating/final placement, so no tighter receiver-fit cap is needed.\", \"1\": \"This is not current insertion, axis-fit, final object orientation validity, or rotational actuation. The component checks maintaining grasp orientation/no slip during transport, but a bit of rotation would not by itself make the current stage physically invalid because success is the marker being above the holder at safe height while still grasped. Therefore tolerance_rad = 0.50, not 0.30. Current 0.2 is below allowed range and must be relaxed.\", \"2\": \"Grasped-state preservation is a core validity term and should outweigh ordinary transport/maintenance terms. The reach-point term is primary progress for this stage, grasp state is similarly critical, and orientation maintenance is secondary because it is not mission-critical to current success. Hence weights favor components 0 and 2 over 1 without inflating all terms.\"}",
+      "weights": {
+        "0": 2.0,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "5": {
+      "diagnosis": "{\"0\": \"reach_point on manipulated-object pose to a specific non-contact pre-insertion standoff centered over a receiver/support opening; this is insertion-readiness setup, not final placement. Positional tolerance uses pre-contact/constrained-engagement setup rule: 0.03 m.\", \"1\": \"axis_align on manipulated-object longitudinal axis relative to receiver opening axis; current stage validity requires the marker be upright for immediate insertion-readiness over the holder. Angular tolerance is mission-critical fit/alignment for the current stage: 0.30 rad.\", \"2\": \"object_grasped state validity; grasp must be maintained so the manipulated object remains controlled.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.3
+        }
+      },
+      "reasoning": "Component 0 is not a broad free-space carry waypoint because the target is directly above a receiver opening with a safe standoff that prepares the next constrained insertion. The offset is a target location, not a size or progress amount. By the setup/pre-engagement rule, 0.03 m is the learnable positional tolerance. Component 1 is tighter because a bit of rotation here would make the current stage's upright-over-opening alignment invalid for insertion-readiness; this is not merely future convenience or wording, but the current success condition includes axis parallelism above the opening, so use 0.30 rad. Component 2 is a core state term since losing grasp invalidates all progress, but this is a simple grasp-maintenance stage rather than a tiny-feature grasp-lock term. Weight ratios therefore prioritize position and grasp, with axis alignment also elevated but not dominant beyond the primary setup terms.",
+      "weights": {
+        "0": 2.0,
+        "1": 1.5,
+        "2": 2.0
+      }
+    },
+    "6": {
+      "diagnosis": "{\"0\": \"Directional downward motion of the grasped marker during active insertion into a receiver/opening; this is precision directional progress because insertion depth is part of current physical success. Known travel distance d=0.10 m gives tolerance cap 0.20*d=0.02 m.\", \"1\": \"Axis alignment of the grasped marker with the holder opening axis during current insertion; this is mission-critical angular fit because rotational drift can break insertion validity in the current stage.\", \"2\": \"Object grasp state validity during insertion; secure grasp is required throughout active receiver placement.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.02
+        },
+        "1": {
+          "tolerance_rad": 0.3
+        }
+      },
+      "reasoning": "Component 0 is not a coarse lowering waypoint: the current stage succeeds only if the marker is actually inserted to sufficient depth into the holder, so use precision directional translation with known d=0.10 m -> tolerance_m = max(0.01, min(0.05, 0.20*d)) = 0.02. Component 1 is an angular validity term for active insertion of a long/slender, axis-critical object into an opening, so a bit of rotation would make the current stage invalid; use the smaller allowed tolerance, 0.30 rad. Component 2 is a grasp-validity state term during active insertion and should be weighted strongly because losing grasp invalidates all progress. Weight ratios: make insertion progress primary, orientation and grasp also strong but not inflated beyond the core insertion term.",
+      "weights": {
+        "0": 2.5,
+        "1": 2.0,
+        "2": 2.5
+      }
+    },
+    "7": {
+      "diagnosis": "{\"0\": \"freeze_position on robot/tool pose during open-gripper release; this is a release hold near a freestanding placed object to avoid dragging/knocking the marker, so use near_contact_release_hold tolerance_m=0.03.\", \"1\": \"freeze_orientation on robot/tool pose during open-gripper release; small hand rotation is acceptable if the marker is already supported in the holder, so use non-mission-critical angular tolerance_rad=0.50.\", \"2\": \"open_gripper state validity for completing release; important because release/open state defines stage completion.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "This stage is a supported_or_attached_release / near-contact release, not active insertion or force transmission. Component 0 is explicitly a tool-pose freeze during gripper opening, so release logic takes precedence over small-feature or insertion-fit logic. Because the tool is still next to a freestanding placed marker that could be disturbed before clean separation, a moderate hold is appropriate: tolerance_m=0.03. Component 1 is also a tool-pose hold during release, not final object orientation validity and not a current insertion/fit axis check; if the hand rotates a bit while opening, the release can still be physically valid, so tolerance_rad=0.50. Weights keep open_gripper as the primary completion signal, while position/orientation guards remain supportive but secondary. Position hold is slightly more important than orientation hold because unintended translation is the more direct way to drag the marker during release.",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "8": {
+      "diagnosis": "{\"0\": \"Gripper-state validity during post-release retract; no tunable tolerance.\", \"1\": \"Post-release free-space retract of robot/tool upward by 0.15 m to clear the placed marker and holder; classified as retract_or_clearance_progress/coarse directional translation, so use broad retract tolerance_m = 0.05.\", \"2\": \"Robot/tool orientation hold during open-gripper post-release retract; classified as non-critical free-space orientation maintenance/tool_release_guard, so use tolerance_rad = 0.50.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_m": 0.05
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "This stage occurs after the object has been released into its receiver/support, and the current physical goal is simply to back the open tool away without re-contact. The directional_move is a retract/clearance motion, not receiver placement or insertion validity, so per precedence the positional tolerance should be the free-space retract value 0.05 rather than a tight fraction of the 0.15 m travel or the previous 0.01 setting. The freeze_orientation is on the tool during post-release retract; a bit of hand rotation would still leave the stage physically valid as long as the tool backs away in free space, so the angular tolerance should be 0.50 rather than a mission-critical value. Weighting keeps the main stage-defining terms slightly above default: open gripper is important because closing would invalidate release, and the upward retract motion is the primary progress term. Orientation maintenance is auxiliary here and should not outweigh the retract motion.",
+      "weights": {
+        "0": 1.5,
+        "1": 1.5,
+        "2": 1.0
+      }
+    }
+  },
+  "task": "Kinova-Table-Gen3-Pen-Cup-fff3"
+}

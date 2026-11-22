@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is represented as one conjunctive controller stage. The gripper is commanded/kept open to represent the released fully open state. The retract motion is encoded as a 0.15 m directional move of panda_fingertip along its current tool -z axis, with 0.01 m completion tolerance; the manipulator_high_effort condition is included on this motion term to represent the requested early stop on unexpected/unsafe contact effort. The end-effector orientation is frozen within 5 degrees during the retract. The requested numeric finger joint targets near 1.0 and finger contact/effort free-space feedback are only partially represented by open_gripper because this API has no explicit finger-joint or finger-contact constraint. The can upright monitoring, no can translation/rotation, and final fingertip-to-can separation inequality are omitted because the API has no valid constraint for monitoring or freezing an ungripped object and no distance-inequality/non-contact operator.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "robot_frame",
+                "reference_origin": "panda_fingertip",
+                "axis": "-z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        }
+    ]
+}

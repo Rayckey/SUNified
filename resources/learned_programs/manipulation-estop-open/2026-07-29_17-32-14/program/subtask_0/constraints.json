@@ -1,0 +1,49 @@
+{
+    "Reasoning": "This stage is a non-contact pre-approach. The gripper is commanded open with open_gripper. The fingertip tool +z is aligned antiparallel to estop_cap_center object +z using axis_align, while no constraint is added about tool +y or rotation about the symmetric object +z axis. The fingertip origin is commanded to the standoff point 0.12 m along estop_cap_center +z in the object frame with a 0.01 m tolerance. Non-contact clearance is represented by this positive standoff offset; there is no separate collision-clearance primitive beyond the pose goal.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

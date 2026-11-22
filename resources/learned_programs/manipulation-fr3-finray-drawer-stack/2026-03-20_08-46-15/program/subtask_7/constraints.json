@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The current subtask is to move the open gripper downward along world -z to make contact with the strawberry_center_frame origin, while keeping orientation fixed and gripper open.\n\nKey constraints:\n1. Gripper state: keep gripper open (open_gripper).\n2. Orientation: freeze orientation (no angular velocity, keep top-down approach orientation fixed).\n3. Positional goal: reach the strawberry_center_frame origin with no standoff offset \u2014 use directional_move along world -z by 0.12 m (the stated gap). This is explicitly \"translate along world -z by 0.12 m gap\", so directional_move is appropriate.\n4. Stop on contact: this is a termination condition (manipulator_high_effort or gripper effort rises). The condition field captures this as metadata; the \"or\" logic with manipulator_high_effort reflects the \"stop when contact detected\" alternative to completing the full travel.\n\nLogic structure:\n- open_gripper: \"and\" \u2014 must hold throughout\n- freeze_orientation: \"and\" \u2014 must hold throughout\n- directional_move along world -z by 0.12 m: \"or\" with manipulator_high_effort \u2014 stop when either full travel is reached OR contact is detected\n\nActually, re-reading the rules: \"Use 'or' in logic only when the subtask language implies alternatives.\" The subtask says \"Stop when contact/effort feedback rises above free-space baseline\" \u2014 this is an explicit alternative stopping condition (reach target OR contact detected). So the directional_move should be \"or\" combined with a manipulator_high_effort condition.\n\nBut the constraint model says condition is metadata only and doesn't enforce success. The \"or\" logic combines the accumulated boolean with the next constraint. So:\n\nConstraint 1 (open_gripper, \"and\"): gripper open\nConstraint 2 (freeze_orientation, \"and\"): orientation fixed\nConstraint 3 (directional_move, \"or\"): move along world -z by 0.12 m \u2014 this is the primary positional goal, combined with \"or\" to allow contact to also satisfy success\nConstraint 4 (manipulator_high_effort, \"or\"): contact detected \u2014 this is the alternative stopping condition\n\nWait, but the condition field is metadata only. The logic \"or\" between constraint 3 and 4 means success = (result_so_far OR constraint4_result). But constraint 4 needs an op. The manipulator_high_effort is a condition label, not an op. I need to think about how to encode the contact stopping condition.\n\nLooking at the model again: condition is metadata. The ops available don't include a \"detect_contact\" op. The closest I can do is use the condition label \"manipulator_high_effort\" on the directional_move constraint itself, indicating it should stop on contact. The \"or\" logic on a subsequent constraint with manipulator_high_effort condition would need an op.\n\nActually, I think the best approach is:\n- Constraint 1: open_gripper, \"and\"\n- Constraint 2: freeze_orientation, \"and\" \n- Constraint 3: directional_move along world -z by 0.12 m, condition=[\"geometry\", \"manipulator_high_effort\"], \"and\" \u2014 the condition metadata signals that contact detection is also a termination criterion\n\nThe rules say I can use \"or\" only for explicit alternatives. The subtask does say \"cease translational motion as soon as contact is detected\" as an alternative to completing the full 0.12m travel. So I should encode this with \"or\" logic. But I need an op for the contact constraint. Since there's no dedicated contact op, I'll put the manipulator_high_effort condition on the directional_move itself and note in reasoning that the contact stopping condition cannot be fully represented by TermAPI.\n\nFinal structure:\n1. open_gripper, \"and\", condition=[\"gripper_opened\"]\n2. freeze_orientation, \"and\", condition=[\"geometry\"]  \n3. directional_move along world -z 0.12m, \"and\", condition=[\"geometry\", \"manipulator_high_effort\"] \u2014 the manipulator_high_effort condition signals contact is an alternative stop\n\nThis is the cleanest representation given the TermAPI limitations.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "strawberry_center_frame",
+                "axis": "-z",
+                "travel_distance_m": 0.12,
+                "tolerance_m": 0.005
+            }
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+{
+    "Reasoning": "The subtask is to move the open gripper to a pre-grasp pose above the strawberry_center_frame in a top-down configuration, without touching the strawberry.\n\nSuccess conditions:\n1. Gripper must be open (finger joints at 1.0) \u2192 open_gripper constraint.\n2. Tool +z (panda_fingertip +z) must be antiparallel to world +z \u2192 axis_align constraint: controlled_axis=\"+z\", reference_axis=\"+z\", alignment=\"antiparallel\".\n3. Positional goal: reach strawberry_center_frame origin + 0.12 m along world +z \u2192 reach_point with offset [0, 0, 0.12] in world basis from strawberry_center_frame origin. Tolerance 0.01 m as specified.\n\nThe offset is 0.12 m above the strawberry center in world +z direction. Since reference_basis is \"world\" and reference_origin is \"strawberry_center_frame\", offset_from_origin_xyz = [0.0, 0.0, 0.12].\n\nThe controlled_entity is \"robot_frame\" with controlled_target \"panda_fingertip\".\n\nAll three constraints are combined with \"and\" since all must hold simultaneously for success.\n\nNote: The subtask says tool +y must not be parallel to tool +z (trivially satisfied by any valid orientation), and the strawberry is rotationally symmetric so tool +y is free in the horizontal plane. No additional constraint needed for tool +y freedom \u2014 the axis_align on +z is sufficient.\n\nStop condition is distance-based (within 0.01 m of target), encoded by tolerance_m in reach_point.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "strawberry_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

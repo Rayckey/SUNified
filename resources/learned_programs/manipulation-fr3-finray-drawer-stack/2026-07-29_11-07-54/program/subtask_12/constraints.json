@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage is represented by holding the end-effector pose fixed while commanding the gripper to open. freeze_position keeps the panda_fingertip origin at its start-of-stage placement pose within 0.01 m, which also avoids pulling the strawberry away from top_drawer_center_frame. freeze_orientation preserves the start-of-stage panda_fingertip orientation, including its tool +z and +y directions. open_gripper commands both fingers toward the open state and supplies the gripper_opened success condition. The requested gripper effort/contact drop and explicit confirmation that strawberry_center_frame is no longer object_grasped are not directly representable with the available ops or condition labels, since manipulator_low_effort refers to arm/TCP effort rather than finger contact effort. Continuous monitoring has no separate operator, but the listed geometry and gripper-open feedback constraints are the representable monitored success requirements.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

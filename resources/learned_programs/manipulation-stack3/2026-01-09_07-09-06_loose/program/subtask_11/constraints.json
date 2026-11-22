@@ -1,0 +1,41 @@
+{
+    "Reasoning": "Success for this subtask requires lifting the grasped cube_3 vertically along world +z by at least 0.075 m, to achieve clearance above the surface, while holding orientation constant and maintaining a firm grasp. The first constraint uses 'directional_move', as the subtask explicitly says to translate along world +z by at least 0.075 m. The second constraint uses 'freeze_orientation', because the gripper (tool) orientation must be fixed relative to the world frame during the motion. The third constraint requires the gripper to remain actively grasping (gripper_closed), as the grip must be secure throughout. All are combined with 'and' since all are required together for success.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.075,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

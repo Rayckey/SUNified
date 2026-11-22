@@ -1,0 +1,1 @@
+[Manipulate] Pull the grasped top_drawer_handle_frame until top_drawer_center_frame reaches the requested open state, with the gripper closed and orientation fixed.

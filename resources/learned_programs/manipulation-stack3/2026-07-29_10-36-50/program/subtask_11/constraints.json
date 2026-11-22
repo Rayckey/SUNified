@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage is a constrained lift of the currently grasped cube_3. A single directional_move is used for the 0.15 m world +z lift with 0.01 m tolerance, applied to the gripped object cube_3; because cube_3 must remain grasped, this also represents the rigidly coupled lift of the panda_fingertip within the API's single-position-op limit. freeze_orientation keeps the panda_fingertip orientation fixed to the immediately preceding grasp-stage orientation within the requested 0.05 rad. object_grasped with gripper_closed condition represents maintaining the closed gripper and cube_3 held without commanded opening. Unrepresented clauses: explicit bilateral finger effort/contact thresholds, finger joint stable-position values, object-object non-contact separation distances from cube_1 and cube_2, cube_2-on-cube_1 stack maintenance, and explicit feedback monitoring cannot be directly encoded with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

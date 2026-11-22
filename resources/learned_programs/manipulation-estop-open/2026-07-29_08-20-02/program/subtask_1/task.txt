@@ -1,0 +1,1 @@
+[Approach] Use an appropriate axis approach to move the open gripper into contact with estop_cap_center while keeping the gripper orientation fixed.

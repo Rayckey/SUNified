@@ -1,0 +1,66 @@
+{
+    "Reasoning": "This single approach stage moves the panda_fingertip to a non-contact standoff point 0.12 m along the top_drawer_handle_frame -y axis, with a 0.02 m positional success tolerance. The two axis_align constraints encode the requested tool-axis orientation relations: tool +z antiparallel to the handle frame -y, and tool +y orthogonal to the handle frame +x. The gripper is commanded open, representing the requirement to keep both fingers near the fully open state and to avoid any grasp command. No close_gripper or object_grasped term is emitted. The explicit feedback modalities and the exact numeric finger joint value of 1.0 are not directly parameterized by the available terms; they are represented by the geometry and gripper_opened conditions and the open_gripper operation.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.12,
+                    0.0
+                ],
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+z",
+                "reference_axis": "-y",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

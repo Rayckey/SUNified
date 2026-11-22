@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage approaches the estop_cap_center with the open panda_fingertip while preserving the current tool orientation. The open_gripper constraint represents keeping both fingers open and avoiding commanded closure. The freeze_orientation constraint represents holding the current panda_fingertip orientation fixed during the approach. The reach_point constraint moves the panda_fingertip frame origin to the estop_cap_center frame origin with a 0.015 m contact/arrival tolerance; its condition includes both geometry and manipulator_high_effort to represent stopping either on geometric proximity or contact/effort feedback. Monitoring for unexpected collision, excessive effort aborts, detailed finger joint values near 1.0, and pose/error feedback are only partially representable by these constraints; detailed abort logic is not directly expressible in the available term API.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.015
+            }
+        }
+    ]
+}

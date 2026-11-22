@@ -1,0 +1,9 @@
+python src/kuafu/isaac/tasks/train.py --video --task open-drawer --track --wandb-project-name KUAFU --wandb-entity milesway --wandb-name open-drawer-0 --headless --video_length 800 --video_interval 2400
+
+python src/kuafu/isaac/tasks/train.py --video --task open-fr3-finray-drawer --track --wandb-project-name KUAFU --wandb-entity milesway --wandb-name open-fr3-finray-drawer-0 --headless --video_length 800 --video_interval 2400
+
+wandb.ai
+username
+mikelili@ucla.edu
+password
+dygdY3-qonbeh-jubraf

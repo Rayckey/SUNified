@@ -1,0 +1,67 @@
+{
+    "Reasoning": "Success for this subtask is defined as the end-effector (panda_fingertip) moving straight down from the pre-grasp position toward the marker center, while the gripper remains open and maintains a fixed orientation (tool +z antiparallel to world +z for a top-down approach, and tool +y orthogonal to marker +y for optimal grasp alignment). The robot must stop the approach either when the tool frame is within 0.01 m of the marker center along world z or when contact/force feedback is detected (alternative stopping conditions, requiring 'or'). Only one position constraint is permitted, so 'reach_distance' expresses the stop-at-contact-or-threshold condition (since it is a Euclidean distance to the center of the marker). Orientation constraints ensure the required pose during the approach, and the gripper must remain open. Constraints are combined using 'and' where all must be satisfied, except for the stopping criterion, where 'or' encodes the choice between reaching close proximity or detecting contact.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "marker",
+                "controlled_axis": "+y",
+                "reference_axis": "+y",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "marker",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "distance_m": 0.0,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

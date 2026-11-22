@@ -1,0 +1,47 @@
+{
+    "Reasoning": "This stage keeps the marker held while inserting it axially into the pen_holder. I use object_grasped with a gripper_closed condition to represent maintaining the already-closed grasp without issuing another close_gripper command. The axis_align term maintains the marker +y length axis bipolar with the pen_holder +z opening axis within 5 degrees. The directional_move term encodes the required straight insertion motion of the gripped marker along pen_holder -z by 0.155 m with 0.01 m tolerance; its condition includes both geometry and manipulator_high_effort to represent stopping either on geometric insertion progress or on a firm axial insertion stop. Because only one position operator is allowed, the explicit pen_holder +z offset target of 0.0685 m is not separately emitted as a reach_point; it is treated as the intended equivalent endpoint of the specified 0.155 m insertion from the start-of-stage pre-insertion pose. The API cannot directly represent gripper effort consistency without stall, fingertip-to-marker relative transform preservation, lateral-vs-axial contact force discrimination, loss-of-grasp/slip detection beyond object_grasped, or no-progress stall monitoring, so those are noted but omitted.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "axis": "-z",
+                "travel_distance_m": 0.155,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

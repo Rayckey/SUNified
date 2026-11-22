@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage is encoded as a conjunctive retract controller stage. The gripper is commanded/verified open, the panda_fingertip frame orientation is frozen to preserve the current world-frame tool orientation within 0.05 rad, and the fingertip origin is sent to a conservative world +z standoff above cube_2. The reach target is cube_2 plus 0.135 m in world +z with 0.01 m tolerance, which ensures the final z separation is at least 0.125 m. The reach term also carries manipulator_low_effort to represent free-space non-contact monitoring during/after the retract. The API cannot directly encode both individual gripper joint numeric value 1.0, gripper effort specifically, strict path-only +z motion while also targeting a relative final standoff, or the stationary/on-cube pose constraint for released cube_2 relative to cube_1, because arbitrary non-gripped object pose constraints are not available and only one position operator is allowed.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.135
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

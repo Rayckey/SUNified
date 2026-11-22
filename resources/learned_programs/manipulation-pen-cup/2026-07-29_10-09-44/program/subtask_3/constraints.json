@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is represented as a conjunctive lift while maintaining a held marker. object_grasped with gripper_closed condition represents keeping the gripper closed enough to maintain a firm no-slip grasp; close_gripper is not also emitted because object_grasped is the required held-object constraint. freeze_orientation keeps the marker's start-of-stage world orientation fixed. directional_move commands the gripped marker to translate 0.17 m along world +z with 0.01 m completion tolerance and no intended x/y translation; because the marker is grasped, the fingertip is expected to move with it. The manipulator_high_effort label is included on the lift term to represent the specified stop-on-unexpected-collision-effort alternative. The explicit 0.10 m table clearance margin and separate verification that panda_fingertip also translated exactly 0.17 m cannot be independently encoded without an inequality/table-clearance operator or a second position op, so they are represented only indirectly by the +z lift and maintained grasp.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.17,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

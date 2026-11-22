@@ -1,0 +1,1 @@
+[Manipulate] Move cube_1 onto cube_2 to form the desired stacked state while keeping the gripper orientation fixed.

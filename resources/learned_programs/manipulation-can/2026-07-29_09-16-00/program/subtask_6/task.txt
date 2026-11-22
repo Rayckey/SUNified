@@ -1,0 +1,1 @@
+[Release] Open the gripper to release can at the desired upright placement state while keeping both the gripper position and orientation fixed.

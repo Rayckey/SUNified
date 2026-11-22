@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "id": "drawer_stack",
+  "title": "Place object in drawer",
+  "status": "registered",
+  "task": "open the top drawer fully and put the strawberry in top_drawer_center_frame",
+  "environments": [
+    {
+      "robot_id": "fr3_finray",
+      "gym_id": "FR3-FinRay-Table-Drawer-Stack",
+      "registration_module": "kuafu.isaac.learned",
+      "entry_point": "kuafu.isaac.learned.fr3_finray_drawer_stack_env_learned:FR3FinRayTableDrawerStackEnv",
+      "config_entry_point": "kuafu.isaac.learned.fr3_finray_drawer_stack_env_learned:FR3FinRayTableDrawerStackEnvCfg",
+      "source": "src/kuafu/isaac/learned/fr3_finray_drawer_stack_env_learned.py",
+      "variants": [
+        "FR3-FinRay-Table-Drawer-Stack-ff",
+        "FR3-FinRay-Table-Drawer-Stack-fff",
+        "FR3-FinRay-Table-Drawer-Stack-ffff",
+        "FR3-FinRay-Table-Drawer-Stack-ffff3",
+        "FR3-FinRay-Table-Drawer-Stack-fffff",
+        "FR3-FinRay-Table-Drawer-Stack-ffffff"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/fr3_ft_robotiq_2f_85_finrays_tcp/usd/fr3_ft_robotiq_2f_85_finrays.usd",
+          "table": "assets/objects/table/table_flattened_instanceable_meshes.usd",
+          "cabinet": "assets/objects/two_layer_drawer_iphone_with_link/two_layer_drawer_iphone_with_link.usd",
+          "strawberry": "assets/objects/Berries/stawberry.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-04-01_14-56-05",
+        "interaction_frames": {
+          "cabinet": {
+            "description": "local frame +z is up direction, local frame -y is the forward direction; drawers open approximately 0.14 m; estimated size (approx.): (0.15, 0.25, 0.2).",
+            "prim_path": "/World/envs/env_*/Cabinet"
+          },
+          "top_drawer_center_frame": {
+            "description": "placement target frame at the center of the top drawer interior, estimated size (approx.): (0.15, 0.25, 0.05)",
+            "prim_path": "/Visuals/top_drawer_center_frame"
+          },
+          "top_drawer_handle_frame": {
+            "description": "grasp/contact frame for opening the top drawer; handle is a bar along local x axis; local frame -y is pulling out/open direction for approximately 0.14 m, local frame +y is pushing in/close direction",
+            "prim_path": "/Visuals/top_drawer_handle_frame"
+          },
+          "strawberry_center_frame": {
+            "description": "center frame of a cube-like symmetric strawberry object; treat it as a 0.04 m cube for grasping and placement",
+            "prim_path": "/Visuals/strawberry_center_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "franka_panda",
+      "gym_id": "Panda-Table-Drawer-Stack",
+      "registration_module": "kuafu.isaac.learned.panda",
+      "entry_point": "kuafu.isaac.learned.panda.panda_drawer_stack_env_learned:PandaDrawerStackEnv",
+      "config_entry_point": "kuafu.isaac.learned.panda.panda_drawer_stack_env_learned:PandaDrawerStackEnvCfg",
+      "source": "src/kuafu/isaac/learned/panda/panda_drawer_stack_env_learned.py",
+      "variants": [
+        "Panda-Table-Drawer-Stack-ff",
+        "Panda-Table-Drawer-Stack-fff",
+        "Panda-Table-Drawer-Stack-ffff",
+        "Panda-Table-Drawer-Stack-ffff3",
+        "Panda-Table-Drawer-Stack-fffff",
+        "Panda-Table-Drawer-Stack-ffffff",
+        "Panda-Table-Drawer-Stack-fff3",
+        "Panda-Table-Drawer-Stack-f3",
+        "Panda-Table-Drawer-Stack-ff3",
+        "Panda-Table-Drawer-Stack-f"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "cabinet": "assets/objects/panda_drawer/panda_drawer.usda",
+          "strawberry": "assets/objects/Berries/stawberry.usd",
+          "robot": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-04-01_14-56-05-s",
+        "interaction_frames": {
+          "cabinet": {
+            "description": "local frame +z is up direction, local frame -y is the forward direction; drawers open approximately 0.12 m; estimated size (approx.): (0.15, 0.25, 0.2).",
+            "prim_path": "/World/envs/env_*/Cabinet"
+          },
+          "top_drawer_center_frame": {
+            "description": "placement target frame at the center of the top drawer interior, estimated size (approx.): (0.15, 0.25, 0.05)",
+            "prim_path": "/Visuals/top_drawer_center_frame"
+          },
+          "top_drawer_handle_frame": {
+            "description": "grasp/contact frame for opening the top drawer; handle is a bar along local x axis; local frame -y is pulling out/open direction for approximately 0.12 m, local frame +y is pushing in/close direction",
+            "prim_path": "/Visuals/top_drawer_handle_frame"
+          },
+          "strawberry_center_frame": {
+            "description": "center frame of a cube-like symmetric strawberry object; treat it as a 0.04 m cube for grasping and placement",
+            "prim_path": "/Visuals/strawberry_center_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "kinova_gen3",
+      "gym_id": "Kinova-Table-Gen3-Drawer-Stack",
+      "registration_module": "kuafu.isaac.learned.kinova",
+      "entry_point": "kuafu.isaac.learned.kinova.kinova_drawer_stack_env_learned:KinovaDrawerStackEnv",
+      "config_entry_point": "kuafu.isaac.learned.kinova.kinova_drawer_stack_env_learned:KinovaDrawerStackEnvCfg",
+      "source": "src/kuafu/isaac/learned/kinova/kinova_drawer_stack_env_learned.py",
+      "variants": [
+        "Kinova-Table-Gen3-Drawer-Stack-f",
+        "Kinova-Table-Gen3-Drawer-Stack-f3",
+        "Kinova-Table-Gen3-Drawer-Stack-ff",
+        "Kinova-Table-Gen3-Drawer-Stack-ff3",
+        "Kinova-Table-Gen3-Drawer-Stack-fff",
+        "Kinova-Table-Gen3-Drawer-Stack-fff3",
+        "Kinova-Table-Gen3-Drawer-Stack-ffff",
+        "Kinova-Table-Gen3-Drawer-Stack-ffff3",
+        "Kinova-Table-Gen3-Drawer-Stack-fffff",
+        "Kinova-Table-Gen3-Drawer-Stack-ffffff"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/kinova/usd/kinova_gen3_7dof_robotiq_2f85_vision_official_contact_stable.usd",
+          "cabinet": "assets/objects/panda_drawer/panda_drawer.usda",
+          "strawberry": "assets/objects/Berries/stawberry.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-04-01_14-56-05",
+        "interaction_frames": {
+          "cabinet": {
+            "description": "local frame +z is up direction, local frame -y is the forward direction; drawers open approximately 0.14 m; estimated size (approx.): (0.15, 0.25, 0.2).",
+            "prim_path": "/World/envs/env_*/Cabinet"
+          },
+          "top_drawer_center_frame": {
+            "description": "placement target frame at the center of the top drawer interior, estimated size (approx.): (0.15, 0.25, 0.05)",
+            "prim_path": "/Visuals/top_drawer_center_frame"
+          },
+          "top_drawer_handle_frame": {
+            "description": "grasp/contact frame for opening the top drawer; handle is a bar along local x axis; local frame -y is pulling out/open direction for approximately 0.14 m, local frame +y is pushing in/close direction",
+            "prim_path": "/Visuals/top_drawer_handle_frame"
+          },
+          "strawberry_center_frame": {
+            "description": "center frame of a cube-like symmetric strawberry object; treat it as a 0.04 m cube for grasping and placement",
+            "prim_path": "/Visuals/strawberry_center_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "ur5_robotiq",
+      "gym_id": "UR5-Table-Drawer-Stack",
+      "registration_module": "kuafu.isaac.learned.ur5",
+      "entry_point": "kuafu.isaac.learned.ur5.tasks:UR5DrawerStackEnv",
+      "config_entry_point": "kuafu.isaac.learned.ur5.tasks:UR5DrawerStackEnvCfg",
+      "source": "src/kuafu/isaac/learned/ur5/tasks.py",
+      "variants": [],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/ur5_robotiq/ur5_robotiq.usd",
+          "cabinet": "assets/objects/panda_drawer/panda_drawer.usda",
+          "strawberry": "assets/objects/Berries/stawberry.usd"
+        },
+        "controller_inputs": {
+          "urdf_path": "assets/robots/ur5_robotiq/ur5_controller.urdf",
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/ur5-drawer-stack",
+        "interaction_frames": {
+          "cabinet": {
+            "description": "local frame +z is up direction, local frame -y is the forward direction; drawers open approximately 0.14 m; estimated size (approx.): (0.15, 0.25, 0.2).",
+            "prim_path": "/World/envs/env_*/Cabinet"
+          },
+          "top_drawer_center_frame": {
+            "description": "placement target frame at the center of the top drawer interior, estimated size (approx.): (0.15, 0.25, 0.05)",
+            "prim_path": "/Visuals/top_drawer_center_frame"
+          },
+          "top_drawer_handle_frame": {
+            "description": "grasp/contact frame for opening the top drawer; handle is a bar along local x axis; local frame -y is pulling out/open direction for approximately 0.14 m, local frame +y is pushing in/close direction",
+            "prim_path": "/Visuals/top_drawer_handle_frame"
+          },
+          "strawberry_center_frame": {
+            "description": "center frame of a cube-like symmetric strawberry object; treat it as a 0.04 m cube for grasping and placement",
+            "prim_path": "/Visuals/strawberry_center_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    }
+  ],
+  "object_assets": [
+    "assets/objects/Berries/stawberry.usd",
+    "assets/objects/panda_drawer/panda_drawer.usda",
+    "assets/objects/table/table_flattened_instanceable_meshes.usd",
+    "assets/objects/two_layer_drawer_iphone_with_link/two_layer_drawer_iphone_with_link.usd"
+  ],
+  "scene_source": "src/kuafu/isaac/learned/fr3_finray_drawer_stack_env_learned.py",
+  "interaction_frames_source": "src/kuafu/isaac/learned/fr3_finray_drawer_stack_env_learned.py:detectable_objects",
+  "interaction_frames": {
+    "cabinet": {
+      "description": "local frame +z is up direction, local frame -y is the forward direction; drawers open approximately 0.14 m; estimated size (approx.): (0.15, 0.25, 0.2).",
+      "prim_path": "/World/envs/env_*/Cabinet"
+    },
+    "top_drawer_center_frame": {
+      "description": "placement target frame at the center of the top drawer interior, estimated size (approx.): (0.15, 0.25, 0.05)",
+      "prim_path": "/Visuals/top_drawer_center_frame"
+    },
+    "top_drawer_handle_frame": {
+      "description": "grasp/contact frame for opening the top drawer; handle is a bar along local x axis; local frame -y is pulling out/open direction for approximately 0.14 m, local frame +y is pushing in/close direction",
+      "prim_path": "/Visuals/top_drawer_handle_frame"
+    },
+    "strawberry_center_frame": {
+      "description": "center frame of a cube-like symmetric strawberry object; treat it as a 0.04 m cube for grasping and placement",
+      "prim_path": "/Visuals/strawberry_center_frame"
+    },
+    "panda_link4": {
+      "description": "frame of robot link 4",
+      "prim_path": "/Visuals/panda_link4_frame"
+    },
+    "panda_fingertip": {
+      "description": "frame of robot tool frame",
+      "prim_path": "/Visuals/panda_hand_frame"
+    }
+  },
+  "success_check": {
+    "summary": "The strawberry reaches the drawer interior and the gripper opens; the configured program stage gate also applies.",
+    "source": "src/kuafu/isaac/learned/fr3_finray_drawer_stack_env_learned.py",
+    "method": "_external_get_dones",
+    "thresholds": "Use the selected robot configuration and implementation."
+  },
+  "formulation": [
+    {
+      "gym_id": "Formulate-Panda-Drawer-Stack-v0",
+      "runner": "src/kuafu/programs/fr3_finray_drawer_stack_learn_programs.py"
+    }
+  ],
+  "program_families": [
+    "resources/learned_programs/manipulation-fr3-finray-drawer-stack",
+    "resources/learned_programs/ur5-drawer-stack"
+  ],
+  "saved_programs": [
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-02-01_10-15-17",
+      "stages": 14,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-03-20_08-46-15",
+      "stages": 13,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-04-01_14-56-05",
+      "stages": 14,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-04-01_14-56-05-s",
+      "stages": 13,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-07-29_11-07-54",
+      "stages": 14,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-07-29_16-22-49",
+      "stages": 15,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-07-29_18-34-48",
+      "stages": 14,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/ur5-drawer-stack",
+      "stages": 14,
+      "recorded_success": null
+    }
+  ],
+  "example_program": {
+    "path": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-07-29_18-34-48",
+    "stages": 14,
+    "recorded_success": "True"
+  },
+  "agent_interface": {
+    "discovery": [
+      "kuafu_list_tasks",
+      "kuafu_get_task"
+    ],
+    "learning": "kuafu_start_stage with a compatible task manifest",
+    "scene_verification": "Use the task-specific scene and success implementation. The exported-video cabinet tool has its own task entry."
+  },
+  "robot_setup": {
+    "default": "docs/INSTALL.md",
+    "ur5_robotiq": "docs/UR5.md"
+  },
+  "related_sources": [
+    "src/kuafu/isaac/base/manipulation/drawer_stack_env.py",
+    "src/kuafu/isaac/base/manipulation/fr3_finray_drawer_stack_env.py",
+    "src/kuafu/isaac/tasks/drawer_stack/fr3_finray_drawer_stack_env_learned.py"
+  ],
+  "external_assets": [
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+  ]
+}

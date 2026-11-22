@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is represented as a conjunctive hold-and-lower controller stage. `object_grasped` keeps the can physically held without issuing a new `close_gripper` command, matching the requirement to preserve the existing closed grasp. `freeze_orientation` preserves the start-of-stage panda_fingertip world orientation within 5 degrees. `directional_move` commands the panda_fingertip to move along world -z by up to 0.15 m with 0.01 m tolerance; its condition labels include both `geometry` and `manipulator_high_effort` to encode the supported early-stop alternative: stop either when the geometric descent is completed or when downward contact/obstruction effort is detected. No separate absolute can-axis target is imposed, consistent with the instruction to keep the can upright through no-slip grasp preservation rather than an additional can orientation goal. Exact bilateral finger joint-state holding, finger effort thresholds, sustained-vs-sharp contact classification, continuous observed can pose monitoring, and explicit abort/hold logic for slip or abnormal effort are not directly representable with the available operators, so they are noted here rather than encoded as extra constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

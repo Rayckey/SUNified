@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage keeps cube_2 securely held, maintains the current panda_fingertip orientation from the prior alignment stage, and moves the grasped cube_2 to the stacking target at cube_1 plus 0.05 m in world +z with 0.01 m placement tolerance. The reach_point condition includes both geometry and manipulator_high_effort to represent the supported stop condition: success by reaching the geometric placement target and/or stopping on placement contact/effort feedback. object_grasped represents maintaining the closed, secure grasp without commanding opening and preserving the grasped object with the gripper as far as the API supports. The exact preserved relative transform between panda_fingertip and cube_2, individual finger joint positions/efforts, and the minimum 0.15 m cube_2-to-cube_3 separation cannot be directly represented with the available operators. The explicit 0.10 m world -z descent is not separately emitted because only one position operator is allowed; the selected target is the required final stacking/contact target, which is the intended endpoint of that descent from the preceding alignment pose.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.05
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

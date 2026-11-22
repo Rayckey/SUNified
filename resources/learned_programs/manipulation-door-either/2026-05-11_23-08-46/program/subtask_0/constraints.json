@@ -1,0 +1,49 @@
+{
+    "Reasoning": "This stage moves the open gripper to a standoff position 0.12 m along right_door_nob_frame +x from its origin, with tool +z antiparallel to right_door_nob_frame +x, without contact.\n\nConstraints:\n1. reach_point: Position panda_fingertip at right_door_nob_frame origin offset +0.12 m along right_door_nob_frame +x (object basis), within 0.01 m tolerance. This encodes constraint 4 and the stop condition (geometry).\n2. axis_align: Align panda_fingertip +z antiparallel to right_door_nob_frame +x, within 5 degrees (~0.087 rad). This encodes constraints 2 and 6 (orientation stop).\n3. open_gripper: Gripper fingers fully open throughout. Encodes constraint 1.\n\nConstraint 3 (tool +y free / no over-constraining finger axis): satisfied by omission \u2014 we do not add any axis_align for +y.\nConstraint 5 (no contact, \u22650.10 m clearance): The standoff offset of 0.12 m inherently provides clearance; this is a path-planning concern not directly representable as a Constraint term, so it is noted here but omitted from the list.\nStop condition: geometry (position within 0.01 m AND orientation within 5\u00b0); no contact/effort feedback used as termination signal (constraint 6 satisfied by not including manipulator_high_effort in condition).",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "right_door_nob_frame",
+                "offset_from_origin_xyz": [
+                    0.12,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "right_door_nob_frame",
+                "controlled_axis": "+z",
+                "reference_axis": "+x",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.087
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

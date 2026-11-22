@@ -1,0 +1,56 @@
+{
+    "Reasoning": "The stage goal is encoded as carrying the currently gripped cube_1 to the point 0.16 m above cube_2 in the world frame, with a 0.01 m stop tolerance. object_grasped represents that cube_1 must remain physically held, which covers the required closed-grasp intent more strongly than close_gripper; close_gripper is not emitted because object_grasped should not be combined with it. The panda_fingertip orientation is frozen with the requested 0.05 rad tolerance, and cube_1 orientation is also frozen to support the required no-slip/current relative-pose preservation during the carry. No tool +z or +y axis relation is imposed. The final target position provides lateral alignment with cube_2 and keeps cube_1 above cube_2. Continuous collision avoidance/non-contact clearance along the path, the explicit 0.15 m inter-cube minimum-distance monitor, detailed opposing finger effort/contact stability, and explicit monitoring-source requirements are not directly representable with the available operators; they are partially reflected by the above-target reach goal and object_grasped hold requirement.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.16
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

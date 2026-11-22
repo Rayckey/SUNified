@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The current subtask is to move the open gripper downward (along world -z) from the standoff position into contact with can_center_frame, keeping orientation fixed throughout.\n\nKey constraints:\n1. **Orientation fixed**: freeze_orientation on panda_fingertip \u2014 the tool orientation established in the prior step must not change.\n2. **Positional goal**: reach the can_center_frame origin (no standoff offset). The panda_fingertip should reach the can_center_frame origin within 0.01 m tolerance. This is a contact approach so offset is [0,0,0]. I use reach_point for this.\n3. **Motion direction**: world -z translation \u2014 this is implied by the directional constraint but the primary positional goal is reach_point (the direction is a consequence of moving from above to the target). Since the subtask explicitly says \"translate along world -z\" with no explicit distance given (only \"until contact or within 0.01 m\"), I use reach_point rather than directional_move.\n4. **Gripper state**: both fingers remain fully open \u2192 open_gripper.\n5. **Stop condition**: within 0.01 m of can_center_frame origin OR contact/effort feedback rises above baseline \u2014 this is an OR condition between geometry (reach_point) and manipulator_high_effort. However, the reach_point already encodes the geometric stop condition. The effort-based stop is an alternative termination condition, so I use \"or\" logic for the effort constraint.\n\nConstraint list:\n- C1 (and, geometry): freeze_orientation on panda_fingertip \u2014 keep orientation fixed.\n- C2 (and, geometry): reach_point \u2014 panda_fingertip reaches can_center_frame origin, tolerance 0.01 m.\n- C3 (or, manipulator_high_effort): manipulator_high_effort \u2014 stop if contact/effort rises above baseline (alternative stop condition). Since TermAPI has no standalone \"monitor effort\" op, and the subtask says \"OR when contact/effort feedback rises\", I need to represent this. The condition field captures this semantically, but there is no dedicated op for it. The closest representation is to note it in reasoning. I will include it as an \"or\" condition with the geometry condition on reach_point, but since I cannot have two position ops, I'll handle it by making the reach_point the primary and noting the effort condition is captured via the \"or\" logic and condition metadata on a second constraint. However, there is no op for \"detect high effort\" alone without a geometry op. I'll use the condition field on the reach_point constraint itself to include both geometry and manipulator_high_effort with \"or\" logic to signal the alternative stop.\n\nActually, re-reading the rules: \"condition is metadata only and does not enforce success by itself.\" So I can encode the OR stop condition by having the reach_point constraint carry both conditions, but the logic only applies between constraints. The best approach: \n- C1: freeze_orientation (and)\n- C2: reach_point with condition [\"geometry\", \"manipulator_high_effort\"] and logic \"or\" \u2014 this signals that success is reach_point OR high effort. But logic \"or\" here would OR with the accumulated result of C1 (freeze_orientation), which is not what we want.\n\nBetter structure:\n- C1 (and, geometry): freeze_orientation\n- C2 (and, geometry + manipulator_high_effort): reach_point \u2014 the \"or\" between distance and effort is captured in the condition list as metadata\n- C3 (and, gripper_opened): open_gripper\n\nThe OR between distance and effort cannot be perfectly represented in the constraint model since there's no effort-only op. I'll note this in reasoning and encode the reach_point as the primary geometric stop, with condition including manipulator_high_effort to signal the monitoring requirement, and use \"or\" logic on a separate open_gripper constraint won't make sense either.\n\nFinal decision: \n- C1 (and, geometry): freeze_orientation\n- C2 (and, [\"geometry\", \"manipulator_high_effort\"]): reach_point \u2014 encodes the primary stop condition; the manipulator_high_effort in condition signals the effort monitoring; the OR nature of the two stop conditions is noted in reasoning but cannot be fully expressed in the TermAPI\n- C3 (and, gripper_opened): open_gripper\n\nThis is the cleanest representation within the TermAPI constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "can_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

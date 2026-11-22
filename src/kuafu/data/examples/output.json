@@ -1,0 +1,5 @@
+{
+  "artifact": "examples/03_demonstrations_to_policy/input/provenance.json",
+  "description": "Compact HDF5, point-cloud/RGB recordings and dataset metadata",
+  "path_base": "repository root"
+}

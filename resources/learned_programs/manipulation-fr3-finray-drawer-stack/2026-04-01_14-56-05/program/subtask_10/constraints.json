@@ -1,0 +1,44 @@
+{
+    "Reasoning": "The subtask is to carry the grasped strawberry horizontally to a position above top_drawer_center_frame, maintaining:\n1. Gripper closed (grasp maintained) throughout.\n2. Tool orientation fixed (top-down grasp: tool +z antiparallel to world +z).\n3. Positional goal: tool frame origin at top_drawer_center_frame origin + 0.20 m along world +z, with XY aligned to top_drawer_center_frame origin.\n4. Stop within 0.02 m laterally and 0.02 m in Z of the target.\n\nConstraints:\n- reach_point: Move panda_fingertip to top_drawer_center_frame origin offset by [0, 0, 0.20] in world frame (world +Z). Tolerance 0.02 m as specified.\n- freeze_orientation: Keep tool orientation fixed as established (top-down grasp). tolerance_rad = 0.2.\n- close_gripper: Gripper remains closed, maintaining grasp on strawberry.\n\nThe axis_align for tool +z antiparallel to world +z is already established and must be maintained via freeze_orientation. I'll use freeze_orientation to encode \"keep orientation fixed\" and close_gripper for gripper state. The reach_point encodes the positional goal.\n\nNote: The subtask says \"carry horizontally\" (no Z change), but the target is defined as top_drawer_center_frame + 0.20 m in world +Z. Since the prior lift step already brought the gripper to this height, the reach_point will naturally encode the full 3D target (XY alignment + Z height). The tolerance of 0.02 m covers both lateral and Z as specified.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "top_drawer_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.2
+                ],
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

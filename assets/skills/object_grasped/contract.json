@@ -1,0 +1,6 @@
+{
+  "operator": "object_grasped",
+  "arguments": {},
+  "source": "kuafu.skills.schema.OP_ARGS",
+  "tolerances": "Assigned by the receiver using the MPC or learning profile."
+}

@@ -1,0 +1,29 @@
+{
+    "Reasoning": "The stage is a vertical lift while continuing to hold the strawberry. A single directional_move encodes the required 0.14 m world +z translation with 0.01 m tolerance and no intended lateral motion. object_grasped encodes that the strawberry remains physically held with the gripper closed, supporting the rigid no-slip grasp relationship between panda_fingertip and strawberry_center_frame during the lift. The panda_fingertip moving together with the strawberry is represented through the maintained grasp plus the object motion, since only one position operator is allowed. Explicit bilateral finger effort/contact regulation and collision avoidance against top_drawer_center_frame, top_drawer_handle_frame, and cabinet are not directly representable with the available operators, so they are omitted.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

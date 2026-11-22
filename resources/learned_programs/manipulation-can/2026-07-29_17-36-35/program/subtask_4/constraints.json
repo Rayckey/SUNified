@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is a conjunctive reorientation-in-place while continuing to hold the can. object_grasped represents that the can remains physically held and the gripper is not intentionally opened. freeze_position keeps the currently grasped can_center_frame origin at its start-of-stage world position within 0.01 m. axis_align rotates the gripped can until its local -y long/upright axis is codirectional with world +z within the requested 0.05 rad, without constraining roll about that same axis. The API cannot explicitly encode preserving the exact start-of-stage rigid transform between panda_fingertip and can_center_frame, individual finger joint positions, or finger squeeze/contact effort feedback; these are represented only partially by object_grasped and the gripper_closed condition.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "-y",
+                "reference_axis": "+z",
+                "alignment": "codirectional",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

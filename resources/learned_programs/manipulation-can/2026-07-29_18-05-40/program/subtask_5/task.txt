@@ -1,0 +1,1 @@
+[Manipulate] Lower the grasped can with the gripper closed until can is placed back down in upright position.

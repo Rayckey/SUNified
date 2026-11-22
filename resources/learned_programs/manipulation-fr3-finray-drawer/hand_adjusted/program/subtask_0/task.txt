@@ -1,0 +1,1 @@
+[Approach] Use an appropriate axis approach to move the open gripper near the top_drawer_handle_frame without touching it.

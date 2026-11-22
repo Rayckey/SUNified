@@ -1,0 +1,1 @@
+[Release] Retract the gripper away from top_drawer_handle_frame to a non-contact configuration with the gripper open, preserving continuity with the immediately preceding interaction.

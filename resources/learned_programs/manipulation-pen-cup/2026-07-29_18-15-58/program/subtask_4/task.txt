@@ -1,0 +1,1 @@
+[Manipulate] Reorient marker to an upright posture with the gripper closed while keeping the gripper position fixed.

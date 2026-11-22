@@ -1,0 +1,43 @@
+{
+    "Reasoning": "The subtask requires inserting the mug (held by the gripper) onto the cup hanger branch by translating the mug along the branch -y axis in the cup_hanger_branch_1_tip_frame for at least 0.11 m, until the branch tip passes completely through the mug handle hole. During this, the orientation of the tool must remain fixed relative to the agent (robot) frame, preserving the previous alignment step, and the gripper must stay closed to maintain a secure grasp. The positional constraint is best expressed via 'directional_move' strictly along the branch -y axis by 0.11 m (the specified distance). The 'freeze_orientation' enforces keeping the tool's orientation constant (no rotation) during the move. 'close_gripper' ensures the grasp is continuously maintained. The subtask also specifies stopping if excessive force (contact/effort) is detected, so an 'or' logic is needed: either the translation completes (distance \u2265 0.11 m), or excessive manipulator effort halts the motion prior. Thus, the success condition is: EITHER (the required directional move is complete with orientation/grasp preserved) OR (the move is interrupted by high manipulator effort, also with grasp and orientation preserved).",
+    "Constraints": [
+        {
+            "logic": "or",
+            "condition": [
+                "geometry",
+                "gripper_closed",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_center_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.11,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_center_frame",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

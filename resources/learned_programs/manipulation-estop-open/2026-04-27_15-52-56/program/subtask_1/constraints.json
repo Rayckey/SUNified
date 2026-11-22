@@ -1,0 +1,44 @@
+{
+    "Reasoning": "The current stage requires:\n1. Move the open gripper into contact with estop_cap_center (reach the origin of estop_cap_center, no standoff offset, tolerance 0.01 m).\n2. Keep gripper orientation fixed (freeze_orientation on panda_fingertip).\n3. Gripper must be fully open throughout (open_gripper).\n4. Stop when panda_fingertip is within 0.01 m of estop_cap_center origin OR when contact/effort feedback rises above baseline.\n\nFor the position goal: reach_point with panda_fingertip targeting estop_cap_center origin, offset [0,0,0], tolerance 0.01 m.\nFor orientation: freeze_orientation on panda_fingertip (orientation was established in prior approach stage, so we just freeze it here).\nFor gripper state: open_gripper.\n\nThe \"OR contact/effort\" stop condition is an alternative stop trigger. Per the rules, I keep the reach_point constraint and note the alternative stop in Reasoning. I do not force a top-level or logic for this since there's no dedicated TermAPI operator for the alternative.\n\nAll three constraints combine with \"and\" since they must all hold together (reach the point AND keep orientation fixed AND keep gripper open). The contact/effort alternative stop is noted but cannot be represented in the TermAPI.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

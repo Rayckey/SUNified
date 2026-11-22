@@ -1,0 +1,44 @@
+{
+    "Reasoning": "This is a retraction stage. The requirements are:\n1. Move the end-effector to a point 0.12 m along estop_cap_tip +z from estop_cap_tip origin (non-contact configuration). This is a reach_point with offset [0, 0, 0.12] in estop_cap_tip frame.\n2. Keep orientation fixed (freeze_orientation) - the previously established antiparallel alignment of tool +z with estop_cap_tip +z must not change.\n3. Gripper remains fully closed (close_gripper).\n4. Stop condition: within 0.01 m of target AND effort drops to free-space baseline. The effort drop is a secondary confirmation; the primary stop is positional. The TermAPI has no dedicated \"effort drop\" operator, so I note it in Reasoning but encode the positional stop via reach_point with tolerance 0.01 m. The manipulator_low_effort condition is noted as a secondary confirmation.\n\nThe orientation was established in a prior subtask (tool +z antiparallel with estop_cap_tip +z). The current stage says \"keep tool orientation fixed (invariant)\" - this is a freeze_orientation, not a new alignment. Since the orientation was already established and we are only preserving it, freeze_orientation is appropriate here.\n\nThe offset: estop_cap_tip origin + 0.12 m along estop_cap_tip +z. In estop_cap_tip frame, +z is [0,0,1], so offset_from_origin_xyz = [0.0, 0.0, 0.12].\n\nConstraints:\n1. reach_point: panda_fingertip to estop_cap_tip origin + [0,0,0.12] in estop_cap_tip frame, tolerance 0.01 m (as specified).\n2. freeze_orientation: keep panda_fingertip orientation fixed, angle_tolerance 0.2 rad.\n3. close_gripper: fingers remain closed.\n\nLogic: all three are conjunctive (and).",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

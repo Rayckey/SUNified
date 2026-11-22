@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This stage keeps the cap physically grasped, holds the panda_fingertip position fixed within 0.01 m, and commands a positive 45 degree twist of the grasped estop_cap_center about its object +z axis. The object_grasped term represents maintaining the closed grasp/contact needed to transmit the twist. The freeze_position term represents keeping the fingertip origin fixed during the twist. The directional_rotate term represents the finite commanded twist limit of 45 degrees about estop_cap_center +z. The API does not provide explicit predicates for unlocked-state detection, 5 degree unlocked tolerance, gripper joint-value feedback, finger squeeze/contact effort feedback, slip detection, or continuous feedback monitoring, so those are noted but not separately encoded.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_rotate",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "estop_cap_center",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "rotation_axis": "+z",
+                "rotation_angle_rad": 0.7853981633974483,
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

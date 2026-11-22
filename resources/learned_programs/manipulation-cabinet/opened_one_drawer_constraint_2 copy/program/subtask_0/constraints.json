@@ -1,0 +1,67 @@
+{
+    "Reasoning": "Success for this subtask means the robot's open gripper (end-effector, 'panda_fingertip') is moved to a pre-grasp pose near the 'drawer_top_handle_frame', specifically maintaining a standoff (distance) of at least 10 cm from the handle's origin measured in the agent frame\u2014no contact is allowed. Simultaneously, the tool's +z axis (pointing direction) in the agent (robot) frame must be antiparallel to the handle frame's +x axis (the handle's pull direction), and the tool's +y axis must be orthogonal to the handle's +y axis (the bar direction). The gripper must remain open throughout. All constraints must be satisfied together for success, so 'and' is used for logic.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "drawer_top_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "distance_m": 0.1,
+                "tolerance_m": 0.03
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "drawer_top_handle_frame",
+                "controlled_axis": "+z",
+                "reference_axis": "+x",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "drawer_top_handle_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+y",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_open"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

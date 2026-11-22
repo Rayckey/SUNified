@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage keeps the panda_fingertip pose fixed while opening the gripper. freeze_position enforces the start-of-stage fingertip position with the specified 0.01 m tolerance, and freeze_orientation enforces the start-of-stage fingertip orientation with a 5 degree tolerance. open_gripper represents commanding both fingers toward the fully open/released state. The API cannot explicitly encode individual left/right finger joint targets, finger effort dropping to free-space levels, loss of bilateral contact with top_drawer_handle_frame, or finger-effort jamming detection; those are omitted except insofar as open_gripper captures the intended open state. Pose-deviation stopping is represented by the freeze constraints failing if tolerance is exceeded.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+[Manipulate] Lift strawberry_center_frame with the gripper closed to a clear non-contact configuration away from cabinet and top_drawer_center_frame while keeping the gripper orientation fixed.

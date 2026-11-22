@@ -1,0 +1,1 @@
+[Manipulate] Reorient the grasped can with the gripper closed until can is upright.

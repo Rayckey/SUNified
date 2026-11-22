@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage moves the open panda_fingertip frame to the cube_3 origin for contact while preserving the current end-effector orientation. The reach_point term targets cube_3's object-frame origin with 0.01 m tolerance; its condition includes both geometry and manipulator_high_effort to encode the supported stop alternative of reaching the contact target or detecting contact/effort. The freeze_orientation term preserves the current panda_fingertip world-frame orientation within the requested 0.05 rad. The open_gripper term represents keeping the gripper fully open. Unrepresented clauses: exact verification that both gripper joint states equal 1.0, cube-specific contact attribution from gripper effort/contact feedback, and maintaining at least 0.125 m clearance from cube_1 and cube_2 cannot be directly encoded with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "cube_3",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

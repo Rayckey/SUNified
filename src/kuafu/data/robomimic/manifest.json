@@ -1,0 +1,72 @@
+{
+  "obs_key": "state",
+  "action_mode": "absolute_ee",
+  "base_config": "src/kuafu/isaac/tasks/stack_two/agents/bc_mlp.json",
+  "prepared_dir": "Trajectories/robomimic",
+  "jobs": [
+    {
+      "name": "stack2",
+      "task": "FR3-FinRay-Table-Stack-2",
+      "dataset": "Trajectories/fr3_finray_table_stack2_damped_higher_noise.hdf5",
+      "params_path": "Residuals/FR3-FinRay-Table-Stack-2-ff/2026-05-17_11-53-49/best.json",
+      "gpu": 0
+    },
+    {
+      "name": "drawer",
+      "task": "FR3-FinRay-Table-Drawer",
+      "dataset": "Trajectories/fr3_finray_table_drawer_damped_noise.hdf5",
+      "params_path": "Residuals/FR3-FinRay-Table-Drawer-ff/2026-05-16_23-54-23/best.json",
+      "gpu": 1
+    },
+    {
+      "name": "pen_cup",
+      "task": "FR3-FinRay-Table-Pen-Cup",
+      "dataset": "Trajectories/fr3_finray_table_pen_cup_damped_noise_random.hdf5",
+      "params_path": "Residuals/FR3-FinRay-Table-Pen-Cup-ff/2026-05-19_02-04-37/best.json",
+      "program_path": "src/kuafu/data/robomimic/program_snapshots/pen_cup_may19_b343f54",
+      "gpu": 2
+    },
+    {
+      "name": "kinova_estop_open",
+      "task": "Kinova-Table-Gen3-EStop-Open",
+      "dataset": "Trajectories/kinova_Kinova-Table-Gen3-EStop-Open_2026-06-24_17-09-03.hdf5",
+      "params_path": "resources/experiment_definitions/kinova_gen3/residual_rl/parameter_search/kinova_learned_estop_open/weights_best.json",
+      "gpu": 3
+    },
+    {
+      "name": "kinova_estop_close",
+      "task": "Kinova-Table-Gen3-EStop-Close",
+      "dataset": "Trajectories/kinova_Kinova-Table-Gen3-EStop-Close_2026-06-22_11-57-13.hdf5",
+      "params_path": "Residuals/Kinova-Table-Gen3-EStop-Close-ff3/2026-06-23_02-24-28/best.json",
+      "gpu": 0
+    },
+    {
+      "name": "kinova_can",
+      "task": "Kinova-Table-Gen3-Can",
+      "dataset": "Trajectories/kinova_Kinova-Table-Gen3-Can_2026-07-05_12-46-51_plus_2026-07-06_extra1000.hdf5",
+      "params_path": "resources/experiment_definitions/kinova_gen3/residual_rl/parameter_search/kinova_learned_can/weights_best.json",
+      "gpu": 1
+    },
+    {
+      "name": "drawer_stack",
+      "task": "FR3-FinRay-Table-Drawer-Stack",
+      "dataset": "Trajectories/fr3_finray_table_drawer_stack_2000.hdf5",
+      "params_path": "Residuals/FR3-FinRay-Table-Drawer-Stack-fff/2026-05-14_23-58-02/best.json",
+      "gpu": 2
+    },
+    {
+      "name": "stack3",
+      "task": "FR3-FinRay-Table-Stack-3",
+      "dataset": "Trajectories/fr3_finray_table_stack3_damped_noise.hdf5",
+      "params_path": "Residuals/FR3-FinRay-Table-Stack-3-fff/2026-05-02_22-58-57/best.json",
+      "gpu": 3
+    },
+    {
+      "name": "kinova_hang_cup",
+      "task": "Kinova-Table-Gen3-Hang-Cup",
+      "dataset": "Trajectories/kinova_Kinova-Table-Gen3-Hang-Cup_2026-07-08_18-15-11.hdf5",
+      "params_path": "Residuals/Kinova-Table-Gen3-Hang-Cup-fff3/2026-07-09_03-32-32/inputs/initial_weights_params.json",
+      "gpu": 3
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+    "Reasoning": "Success for this subtask requires the tool (and the grasped strawberry held by the gripper) to be translated upward (along world +z) by at least 0.115 m from the strawberry's starting contact position, to clear the surface. This is an explicit axis/distance translation along +z, so 'directional_move' is the correct and only allowed positional constraint. The subtask also states the tool's orientation must remain fixed relative to the agent (robot) frame throughout the motion, requiring a 'freeze_orientation' on the end-effector/tool. Additionally, the gripper must stay closed to keep holding the strawberry, and there must be no slip between tool and strawberry, requiring the relative pose between them to be constant (implied by holding the object stably during the move). All requirements must be satisfied together, so 'and' is used to combine them.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.115,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

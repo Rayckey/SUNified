@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The current stage requires:\n1. Move the end-effector into contact with estop_cap_tip (positional goal: reach the estop_cap_tip frame origin, no standoff offset, tolerance 0.01 m).\n2. Keep gripper orientation fixed (freeze_orientation) \u2014 the orientation was already established in the prior subtask (tool +z antiparallel with estop_cap_tip +z), so freeze_orientation is appropriate here to preserve it.\n3. Gripper remains fully closed (close_gripper).\n4. Stop when: distance to estop_cap_tip origin \u2264 0.01 m OR contact/effort feedback rises above baseline. The primary motion constraint is reach_point; the effort-based stop is an alternative stop condition noted in Reasoning but cannot be encoded as a separate TermAPI operator \u2014 it is captured via the manipulator_high_effort condition tag on the reach_point constraint using \"or\" logic per the stage requirements.\n\nLogic chain:\n- reach_point (geometry): move panda_fingertip to estop_cap_tip origin with 0.01 m tolerance. Condition includes manipulator_high_effort as an alternative stop. Logic = \"and\" (first constraint, sets initial truth value).\n- freeze_orientation (geometry): keep panda_fingertip orientation fixed. Logic = \"and\".\n- close_gripper (gripper_closed): both fingers remain fully closed. Logic = \"and\".\n\nNote: The stage says \"stop when distance \u2264 0.01 m OR contact/effort feedback rises above baseline.\" The TermAPI does not have a dedicated operator for the effort-based stop alternative, so I encode the reach_point with condition [\"geometry\", \"manipulator_high_effort\"] to signal that either reaching the point or detecting high effort satisfies this constraint. The logic remains \"and\" for combination with other constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

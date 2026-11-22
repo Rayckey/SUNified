@@ -1,0 +1,43 @@
+{
+    "Diagnosis": "The parser failed because the same stage included both manipulator_low_effort and manipulator_high_effort on the directional_rotate term. The runtime explicitly requires exactly one manipulator effort condition per atomic action, so the smallest repair is to remove manipulator_low_effort and keep manipulator_high_effort as the representable safety stop for excessive effort or hard contact.",
+    "Reasoning": "The stage remains one conjunctive controller stage. freeze_position keeps the panda_fingertip origin fixed within 0.01 m. object_grasped maintains the already closed, firm grasp without also emitting close_gripper. directional_rotate commands the grasped estop_cap_center to rotate about its own +z axis in the positive unlock sense, with the 45 degree maximum angular travel encoded as 0.7853981634 rad. The directional_rotate condition keeps geometry for the unlock rotation/pose stop and manipulator_high_effort for the representable early safety stop on excessive effort or unintended hard contact. The low-effort/detent-settling stop cue cannot be included together with manipulator_high_effort because the runtime rejects conflicting manipulator effort conditions in a single atomic stage.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_rotate",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "estop_cap_center",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "rotation_axis": "+z",
+                "rotation_angle_rad": 0.7853981634,
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+{
+    "Reasoning": "This is a conjunctive non-contact alignment stage. The reach_point term moves the currently gripped strawberry_center_frame origin to the 0.245 m +z standoff waypoint above top_drawer_center_frame with the required 0.01 m positional tolerance; manipulator_low_effort is included to represent the no-unexpected-contact requirement. The two axis_align terms impose the required bipolar +x-to-+x and +y-to-+y orientation relations within the stated 0.05 rad threshold, without adding any +z tool relation. The object_grasped term with gripper_closed condition represents keeping the strawberry physically held with the gripper closed throughout the move. Unrepresented due to API limits: exact preservation of the current panda_fingertip-to-strawberry rigid transform, independent left/right finger joint and finger-squeeze effort thresholds, continuous monitoring/fail-pause logic, strict pathwise standoff inequality, and explicit collision avoidance against top_drawer_center_frame, top_drawer_handle_frame, or cabinet. The API also cannot specify an offset whose origin is top_drawer_center_frame but whose basis is cabinet, so the 0.245 m offset is encoded in the top_drawer_center_frame basis, assuming it is cabinet-aligned.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.245
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_center_frame",
+                "controlled_axis": "+x",
+                "reference_axis": "+x",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_center_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+y",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

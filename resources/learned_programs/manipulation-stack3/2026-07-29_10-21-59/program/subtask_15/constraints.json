@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is represented as an open-gripper vertical retract with preserved end-effector orientation and low contact effort. `directional_move` encodes the required 0.10 m motion of `panda_fingertip` along world +z from the stage-start pose, with no intentional lateral translation implied by the directional motion primitive. `freeze_orientation` preserves the release/placement orientation, including the prior tool +z and +y directions. `open_gripper` encodes maintaining the gripper open. The `manipulator_low_effort` condition on the retract term represents the required non-contact/free-space interaction during withdrawal. Unrepresented clauses: exact finger joint value 1.0 and finger-effort free-space feedback are only approximated by `open_gripper`; negative `cube_3 not object_grasped` cannot be directly encoded; minimum separation from cube_3 cannot be encoded as an inequality; direct preservation/monitoring of cube_3, cube_2, and cube_1 poses, support stability, cube-to-cube lateral alignment, and cube face alignment cannot be encoded because the API only allows robot frames or the currently gripped object as controlled entities, and no object is currently gripped.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

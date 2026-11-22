@@ -1,0 +1,1 @@
+[Manipulate] Move the grasped can to the desired upright placement state with the gripper closed.

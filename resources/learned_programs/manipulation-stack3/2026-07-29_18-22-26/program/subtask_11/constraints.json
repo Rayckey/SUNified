@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This stage lifts the already grasped cube_3 by commanding the panda_fingertip to move along world +z while preserving its current orientation and maintaining the grasp. The directional_move encodes the upward lift, using 0.15 m as the representable clearance-derived positive lift distance and 0.01 m stopping tolerance. freeze_orientation preserves the current panda_fingertip world orientation within the requested 0.05 rad. object_grasped represents that cube_3 remains physically held with the gripper closed during the lift. Exact finger joint value holding, finger effort/contact no-slip verification, pairwise 0.15 m distance inequalities between cube_3 and cube_1/cube_2, and keeping cube_1/cube_2 undisturbed with cube_2 supported/aligned on cube_1 cannot be directly represented with the available flat constraint operators, so they are noted but omitted.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage should keep the panda_fingertip pose fixed while opening the gripper. freeze_position holds the current panda_fingertip origin in the robot/base frame with tight drift tolerance. freeze_orientation preserves the current panda_fingertip orientation, including its tool +z and +y directions. open_gripper represents commanding the fingers to open symmetrically toward the open state and uses the gripper_opened condition as the representable success condition. The requested finger joint monitoring is partially represented by open_gripper/gripper_opened, but explicit target joint value near 1.0, symmetric +y finger-axis motion, finger effort drop to free-space levels, stopping exactly on low finger effort, and abort logic for persistent finger effort or failure to open are not directly representable with the available operators/condition labels.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.005
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

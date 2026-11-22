@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage keeps the panda_fingertip end-effector pose fixed while establishing a grasp on the can. freeze_position enforces the current fingertip world position within the requested 0.01 m tolerance. freeze_orientation preserves the current fingertip orientation; 5 degrees is encoded as approximately 0.087 rad. object_grasped represents closing the fingers until the can is physically held. The detailed requirements about individual left/right finger joint values decreasing toward 0.0, detecting finger contact/effort feedback, and stopping when joint decrease stalls due to contact are not directly expressible with the available operators or condition labels; they are abstracted by object_grasped. close_gripper is not emitted because the API instructs not to emit both close_gripper and object_grasped, and this stage requires a real grasp.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.087266
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

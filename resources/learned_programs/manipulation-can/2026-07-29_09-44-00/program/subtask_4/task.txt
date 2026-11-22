@@ -1,0 +1,1 @@
+[Manipulate] Reorient the grasped can into the upright pose while keeping can_center_frame position fixed and the gripper closed.

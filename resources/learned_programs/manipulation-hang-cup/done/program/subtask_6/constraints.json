@@ -1,0 +1,42 @@
+{
+    "Reasoning": "Success for this subtask means sliding the already grasped mug (via its rim) so that the handle passes through and hooks over cup_hanger_branch_1_tip_frame along the -y axis of the branch's frame, moving by at least 0.05 m. The mug must maintain its current orientation relative to the agent (do not rotate during sliding), and the gripper must remain firmly closed. The action should abort on loss of grasp or excessive resistance. The subtask should end either when the required translation is achieved or resistance consistent with having fully hooked the handle is detected; this is an 'or' condition between completion and resistance. We use a 'directional_move' constraint for the explicit translation along -y by 0.05 m, a 'freeze_orientation' to enforce maintaining the current tool orientation, and 'close_gripper' for maintaining a secure grasp. To represent the success-stopping criteria (required translation OR valid resistance), we use 'or' between geometry and manipulator_high_effort on the directional move.",
+    "Constraints": [
+        {
+            "logic": "or",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_rim_frame_0",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.05,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

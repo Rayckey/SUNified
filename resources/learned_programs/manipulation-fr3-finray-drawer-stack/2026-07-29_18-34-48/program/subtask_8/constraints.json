@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage is a fixed-pose grasp of strawberry_center_frame. freeze_position keeps panda_fingertip at its stage-start position with the required 0.01 m tolerance, representing no commanded translation during closure. freeze_orientation keeps the stage-start orientation fixed within 5 degrees, representing no commanded rotation. object_grasped is used instead of close_gripper because the stage requires a real held strawberry_center_frame with sustained contact/effort consistent with grasp, not merely mechanical full closure. The explicit simultaneous left/right finger closure and detailed finger effort/contact feedback are not separately parameterizable in the available API; they are represented at the stage level by object_grasped. The separate requirement to keep the fingertip origin at strawberry_center_frame within 0.01 m cannot be emitted as an additional reach_point because only one position op is allowed; it is assumed satisfied by the immediately preceding contact stage and maintained by freeze_position.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

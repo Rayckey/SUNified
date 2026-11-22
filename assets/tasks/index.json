@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "robots": [
+    "fr3_finray",
+    "franka_panda",
+    "kinova_gen3",
+    "ur5_robotiq"
+  ],
+  "tasks": [
+    {
+      "id": "drawer",
+      "title": "Open drawer",
+      "status": "registered",
+      "robots": [
+        "fr3_finray",
+        "franka_panda",
+        "kinova_gen3",
+        "ur5_robotiq"
+      ],
+      "spec": "drawer/task.json"
+    },
+    {
+      "id": "drawer_stack",
+      "title": "Place object in drawer",
+      "status": "registered",
+      "robots": [
+        "fr3_finray",
+        "franka_panda",
+        "kinova_gen3",
+        "ur5_robotiq"
+      ],
+      "spec": "drawer_stack/task.json"
+    },
+    {
+      "id": "stack2",
+      "title": "Stack two cubes",
+      "status": "registered",
+      "robots": [
+        "fr3_finray",
+        "franka_panda",
+        "kinova_gen3",
+        "ur5_robotiq"
+      ],
+      "spec": "stack2/task.json"
+    },
+    {
+      "id": "stack3",
+      "title": "Stack three cubes",
+      "status": "registered",
+      "robots": [
+        "fr3_finray",
+        "franka_panda",
+        "kinova_gen3",
+        "ur5_robotiq"
+      ],
+      "spec": "stack3/task.json"
+    },
+    {
+      "id": "pen_cup",
+      "title": "Insert marker into holder",
+      "status": "registered",
+      "robots": [
+        "fr3_finray",
+        "franka_panda",
+        "kinova_gen3",
+        "ur5_robotiq"
+      ],
+      "spec": "pen_cup/task.json"
+    },
+    {
+      "id": "hang_cup",
+      "title": "Hang mug",
+      "status": "registered",
+      "robots": [
+        "fr3_finray",
+        "franka_panda",
+        "kinova_gen3",
+        "ur5_robotiq"
+      ],
+      "spec": "hang_cup/task.json"
+    },
+    {
+      "id": "can",
+      "title": "Stand up can",
+      "status": "registered",
+      "robots": [
+        "fr3_finray",
+        "franka_panda",
+        "kinova_gen3",
+        "ur5_robotiq"
+      ],
+      "spec": "can/task.json"
+    },
+    {
+      "id": "estop_close",
+      "title": "Press emergency stop",
+      "status": "registered",
+      "robots": [
+        "fr3_finray",
+        "franka_panda",
+        "kinova_gen3",
+        "ur5_robotiq"
+      ],
+      "spec": "estop_close/task.json"
+    },
+    {
+      "id": "estop_open",
+      "title": "Release emergency stop",
+      "status": "registered",
+      "robots": [
+        "fr3_finray",
+        "franka_panda",
+        "kinova_gen3",
+        "ur5_robotiq"
+      ],
+      "spec": "estop_open/task.json"
+    },
+    {
+      "id": "generated_cabinet",
+      "title": "Video 28/29 cabinet",
+      "status": "agent_verified_example",
+      "robots": [
+        "franka_panda"
+      ],
+      "spec": "generated_cabinet/task.json"
+    }
+  ]
+}

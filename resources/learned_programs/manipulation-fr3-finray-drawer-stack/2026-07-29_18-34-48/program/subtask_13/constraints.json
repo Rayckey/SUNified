@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The retract stage is encoded as a conjunctive controller stage. The panda_fingertip performs the required 0.14 m translation along world +z from its stage-start pose with 0.01 m tolerance, and the condition also includes manipulator_low_effort to represent free-space/non-contact effort monitoring during retract. The gripper is commanded/maintained open using open_gripper. The end-effector orientation is held fixed with a 5 degree tolerance using freeze_orientation. The requirement that strawberry_center_frame remain at top_drawer_center_frame is not directly encoded because the released strawberry is no longer a controlled gripped_object and the API permits only one position op in the stage. Explicit collision-clearance constraints against strawberry_center_frame, top_drawer_handle_frame, and cabinet, and prevention of commanded closing motion from joint feedback, are not directly representable beyond open_gripper and low-effort monitoring.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

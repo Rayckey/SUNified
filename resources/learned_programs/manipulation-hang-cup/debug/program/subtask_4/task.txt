@@ -1,0 +1,1 @@
+[Manipulate] Carry the lifted mug_center_frame toward the proximity of cup_hanger_branch_1_tip_frame with the gripper closed.

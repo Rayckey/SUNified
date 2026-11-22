@@ -1,0 +1,15 @@
+{
+  "source": "examples/03_demonstrations_to_policy/input/demonstrations.hdf5",
+  "demonstrations": 4,
+  "transitions": 484,
+  "observation_shape": [
+    31
+  ],
+  "action_shape": [
+    11
+  ],
+  "observation": "obs/state",
+  "next_observation": "next_obs/state",
+  "action": "actions/absolute_ee",
+  "scope": "Recorded dataset schema for an independent dynamics training input."
+}

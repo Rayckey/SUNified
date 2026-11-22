@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This release/retract stage is represented as a conjunctive controller stage. The open_gripper term maintains the released/open gripper state and avoids any commanded closing. The directional_move term commands the panda_fingertip to retract 0.10 m along its tool -z direction, using the panda_fingertip frame as the reference basis and a 0.01 m tolerance for the stop condition. The freeze_orientation term keeps the panda_fingertip world orientation fixed during the retract, preserving the stage-start tool-axis directions and commanding no intentional rotation. Low manipulator effort is attached to the retract motion to represent the requirement that unintended arm/TCP contact or collision feedback should not occur. Unrepresented clauses: exact finger-effort/free-space release feedback, named-object non-contact separation checks, no new non-gripper contacts with each listed object, and preservation of the hooked mug geometry cannot be directly encoded with the available operators because there is no explicit collision/contact-distance operator or non-gripped object pose-maintenance operator in this stage.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "robot_frame",
+                "reference_origin": "panda_fingertip",
+                "axis": "-z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

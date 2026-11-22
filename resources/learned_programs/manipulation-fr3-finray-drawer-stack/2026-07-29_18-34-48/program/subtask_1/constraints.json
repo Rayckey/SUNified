@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Use open_gripper to maintain the open fingertip configuration. Use freeze_orientation on panda_fingertip to preserve the orientation present at the start of this stage, with 5 degrees encoded as about 0.0873 rad. Use reach_point to move the panda_fingertip origin to the top_drawer_handle_frame origin with the required 0.01 m contact tolerance. The reach constraint includes both geometry and manipulator_high_effort condition labels to represent contact-aware stopping/monitoring using pose feedback and end-effector interaction effort, without using a top-level OR. Separate gripper effort feedback for contact onset is not directly representable beyond keeping the gripper open and monitoring manipulator_high_effort.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

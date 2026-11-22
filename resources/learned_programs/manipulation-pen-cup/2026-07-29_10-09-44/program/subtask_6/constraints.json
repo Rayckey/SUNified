@@ -1,0 +1,50 @@
+{
+    "Reasoning": "This stage aligns and positions the grasped marker at the pen_holder standoff goal while preserving the grasp. The reach_point term moves the gripped marker origin to the pen_holder-frame target offset [0, 0, 0.224] with 0.01 m tolerance; its condition includes manipulator_high_effort to represent the specified early stop on unexpected collision/contact effort during motion. The axis_align term makes marker local +y bipolar with pen_holder local +z using the supported 0.2 rad angular threshold. The object_grasped term represents the required continued firm closed grasp/no-slip hold of the marker. The exact bilateral finger effort/contact details, explicit rigid transform between panda_fingertip and marker, and continuous 0.10 m clearance inequality are not directly representable by the available operators; the standoff target and object_grasped constraint are the closest supported encodings.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.224
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "object",
+                "reference_origin": "pen_holder",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

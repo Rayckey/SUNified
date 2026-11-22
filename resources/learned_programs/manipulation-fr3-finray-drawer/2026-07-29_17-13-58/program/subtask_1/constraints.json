@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage is an open-gripper contact approach. `open_gripper` represents maintaining the fingertips in the open state, though the exact per-finger joint value 1.0 cannot be encoded directly. `freeze_orientation` preserves the panda_fingertip orientation from the start of the stage with the requested 0.05 rad tolerance and avoids any additional tool-axis reorientation. `reach_point` moves the panda_fingertip origin to the top_drawer_handle_frame origin with a 0.01 m contact-approach tolerance. The `manipulator_high_effort` condition label on the reach term represents the supported effort/contact feedback stop alternative to avoid pushing after first contact; direct contact sensing and gripper finger effort feedback are not otherwise explicitly representable.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

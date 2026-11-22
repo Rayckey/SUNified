@@ -1,0 +1,5 @@
+{
+  "artifact": "resources/experiment_definitions/kinova_gen3/residual_rl/prior_conditioned_training/kinova_learned_stack2_state/stack2_2026-06-21_19-28-09_chunking_10_ff3_residual_hparams.sh",
+  "description": "Prepared launcher, training logs and residual checkpoint",
+  "path_base": "repository root"
+}

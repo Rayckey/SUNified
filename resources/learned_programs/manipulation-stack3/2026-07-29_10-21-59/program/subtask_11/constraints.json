@@ -1,0 +1,41 @@
+{
+    "Reasoning": "Use object_grasped with gripper_closed condition to require cube_3 to remain physically held by the already-closed panda_fingertip gripper. Use one directional_move on panda_fingertip to encode the required 0.15 m lift strictly along world +z with 0.01 m completion tolerance, which also avoids intentional lateral translation. Use freeze_orientation to preserve the stage-start panda_fingertip world orientation without adding any new tool-axis relation. The cube_3 upward motion is represented indirectly through the grasp while the fingertip is lifted; a separate cube_3 target pose cannot be added because only one position operator is allowed. The explicit non-contact clearance and final 0.15 m separation from cube_1 and cube_2, no intentional contact/grasp on cube_1 or cube_2, stable finger effort/contact feedback details, and detailed monitoring requirements are not directly representable with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

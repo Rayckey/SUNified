@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage keeps the panda_fingertip pose fixed while establishing a real grasp on mug_rim_frame_0. freeze_position and freeze_orientation encode no end-effector translation or rotation during closure. object_grasped encodes the required successful outcome: the mug_rim_frame_0 is physically held, not merely that the fingers have mechanically closed. The symmetric finger-closing command, bilateral contact/effort details, monitoring of individual finger joints and gripper effort/contact feedback, and the explicit failure case for fully closed free-space closure cannot be represented directly with the available constraint operators; they are covered only indirectly by requiring object_grasped rather than close_gripper.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

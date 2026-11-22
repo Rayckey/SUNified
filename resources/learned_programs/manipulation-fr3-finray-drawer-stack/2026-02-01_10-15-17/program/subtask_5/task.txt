@@ -1,0 +1,1 @@
+[Release] Retract the gripper away from the top_drawer_handle_frame to a safe configuration with the gripper open.

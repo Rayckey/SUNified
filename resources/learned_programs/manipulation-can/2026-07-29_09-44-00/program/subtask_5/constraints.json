@@ -1,0 +1,47 @@
+{
+    "Reasoning": "The stage is encoded as one conjunctive controller stage. The gripped can_center_frame is commanded to move downward along world -z by the maximum intended 0.15 m with 0.01 m tolerance; the condition labels include both geometry and manipulator_high_effort to represent the supported stop alternative of reaching the geometric target or stopping early on placement contact/effort. object_grasped with gripper_closed represents keeping the can firmly held without issuing an additional close_gripper command. The can upright requirement is represented by aligning can_center_frame local -y codirectionally with world +z within 5 degrees, leaving rotation about that axis unconstrained. Exact start-of-stage finger joint values, explicit no-extra-closing effort limits, full panda_fingertip-to-can relative transform preservation, compliance implementation details, and monitoring signals are not directly representable beyond object_grasped, the downward motion term, and the contact/effort condition label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "-y",
+                "reference_axis": "+z",
+                "alignment": "codirectional",
+                "tolerance_rad": 0.0872664626
+            }
+        }
+    ]
+}

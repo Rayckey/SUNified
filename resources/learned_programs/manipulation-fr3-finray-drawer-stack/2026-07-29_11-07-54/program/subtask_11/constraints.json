@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage is a single lowering motion while continuing to hold the strawberry. `object_grasped` represents the required stable grasp with the gripper remaining closed; no separate `close_gripper` is emitted because the object is already held and the requirement is to keep holding rather than close further. `freeze_orientation` preserves the start-of-stage panda_fingertip orientation in the base/world frame, keeping the tool axes fixed during the lowering motion. `directional_move` encodes the explicit world -z lowering of the grasped strawberry_center_frame by 0.245 m with 0.01 m tolerance, which corresponds to reaching the observed top_drawer_center_frame placement height from the above-target pose. Collision avoidance with the cabinet and top_drawer_handle_frame, bilateral finger contact/no-slip verification details, fixed grasp transform beyond `object_grasped`, and continuous monitoring are required by the text but are not directly representable with the available operators; they are reflected only indirectly through the grasp and geometry constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.245,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

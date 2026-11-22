@@ -1,0 +1,1 @@
+[Manipulate] Lift the grasped mug_rim_frame_0 vertically to create clearance above the table with the gripper closed.

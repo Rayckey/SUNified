@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Success for this subtask means lowering the currently grasped cube_1 (with the gripper closed and fixed orientation) along the world -z axis until its bottom face is within 0.01 m of (or gently touches) the top face of cube_2, then stopping. The approach requires motion strictly along -z by a distance defined implicitly as 'until contact or minimal clearance,' which we encode using reach_distance for proximity between the two cubes along -z. Fixed orientation is maintained to prevent tilting. The gripper must stay closed since cube_1 must remain grasped. All constraints must be satisfied together (logic: 'and'), as all are required for task success.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "object",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0,
+                    0,
+                    0.025
+                ],
+                "distance_m": 0.025,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

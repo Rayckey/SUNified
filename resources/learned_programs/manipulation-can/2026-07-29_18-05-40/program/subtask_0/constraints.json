@@ -1,0 +1,66 @@
+{
+    "Reasoning": "This stage commands an open, top-down, non-contact pregrasp above the can. The gripper-open requirement is represented with open_gripper. The above-can target is represented as a reach_point for panda_fingertip at can_center_frame plus 0.15 m along world +z; a 0.01 m tolerance is used as a stricter grasp-setup tolerance that satisfies the requested 0.02 m stopping accuracy. The top-down orientation is represented by aligning panda_fingertip +z antiparallel to world +z. The elongated-object setup is represented by making panda_fingertip +y orthogonal to the can_center_frame local -y long axis. The requested 5 degree orientation tolerance cannot be encoded exactly because axis_align has the fixed supported tolerance field value of 0.2 rad. Continuous 0.10 m clearance, intentional non-contact path monitoring, and explicit monitoring of pose/joint states are not directly representable with the available operators, so they are omitted.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "can_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "can_center_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "-y",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The retract stage is represented as keeping the gripper open, moving the panda_fingertip to the estop_cap_center +z object-frame offset target at 0.12 m with 0.01 m tolerance, and freezing the panda_fingertip orientation at its start-of-stage released orientation. The reach target encodes the intended non-contact clearance configuration; manipulator_high_effort is included on the reach term as the representable stop/back-off condition for unexpected contact effort during retract. The API cannot directly encode individual finger joint values near 1.0, absence of a gripper-closing command beyond using open_gripper, individual finger effort free-space levels, continuous collision separation, or explicit monitoring channels; these are noted but omitted as separate constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

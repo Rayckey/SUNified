@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This stage keeps the currently held cube_2 grasped, translates the gripped object upward along world +z, and preserves the current panda_fingertip orientation with the required 0.05 rad tolerance. A 0.16 m upward lift is used as a positive lift distance intended to satisfy the requested at-least-0.15 m clearance while allowing a 0.01 m motion tolerance. No new tool +z or tool +y axis-alignment constraint is added. The rigid coupling/no-slip requirement is represented by object_grasped together with the gripper_closed condition; explicit fingertip joint values, finger effort thresholds, pairwise object-distance stop checks against both cube_1 and cube_3, and detailed monitored-signal feedback channels are not directly parameterized by the available terms.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.16,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Use a single position goal for the retract: move the panda_fingertip origin to the estop_cap_center object-frame +z offset point at 0.12 m with 0.01 m tolerance. Preserve the current gripper orientation with freeze_orientation rather than imposing any new alignment to estop_cap_center axes. Keep the gripper open throughout with open_gripper. The reach constraint is also labeled with manipulator_low_effort to represent the required no-sustained-contact/non-contact feedback at the retract goal. Exact finger joint positions near 1.0, absence of closing motion along the tool +y finger axis, and continuous monitoring of pose/joint/effort feedback are not directly parameterized by the available operators, beyond open_gripper and the condition labels.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

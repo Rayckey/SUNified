@@ -1,0 +1,1 @@
+[Manipulate] Pull top_drawer_handle_frame outward from cabinet to open top_drawer_center_frame to the requested opening amount with the gripper closed while keeping the gripper orientation fixed.

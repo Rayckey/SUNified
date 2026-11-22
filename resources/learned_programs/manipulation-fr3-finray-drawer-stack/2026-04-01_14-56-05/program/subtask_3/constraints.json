@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The subtask is to pull the grasped top_drawer_handle_frame outward along the drawer's opening direction (-y in top_drawer_handle_frame object frame) by 0.14 m, while keeping the gripper closed and orientation fixed.\n\nKey constraints:\n1. **directional_move**: Translate along object -y in top_drawer_handle_frame object frame by 0.14 m. The controlled entity is the gripped object (top_drawer_handle_frame), moving along -y in the object's own frame. This is the primary motion constraint.\n2. **freeze_orientation**: Keep tool orientation fixed as established during the grasp. The gripper (panda_fingertip) orientation must not change.\n3. **close_gripper**: Keep both finger joints closed (grasp maintained throughout).\n\nThe stop condition is either reaching 0.14 m OR high effort spike (mechanical stop). The \"or\" logic applies to the stopping condition, but in the constraint model, the directional_move encodes the 0.14 m target, and the manipulator_high_effort condition on the directional_move captures the effort-based stop. I'll use \"or\" logic between the directional_move (geometry) and a manipulator_high_effort condition to represent the \"whichever occurs first\" stopping criterion.\n\nActually, looking at the constraint model more carefully: the `condition` field is metadata only and doesn't enforce success. The `logic` field combines constraints. The stopping condition \"0.14 m OR high effort spike\" can be represented by having the directional_move with condition including both geometry and manipulator_high_effort, or by having two constraints with \"or\" logic.\n\nLet me structure this as:\n1. First constraint (logic: \"and\"): directional_move along -y of top_drawer_handle_frame by 0.14 m \u2014 condition: [\"geometry\", \"manipulator_high_effort\"] to capture both stopping criteria\n2. Second constraint (logic: \"and\"): freeze_orientation of panda_fingertip \u2014 condition: [\"geometry\"]\n3. Third constraint (logic: \"and\"): close_gripper \u2014 condition: [\"gripper_closed\"]\n\nWait, the rule says AT MOST ONE position constraint operator (reach_point OR directional_move OR freeze_position). freeze_orientation is not a position constraint, so that's fine.\n\nFor the \"or\" stopping condition (0.14m OR high effort), I can represent this by including manipulator_high_effort in the condition list of the directional_move constraint. The condition is metadata only, so it signals that high effort is also a valid termination signal. This is the best approximation within the TermAPI.\n\nLet me finalize:\n- Constraint 1 (logic: \"and\"): directional_move, controlled_entity: \"gripped_object\", controlled_target: \"top_drawer_handle_frame\", reference_basis: \"object\", reference_origin: \"top_drawer_handle_frame\", axis: \"-y\", travel_distance_m: 0.14, tolerance_m: 0.005. Condition: [\"geometry\", \"manipulator_high_effort\"] \u2014 the manipulator_high_effort signals the alternative stop.\n- Constraint 2 (logic: \"and\"): freeze_orientation, controlled_entity: \"robot_frame\", controlled_target: \"panda_fingertip\", tolerance_rad: 0.2. Condition: [\"geometry\"]\n- Constraint 3 (logic: \"and\"): close_gripper. Condition: [\"gripper_closed\"]\n\nThe \"or\" for the stopping condition (0.14m vs effort spike) is best captured by including manipulator_high_effort in the condition metadata of the directional_move. The TermAPI doesn't have a direct way to encode \"stop early on effort spike\" as a separate boolean-combined constraint, so this is the closest representation.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "top_drawer_handle_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.13,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

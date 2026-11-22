@@ -1,0 +1,86 @@
+[
+  {
+    "name": "pipeline",
+    "extra": "pipeline",
+    "readme": "src/kuafu/pipeline/README.md",
+    "input": "src/kuafu/pipeline/examples/input.json",
+    "output": "src/kuafu/pipeline/examples/output.json"
+  },
+  {
+    "name": "agents",
+    "extra": "agents",
+    "readme": "src/kuafu/agents/README.md",
+    "input": "src/kuafu/agents/examples/input.json",
+    "output": "src/kuafu/agents/examples/output.json"
+  },
+  {
+    "name": "asset_generation",
+    "extra": "assets",
+    "readme": "src/kuafu/asset_generation/README.md",
+    "input": "src/kuafu/asset_generation/examples/input.json",
+    "output": "src/kuafu/asset_generation/examples/output.json"
+  },
+  {
+    "name": "programs",
+    "extra": "programs",
+    "readme": "src/kuafu/programs/README.md",
+    "input": "src/kuafu/programs/examples/input.json",
+    "output": "src/kuafu/programs/examples/output.json"
+  },
+  {
+    "name": "skills",
+    "extra": "skills",
+    "readme": "src/kuafu/skills/README.md",
+    "input": "src/kuafu/skills/examples/input.json",
+    "output": "src/kuafu/skills/examples/output.json"
+  },
+  {
+    "name": "mpc",
+    "extra": "mpc",
+    "readme": "src/kuafu/mpc/README.md",
+    "input": "src/kuafu/mpc/examples/input.json",
+    "output": "src/kuafu/mpc/examples/output.json"
+  },
+  {
+    "name": "bc",
+    "extra": "bc",
+    "readme": "src/kuafu/bc/README.md",
+    "input": "src/kuafu/bc/examples/input.json",
+    "output": "src/kuafu/bc/examples/output.json"
+  },
+  {
+    "name": "rl",
+    "extra": "rl",
+    "readme": "src/kuafu/rl/README.md",
+    "input": "src/kuafu/rl/examples/input.json",
+    "output": "src/kuafu/rl/examples/output.json"
+  },
+  {
+    "name": "sim2real",
+    "extra": "sim2real",
+    "readme": "src/kuafu/sim2real/README.md",
+    "input": "src/kuafu/sim2real/examples/input.json",
+    "output": "src/kuafu/sim2real/examples/output.json"
+  },
+  {
+    "name": "data",
+    "extra": "data",
+    "readme": "src/kuafu/data/README.md",
+    "input": "src/kuafu/data/examples/input.json",
+    "output": "src/kuafu/data/examples/output.json"
+  },
+  {
+    "name": "isaac",
+    "extra": "isaac",
+    "readme": "src/kuafu/isaac/README.md",
+    "input": "src/kuafu/isaac/examples/input.json",
+    "output": "src/kuafu/isaac/examples/output.json"
+  },
+  {
+    "name": "dynamics",
+    "extra": "dynamics",
+    "readme": "src/kuafu/dynamics/README.md",
+    "input": "src/kuafu/dynamics/examples/input.json",
+    "output": "src/kuafu/dynamics/examples/output.json"
+  }
+]

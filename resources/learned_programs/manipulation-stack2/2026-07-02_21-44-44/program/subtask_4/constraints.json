@@ -1,0 +1,44 @@
+{
+    "Reasoning": "The stage carries the already-grasped cube_1 to a stacking-preparation point directly above cube_2. The reach_point constraint makes the gripped cube_1 center reach cube_2 center plus 0.16 m in world +z, with 0.01 m tolerance, which also enforces x/y alignment and positive vertical separation for non-contact staging. The freeze_orientation constraint preserves the panda_fingertip tool orientation from the start of the stage within about 5 degrees. The object_grasped constraint requires cube_1 to remain physically held with the gripper closed throughout the carry. Not directly representable: exact preservation of both finger joint start values with only symmetric inward adjustment, explicit no-opening joint command, finger effort/contact feedback thresholds, the exact rigid transform from panda_fingertip to cube_1 beyond maintaining grasp while controlling the gripped object, monitoring signals, and early stop on grasp loss or unintended contact.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.16
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.087266
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

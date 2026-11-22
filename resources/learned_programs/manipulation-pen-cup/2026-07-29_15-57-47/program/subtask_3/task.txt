@@ -1,0 +1,1 @@
+[Manipulate] Lift marker clear of table with the gripper closed while keeping marker orientation fixed.

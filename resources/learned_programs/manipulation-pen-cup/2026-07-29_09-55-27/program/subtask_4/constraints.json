@@ -1,0 +1,43 @@
+{
+    "Reasoning": "This stage is conjunctive: keep the marker physically held, keep the panda_fingertip origin fixed, and rotate the grasped marker upright. `object_grasped` is used instead of `close_gripper` because the requirement is a real maintained grasp, not merely mechanical closure. `freeze_position` keeps the panda_fingertip frame origin at its start-of-stage world position within 0.01 m. `axis_align` makes the marker local +y length axis bipolar with world +z within 5 degrees; because the marker is the gripped object, this represents rotating the fingertip/object system while maintaining the grasp. The `manipulator_low_effort` condition on the reorientation term represents monitoring for unexpected external/table contact during rotation. Unrepresented details: exact start-of-stage left/right finger joint values, explicit paired finger effort thresholds, detailed slip detection from all listed feedback modalities, explicit table collision-avoidance geometry, and the exact start fingertip-to-marker transform lock are not directly expressible beyond `object_grasped`.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.0872665
+            }
+        }
+    ]
+}

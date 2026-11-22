@@ -1,0 +1,1 @@
+[Manipulate] Lower the grasped strawberry until its center frame is 3 cm above top_drawer_center_frame, preserving orientation and the grasp.

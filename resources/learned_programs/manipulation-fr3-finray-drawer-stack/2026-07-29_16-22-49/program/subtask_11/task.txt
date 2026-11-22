@@ -1,0 +1,1 @@
+[Manipulate] Align the grasped strawberry_center_frame with top_drawer_center_frame for placement while keeping the gripper closed.

@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The subtask is to lift the grasped strawberry upward along world +z by 0.15 m, with the gripper closed and tool orientation fixed.\n\n1. **directional_move**: Move the gripped strawberry (or tool frame) along world +z by 0.15 m with tolerance 0.01 m. This is explicitly specified as a directional move along +z in world frame by 0.15 m.\n\n2. **freeze_orientation**: Keep the tool orientation fixed as established during the prior top-down grasp. The subtask explicitly says \"keep tool orientation fixed.\"\n\n3. **close_gripper**: Gripper must remain closed throughout (both finger joints at or near 0.0), maintaining the grasp on the strawberry.\n\n4. **manipulator_high_effort** monitoring: The subtask says to monitor gripper effort and arm joint effort. This is represented as a manipulator_high_effort condition on the close_gripper constraint (the gripper should maintain high effort indicating a grasp is held). The effort monitoring for grasp loss is captured via the gripper_closed condition.\n\nLogic: All constraints must hold simultaneously, so all use \"and\".\n\nNote: The effort monitoring (flag grasp loss if effort drops) cannot be directly represented as a constraint operator in the TermAPI \u2014 it's a monitoring/safety condition. I'll attach it as a condition label on the close_gripper constraint.\n\nThe controlled_entity for directional_move: the gripped object is strawberry_center_frame. The reference_basis is \"world\", reference_origin is \"world\", axis is \"+z\", travel_distance_m is 0.15, tolerance_m is 0.01.\n\nFor freeze_orientation: controlled_entity is \"robot_frame\", controlled_target is \"panda_fingertip\".",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed",
+                "manipulator_high_effort"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

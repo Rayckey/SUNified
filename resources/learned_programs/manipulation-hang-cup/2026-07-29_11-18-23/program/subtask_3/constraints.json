@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This stage keeps the mug held, fixes the panda_fingertip orientation at its start-of-stage world orientation, and commands a pure world +z lift with no intentional x/y motion. The gripped-object directional move uses mug_center_frame as the mug geometry representative and a 0.10 m upward travel as the representable proxy for achieving the requested 0.10 m table clearance. object_grasped with gripper_closed condition represents the continued closed, load-bearing grasp. freeze_orientation represents the fixed gripper orientation without adding any new tool-axis relation. The API has no direct term for table-geometry clearance monitoring, explicit finger joint targets/effort feedback, or explicit preservation of the full fingertip-to-mug relative transform; these are represented indirectly by the upward gripped-object move plus object_grasped where possible.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

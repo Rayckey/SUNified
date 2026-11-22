@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This stage is a conjunctive pull while maintaining the existing grasp and end-effector orientation. The directional_move encodes the required 0.14 m translation of panda_fingertip along the top_drawer_handle_frame -y pull direction with the specified 0.01 m completion tolerance. freeze_orientation keeps the panda_fingertip orientation fixed at its start-of-stage orientation. object_grasped represents maintaining a physical hold on top_drawer_handle_frame during the pull, with the gripper-closed condition metadata. The detailed requirements to keep both finger joints at their exact current grasping joint states, monitor finger effort for stable contact, distinguish lost grasp from excessive drawer resistance via gripper effort, and explicitly preserve the full relative grasp transform/no-slip are not directly representable beyond object_grasped and are therefore omitted as separate constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

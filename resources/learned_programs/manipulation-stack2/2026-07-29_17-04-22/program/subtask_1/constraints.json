@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage keeps the gripper open, moves the panda_fingertip frame origin to the cube_1 center with a 0.01 m contact tolerance, and freezes the panda_fingertip orientation at the stage-start orientation with a 5 degree tolerance. The reach_point term includes both geometry and manipulator_high_effort condition labels to represent the allowed stop alternatives: geometric arrival at cube_1 center or earlier sustained contact detected by effort feedback. The requirement that intentional contact be allowed only with cube_1 is not directly representable as a collision-exclusion constraint in the available API, so it is omitted.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0873
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

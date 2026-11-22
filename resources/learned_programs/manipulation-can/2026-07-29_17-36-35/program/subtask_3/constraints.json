@@ -1,0 +1,53 @@
+{
+    "Reasoning": "This stage is a conjunctive lift while maintaining the existing grasp. The directional_move constraint encodes the required 0.15 m upward translation of panda_fingertip along world +z with the specified 0.01 m tolerance. The freeze_orientation constraint keeps the panda_fingertip orientation at its start-of-stage orientation within 0.05 rad. The gripped-object orientation freeze helps represent no intentional can rotation/slip during the lift. The object_grasped constraint represents that the can remains physically held with the gripper closed throughout the stage. Exact finger joint start states, finger closing effort magnitude, detailed contact feedback, and the full can pose expressed in the gripper frame including relative position cannot be directly encoded beyond object_grasped and orientation preservation.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

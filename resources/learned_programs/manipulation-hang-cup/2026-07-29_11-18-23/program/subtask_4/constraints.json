@@ -1,0 +1,45 @@
+{
+    "Diagnosis": "The failure is caused by the runtime rejecting a stage that mixes `freeze_orientation` with another orientation constraint: the previous list had `freeze_orientation` on `panda_fingertip` and `axis_align` on `mug_handle_hole_frame`. To make the smallest valid repair, the `axis_align` term is removed and the fixed gripper world-frame orientation term is kept, because preserving the start-of-stage `panda_fingertip` orientation is an explicit hard constraint and stop condition for this stage.",
+    "Reasoning": "This stage carries the already-grasped mug to the pre-insertion standoff pose while keeping the grasp and the gripper orientation fixed. `object_grasped` with the `gripper_closed` condition represents maintaining the closed, load-bearing grasp on the mug. `freeze_orientation` preserves the start-of-stage world-frame orientation of `panda_fingertip`, satisfying the fixed-orientation requirement without adding another tool-axis relation. `reach_point` moves the gripped `mug_handle_hole_frame` origin to the point 0.12 m along `cup_hanger_branch_1_tip_frame` +y, with 0.01 m tolerance, which encodes both the positive axial standoff and lateral alignment to the branch +y axis at the target. The explicit `axis_align` relation between `mug_handle_hole_frame` +y and `cup_hanger_branch_1_tip_frame` +y is not included because the runtime error shows it cannot be combined with the required `freeze_orientation` term in one controller stage. Unrepresented clauses include exact finger joint commands toward 0.0, explicit gripper effort/contact thresholds, exact preservation of the fingertip-to-rim transform beyond `object_grasped`, rigid internal mug transform preservation, continuous 0.10 m clearance from the table, transient prevention of motion into the branch along -y, and explicit monitoring signals.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.12,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

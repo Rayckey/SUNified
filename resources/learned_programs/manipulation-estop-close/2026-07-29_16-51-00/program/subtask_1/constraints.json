@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage moves the panda_fingertip frame origin directly to the estop_cap_tip frame origin for contact, using a 0.01 m tolerance as specified for contact. The reach_point term includes both geometry and manipulator_high_effort condition labels to represent termination either by reaching the contact geometry tolerance or by earlier contact/effort feedback during the approach. The freeze_orientation term preserves the current panda_fingertip orientation throughout the stage without adding any new approach-axis or finger-axis alignment. The close_gripper term keeps the gripper mechanically closed and avoids commanding any opening. Detailed monitoring of decreasing pose error, fixed-orientation error, individual gripper joint states commanded to 0.0, and unexpected effort beyond intended contact cannot be fully represented by the available operators, except for the manipulator_high_effort contact-stop label on the reach constraint.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

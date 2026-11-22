@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This stage keeps the end-effector pose fixed while completing a real grasp of cube_1. The fixed Cartesian position is represented by freeze_position on panda_fingertip with the required 0.01 m tolerance. The fixed full orientation is represented by freeze_orientation on panda_fingertip with the required 0.05 rad tolerance. The grasp success requirement is represented with object_grasped, rather than close_gripper, because the stage explicitly requires stable contact/effort-consistent bilateral grasp feedback and says mere closure to joint value 0.0 is not sufficient. The API cannot explicitly encode separate left/right finger symmetry, individual joint-state monitoring, or bilateral finger effort thresholds; these are captured only at the grasp-success level by object_grasped.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

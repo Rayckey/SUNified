@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage is encoded as carrying the currently grasped strawberry to the specified non-contact waypoint while preserving its current orientation and confirming it remains grasped. The position goal moves strawberry_center_frame, as the gripped object, to an offset waypoint 0.245 m along the local +z direction from top_drawer_center_frame with 0.01 m tolerance. The grasp/closed-gripper requirement is represented by object_grasped rather than close_gripper, because the stage requires continued physical holding of strawberry_center_frame, not merely free-space finger closure. The orientation requirement is represented by freeze_orientation on strawberry_center_frame with the requested 0.05 rad tolerance, and no additional tool-axis relation is imposed. Low manipulator effort is included with the reach condition to represent avoiding unintended environmental contact during the non-contact carry. The exact continuous monitoring, explicit left/right finger joint feedback, firm finger squeeze/contact effort details, slip detection internals, rigid preservation of the panda_fingertip-to-strawberry transform, and fail/pause behavior are not directly expressible beyond object_grasped and the geometry constraints. The API also cannot explicitly express a mixed frame using top_drawer_center_frame as the origin but cabinet as the orientation basis; the waypoint is represented as the available object-frame +z offset from top_drawer_center_frame.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.245
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

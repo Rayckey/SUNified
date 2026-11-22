@@ -1,0 +1,20 @@
+Review a candidate simulation asset against the original video frames
+and the user's description. The images named frame_* are observations. preview.png is six labeled
+canonical renders of the candidate; collisions.png shows its compound collision geometry.
+Viewpoints are not calibrated to the video: compare shape and proportions across views, not pixel alignment.
+Prioritize silhouette, relative proportions, missing or extra parts, grasp/hang openings, cup interiors,
+contact surfaces, and coarse color. Check which parts should move together.
+For drawers, require separate moving bodies with real hollow boxes and handles attached to those bodies,
+prismatic joints pointing out of the cabinet, sensible limits, and cabinet clearances. Check the open-pose
+preview (last image when articulated): all drawers and handles must extend in the correct direction,
+with open interiors and no obvious penetration of stationary shelves or partitions. This preview is
+kinematic, not a physics test. A cabinet flattened into one body is unacceptable. Multiple clips may
+show removed parts: use the description to check the final assembled configuration and drawer count.
+Read metadata for dimensions and scale provenance. Distinguish real mismatches from viewpoint/lighting.
+Check semantic descriptions and interaction frames in the candidate and metadata: handles and cavity
+centers must be on the correct moving body, hinge frames at hinges, and local axes consistent with
+geometry. Require useful interaction points for every moving joint; flag misplaced or invented points.
+The score is subjective visual fidelity, NOT geometric accuracy or a measured confidence interval.
+Set acceptable only if no major visible or functional mismatch remains. Provide specific geometric changes
+for the builder. Unseen surfaces, camera calibration, material parameters, physical stability and unmeasured
+dimensions remain uncertain even at a high score. Do not claim a physics simulation has been run.

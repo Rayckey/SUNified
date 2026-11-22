@@ -1,0 +1,66 @@
+{
+    "Reasoning": "The subtask requires moving the open gripper to a top-down pre-grasp standoff above strawberry_center_frame, 0.12 m above it in world +z, without touching it.\n\nSuccess conditions:\n1. Gripper must be open (open_gripper).\n2. Tool +z (panda_fingertip +z) must be antiparallel to world +z \u2014 top-down approach.\n3. Tool +y (panda_fingertip +y, finger axis) must be orthogonal to world +z \u2014 finger axis in horizontal plane.\n4. Positional goal: panda_fingertip frame reaches strawberry_center_frame origin + [0, 0, 0.12] in world frame, within 0.01 m tolerance.\n\nFor orientation:\n- axis_align: panda_fingertip +z antiparallel to world +z (top-down approach, tool pointing down).\n- axis_align: panda_fingertip +y orthogonal to world +z (finger axis horizontal).\n\nFor position:\n- reach_point: panda_fingertip to strawberry_center_frame origin offset +0.12 m along world +z, tolerance 0.01 m.\n\nNote: reach_point is used (not reach_distance) because the subtask specifies a concrete standoff target point with a specific offset direction and distance above the strawberry center.\n\nAll constraints combined with \"and\" since all must hold simultaneously.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "strawberry_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+[Release] Retract the gripper away from mug_rim_frame_0 to a safe configuration with the gripper open.

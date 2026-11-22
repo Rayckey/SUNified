@@ -1,0 +1,1 @@
+[Manipulate] Close the gripper to grasp mug_center_frame while keeping both the gripper position and orientation fixed.

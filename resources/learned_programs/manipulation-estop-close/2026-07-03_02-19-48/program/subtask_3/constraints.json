@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This release stage is represented as a conjunctive controller stage. The fingertip is commanded to the non-contact retract goal 0.12 m along estop_cap_tip +z, with a 0.01 m tolerance matching the stop condition. The fingertip orientation is frozen at the orientation measured at the start of this release stage, using a 5 degree tolerance. The gripper is kept mechanically closed. Low manipulator effort/contact feedback is associated with the retract reach constraint to represent decreasing contact and final free-space/non-contact feedback. The API cannot explicitly encode monotonic decrease of effort over the path or exact individual finger joint values, so these are represented by manipulator_low_effort and close_gripper respectively.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

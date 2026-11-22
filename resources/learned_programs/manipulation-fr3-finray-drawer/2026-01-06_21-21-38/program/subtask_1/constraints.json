@@ -1,0 +1,47 @@
+{
+    "Diagnosis": "Conflicting position constraints: Both 'reach_distance' and 'freeze_position' were included, violating the operator usage rule that only ONE position operator ('reach_point', 'reach_distance', or 'freeze_position') may be present across all constraints. 'freeze_position' was inappropriately used to encode contact or movement stopping, but should only be used when explicit position freezing is required. Only 'reach_distance' is appropriate here for the approach/contact criterion.",
+    "Reasoning": "The goal is to move the robot tool (panda_fingertip) so its origin reaches and establishes contact (effort/contact or within 1cm) with the center of the top_drawer_handle_frame, while keeping orientation fixed. Contact can be physical (manipulator_high_effort) or within 1cm (reach_distance), so 'or' logic is used between these two alternatives. Only one position operator is allowed, so we retain 'reach_distance' and do NOT use 'freeze_position'. The 'freeze_orientation' constraint is included with 'and' logic because orientation must remain fixed through the approach. The gripper must stay open, enforced with 'open_gripper' (and logic, as it is not part of the mutually exclusive contact condition).",
+    "Constraints": [
+        {
+            "logic": "or",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "distance_m": 0.0,
+                "tolerance_m": 0.03
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

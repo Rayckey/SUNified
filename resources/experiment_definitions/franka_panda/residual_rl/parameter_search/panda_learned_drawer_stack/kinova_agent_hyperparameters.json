@@ -1,0 +1,14 @@
+{
+  "kind": "kinova_residual_agent_hyperparameters_transfer",
+  "source_task": "Kinova-Table-Gen3-Drawer-Stack-fff3",
+  "source_run": "Residuals/Kinova-Table-Gen3-Drawer-Stack-fff3/2026-07-02_01-41-01",
+  "source_true_success_rate": 0.9057987113974673,
+  "target_task": "Panda-Table-Drawer-Stack-fff3",
+  "Hyperparameters": {
+    "clip_actions": 1.2,
+    "residual_bounds": [0.1, 0.1, 0.1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+    "clip_composed_actions": true,
+    "alpha_final": 0.5,
+    "alpha_warmup_epochs": 1000
+  }
+}

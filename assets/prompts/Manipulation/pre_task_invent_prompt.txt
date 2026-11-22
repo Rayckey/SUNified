@@ -1,0 +1,22 @@
+Top-level task: {task_description}
+
+Inputs:
+- Optional scene image including the robot
+- Robot frames / joints: {frames}
+- Observed objects: {history}
+- Important: reference only objects, frames, and locations listed in the inputs.
+
+Decompose the top-level task into phase-labeled subtasks.
+
+Requirements:
+- Each subtask starts with exactly one phase tag: "[Approach]", "[Manipulate]", or "[Release]".
+- Each subtask describes one controller-stage-feasible conceptual action: one spatial change OR one gripper-state change, plus any required fixed-position/fixed-orientation condition.
+- Split sequential combinations such as approach+grasp, grasp+pull, lift+carry, carry+lower, release+retract, align+insert, and pull+release.
+- Follow the system instructions for approach labels and GRASP / CONTACT patterns.
+- Prefer exact observed target names, including listed `_frame` names, over vague references like "inside", "there", or "drawer".
+
+Return exactly one JSON object:
+- "Reasoning": 2-6 sentences describing the strategy and decomposition.
+- "Subtasks": ordered array of phase-labeled subtasks.
+
+Reply with JSON only: double-quoted keys/strings, no extra text, no code fences, no backticks.

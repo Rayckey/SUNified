@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The current subtask requires:\n1. Translate the end-effector along estop_cap_tip -z in object frame by 0.03 m (directional_move along -z in estop_cap_tip object frame).\n2. Keep tool orientation fixed throughout (freeze_orientation on panda_fingertip).\n3. Both fingers remain fully closed (close_gripper).\n4. Stop when 0.03 m traveled OR manipulator_high_effort (hard stop). The directional_move encodes the 0.03 m travel; the manipulator_high_effort stop condition is noted but cannot be encoded as a separate TermAPI operator \u2014 it is noted in Reasoning as an alternative stop condition.\n\nNo new orientation alignment is being established (orientation is being preserved from the previous approach stage), so freeze_orientation is appropriate here.\n\nThe logic chain:\n- directional_move (and) \u2192 freeze_orientation (and) \u2192 close_gripper\n\nThe manipulator_high_effort stop condition is an alternative stop (OR) to reaching 0.03 m, but since there is no dedicated TermAPI operator for it as a standalone constraint, I keep the directional_move as the primary motion constraint and note the effort-based stop in Reasoning. Per the rules: \"For motion stop clauses such as distance OR manipulator_high_effort, do not force a top-level logic='or' unless the TermAPI has a dedicated operator for the alternative; otherwise keep the required motion constraint and note the alternative stop in Reasoning.\"\n\nAll three constraints are conjunctive (and).",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "axis": "-z",
+                "travel_distance_m": 0.03,
+                "tolerance_m": 0.003
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

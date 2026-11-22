@@ -1,0 +1,41 @@
+{
+    "Reasoning": "Success for this subtask means the grasped marker is lifted together with the tool vertically upward (world +z) by at least 0.31 m from its current position, resulting in sufficient clearance above the table. The relative orientation between the marker and the tool must remain constant during the lift (to prevent slipping or relative rotation between marker and gripper/tool). The gripper must stay fully closed to maintain grasp, not releasing the marker at any time. Each constraint directly encodes one of these requirements: (1) directional_move along +z by 0.31 m captures the explicit vertical lifting distance along the world z-axis as stated in the subtask; (2) freeze_orientation ensures the marker orientation relative to the tool remains fixed throughout the motion (prevents rotation/slip); (3) close_gripper ensures the gripper maintains its closed/grasping state. All are combined with \"and\" because all conditions are required for successful completion\u2014none are alternatives.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "marker",
+                "axis": "+z",
+                "travel_distance_m": 0.31,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

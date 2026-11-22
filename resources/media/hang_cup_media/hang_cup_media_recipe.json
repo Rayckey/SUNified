@@ -1,0 +1,47 @@
+{
+  "name": "hang_cup_best_ema_front_close_screenshot",
+  "date_created": "2026-05-24",
+  "purpose": "Capture clean and debug-frame screenshots for the FR3FinRay Hang-Cup task with a close front camera that keeps the mug handle, hanger branch, and gripper release readable.",
+  "task": "FR3-FinRay-Table-Hang-Cup-fff",
+  "seed": 20260516,
+  "deterministic_policy": true,
+  "camera_bank": "best",
+  "selected_view": "front_close_hang_cup_success",
+  "camera_spec": {
+    "offset_xyz": [
+      0.12,
+      -0.78,
+      0.56
+    ],
+    "target_bias_xyz": [
+      0.0,
+      0.06,
+      0.05
+    ],
+    "focal_length": 24.0
+  },
+  "policy_inputs": {
+    "checkpoint": "Residuals/FR3-FinRay-Table-Hang-Cup-fff/2026-05-22_17-09-20/rl_runs/2026-05-22_17-13-28_Run-3/nn/last_fr3-finray-hang-cup_ep_2750_rew_15378.236.pth",
+    "prior_checkpoint": "Priors/herm/hang_cup/hang_cup_chunking_10_state_fff/best.pth",
+    "prior_mode": "residual_rl",
+    "weights_params_json": "Residuals/FR3-FinRay-Table-Hang-Cup-fff/2026-05-22_17-07-48/best.json"
+  },
+  "render_settings": {
+    "capture_backend": "viewport",
+    "headless": true,
+    "device": "cuda:0",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "max_steps": 1100,
+    "video_every": 1,
+    "no_video": true,
+    "viewport_settle_frames": 2,
+    "screenshot_steps": "final"
+  },
+  "source_scripts": {
+    "capture_python": "src/kuafu/data/collection/capture_hang_cup_best_ema_media.py",
+    "capture_wrapper": "src/kuafu/data/collection/capture_hang_cup_best_ema_media.sh",
+    "recreate_wrapper": "resources/media/hang_cup_media/recreate_hang_cup_media.sh"
+  }
+}

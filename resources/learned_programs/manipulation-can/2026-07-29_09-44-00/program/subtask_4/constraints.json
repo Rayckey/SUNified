@@ -1,0 +1,43 @@
+{
+    "Diagnosis": "The failure is caused by the previous point_toward term using controlled_entity=\"gripped_object\". The runtime error explicitly says point_toward only supports robot_frame as controlled_entity, so the upright-orientation constraint must be represented without point_toward on the gripped object. The smallest repair is to replace that point_toward term with an axis_align term for can_center_frame local -y codirectional with world +z, while keeping the grasp and fixed-position constraints unchanged.",
+    "Reasoning": "This remains one conjunctive controller stage. object_grasped with the gripper_closed condition keeps the can held in the closed panda_fingertip gripper; individual finger joint coordinates and finger squeeze effort are not directly representable beyond this grasp/closed metadata. freeze_position keeps the can_center_frame origin fixed at its start-of-stage world position within 0.01 m and is the only position operator in the stage. axis_align makes the gripped can_center_frame local -y axis codirectional with world +z, which makes the cylindrical can upright while leaving rotation about that same long axis unconstrained. The start-of-stage panda_fingertip-to-can_center_frame transform preservation and continuous monitoring requirements are not directly representable as separate TermAPI constraints, but object_grasped captures the required coupled grasp during manipulation.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "-y",
+                "reference_axis": "+z",
+                "alignment": "codirectional",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "Reasoning": "This stage is encoded as a lifted carry while maintaining a physical grasp. The directional_move moves the currently gripped can_center_frame upward in the world +z direction by 0.15 m with 0.02 m tolerance, matching the specified stop condition on can lift height. object_grasped represents the required continued firm held/no-slip grasp with the gripper remaining closed; no open_gripper command is emitted. freeze_orientation on panda_fingertip preserves the start-of-stage end-effector orientation within 5 degrees, and freeze_orientation on can_center_frame preserves the can orientation during the rigid grasped lift. The API allows only one position operator, so the fingertip and can moving together is represented by moving the gripped object while requiring object_grasped; a separate simultaneous fingertip directional_move cannot be emitted. Direct finger joint values, gripper squeeze/contact feedback, and continuous monitoring signals are not directly representable as separate Constraint ops or condition labels, beyond object_grasped and gripper_closed metadata.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "tolerance_rad": 0.0872665
+            }
+        }
+    ]
+}

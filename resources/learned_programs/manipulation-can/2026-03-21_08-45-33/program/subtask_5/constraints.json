@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The subtask is to lower the grasped can along world -z until the can bottom contacts the surface, with the gripper remaining closed and orientation fixed throughout.\n\nKey constraints to encode:\n1. **Directional move**: Translate along world -z by approximately 0.15 m (the lift clearance). The stop condition is contact feedback, but the travel distance encodes the expected descent. I'll use `directional_move` with axis `-z` in world frame, travel_distance_m = 0.15 m (with tolerance ~0.05 m to account for contact stopping earlier or the 0.20 m over-travel limit). This is explicitly \"translate along world -z with a distance\".\n\n2. **Freeze orientation**: Keep tool orientation fixed throughout \u2014 explicitly stated in constraint 2.\n\n3. **Close gripper**: Gripper remains closed (firm grasp) \u2014 explicitly stated in constraint 1.\n\n4. **Manipulator high effort stop**: The stop signal is effort feedback rising above firm-contact threshold on both fingers. This is a `manipulator_high_effort` condition on the directional_move. Since the subtask says \"stop when effort rises\" (OR \"stop when over-travel exceeded\"), I'll use `or` logic with a `manipulator_high_effort` condition. However, the TermAPI doesn't have a dedicated \"stop on effort\" operator \u2014 the condition field is metadata only. The directional_move with `manipulator_high_effort` condition captures this intent.\n\nActually, re-reading the rules: \"condition is metadata only and does not enforce success by itself.\" So I need to think about what operators to use.\n\nThe constraints are:\n- directional_move along world -z by 0.15 m (primary motion, with manipulator_high_effort as the stop signal encoded in condition)\n- freeze_orientation (keep orientation fixed)\n- close_gripper (gripper stays closed)\n\nFor the stop condition (effort feedback), since the TermAPI doesn't have a dedicated effort-stop operator, I encode it via the `condition` field on the directional_move as `manipulator_high_effort`. The `or` logic between the directional_move (geometry) and the effort stop isn't directly representable as separate operators, but I can note this in reasoning.\n\nThe rule says: AT MOST ONE position constraint operator. So I can have: directional_move + freeze_orientation + close_gripper.\n\nLogic flow:\n- First constraint (directional_move): logic=\"and\", condition=[\"geometry\", \"manipulator_high_effort\"] \u2014 the motion along -z stops at contact\n- Second constraint (freeze_orientation): logic=\"and\", condition=[\"geometry\"] \u2014 orientation stays fixed\n- Third constraint (close_gripper): logic=\"and\", condition=[\"gripper_closed\"] \u2014 gripper stays closed\n\nFor the directional_move:\n- controlled_entity: \"gripped_object\" (the can moves with the tool)\n- controlled_target: \"can_center_frame\"\n- reference_basis: \"world\"\n- reference_origin: \"world\"\n- axis: \"-z\" (world -z)\n- travel_distance_m: 0.15 (expected descent, with tolerance covering contact stop)\n- tolerance_m: 0.05 (allows stopping earlier due to contact, up to 0.20 m max)\n\nFor freeze_orientation:\n- controlled_entity: \"robot_frame\"\n- controlled_target: \"panda_fingertip\"\n- tolerance_rad: 0.2\n\nFor close_gripper: no args needed.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "can_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

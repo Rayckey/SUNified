@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is represented as a conjunctive release/retraction controller. The gripper is kept open with open_gripper, matching the requirement that both panda_fingertip finger joints remain near their open state. The panda_fingertip orientation is frozen to preserve the start-of-stage world-frame orientation, including tool +z and +y directions, using the requested 5 degree tolerance. The commanded retraction is the explicit 0.15 m motion along panda_fingertip tool -z with 0.01 m completion tolerance, and the manipulator_low_effort condition encodes the required free-space/non-contact effort feedback during completion. The exact joint value near 1.0, monitoring of left/right finger joint feedback, gripper effort details, non-contact distance inequality from can_center_frame, and monitoring the released can's upright pose cannot be directly represented by the available operators, because there is no joint-state, distance-inequality, gripper-effort, or uncontrolled-object monitoring term.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.087266
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "robot_frame",
+                "reference_origin": "panda_fingertip",
+                "axis": "-z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

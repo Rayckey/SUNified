@@ -1,0 +1,5 @@
+{
+  "artifact": "examples/01_video_to_rollout/input/task.json",
+  "description": "Task, videos and module requests",
+  "path_base": "repository root"
+}

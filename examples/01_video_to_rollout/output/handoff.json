@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "task": "Open the top drawer by 10 cm.",
+  "run_id": "release-cabinet-final-20261104",
+  "path_base": "$KUAFU_ARTIFACT_ROOT/runs/release-cabinet-final-20261104",
+  "steps": [
+    {
+      "step": "prepare-video",
+      "status": "complete",
+      "directory": "steps/01-prepare-video/0d9a63774ce947128edce4c9d4d0601f",
+      "request": "steps/01-prepare-video/0d9a63774ce947128edce4c9d4d0601f/request.json",
+      "response": "steps/01-prepare-video/0d9a63774ce947128edce4c9d4d0601f/response.json",
+      "artifacts": "steps/01-prepare-video/0d9a63774ce947128edce4c9d4d0601f/artifacts.json"
+    },
+    {
+      "step": "build-asset",
+      "status": "complete",
+      "directory": "steps/02-build-asset/76b1fa0ec4994dc0954834ec87b16c03",
+      "request": "steps/02-build-asset/76b1fa0ec4994dc0954834ec87b16c03/request.json",
+      "response": "steps/02-build-asset/76b1fa0ec4994dc0954834ec87b16c03/response.json",
+      "artifacts": "steps/02-build-asset/76b1fa0ec4994dc0954834ec87b16c03/artifacts.json"
+    },
+    {
+      "step": "inspect",
+      "status": "complete",
+      "directory": "steps/03-inspect/c1d18a82a2624aa29bc40b3f19adce75",
+      "request": "steps/03-inspect/c1d18a82a2624aa29bc40b3f19adce75/request.json",
+      "response": "steps/03-inspect/c1d18a82a2624aa29bc40b3f19adce75/response.json",
+      "artifacts": "steps/03-inspect/c1d18a82a2624aa29bc40b3f19adce75/artifacts.json"
+    },
+    {
+      "step": "form-program",
+      "status": "complete",
+      "directory": "steps/04-form-program/8c246f76ad124402839e69a1007f02f5",
+      "request": "steps/04-form-program/8c246f76ad124402839e69a1007f02f5/request.json",
+      "response": "steps/04-form-program/8c246f76ad124402839e69a1007f02f5/response.json",
+      "artifacts": "steps/04-form-program/8c246f76ad124402839e69a1007f02f5/artifacts.json"
+    },
+    {
+      "step": "verify-program",
+      "status": "complete",
+      "directory": "steps/05-verify-program/11c5107707204e76af7ec554063aa46e",
+      "request": "steps/05-verify-program/11c5107707204e76af7ec554063aa46e/request.json",
+      "response": "steps/05-verify-program/11c5107707204e76af7ec554063aa46e/response.json",
+      "artifacts": "steps/05-verify-program/11c5107707204e76af7ec554063aa46e/artifacts.json"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Success for this subtask means the mug (gripped by the closed gripper) is brought close to the cup hanger branch tip to prepare for alignment, specifically by reducing the distance between mug_center_frame and cup_hanger_branch_1_tip_frame until they reach a standoff of 0.15 meters or less (as computed). The gripper must remain closed (continuing the grasp), and the mug's current orientation (set during the lift) must not change throughout the motion. Additionally, manipulator/contact effort must be monitored and transport must halt (alert) if grasp slippage or contact is detected, but the main geometric constraints for success are: 1) reaching the desired Euclidean standoff, 2) orientation frozen, and 3) grip maintained. All constraints must be satisfied for success\u2014hence, 'and' logic.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "distance_m": 0.15,
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_center_frame",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

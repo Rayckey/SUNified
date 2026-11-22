@@ -1,0 +1,55 @@
+# right_can example config that emphasizes the final stage of the demonstration.
+# Run with:
+#   python "src/kuafu/bc/training/train_bc_prior_mlp.py" --config "resources/experiment_definitions/fr3_finray/prior_configs/right_can/right_can_chunking_90_l.yaml"
+#
+# This file is fully documented so you can tune it directly.
+
+dataset:
+  dataset: "src/kuafu/data/datasets/fr3_finray_table_right_can_spice_damped_noise.hdf5"
+  demo: null
+  obs_key: "state"
+  action_mode: "absolute_ee"
+  time_shift: 0
+  val_fraction: 0.1
+  split_mode: "random"
+  seed: 1999
+
+preprocessing:
+  action_chunk_size: 90
+  obs_history: 1
+
+model:
+  hidden_dims: [512,512,256,128,256,512,512]
+  activation: "relu"
+
+optimization:
+  lr: 1.0e-5
+  weight_decay: 1.0e-5
+  batch_size: 1024
+  num_workers: 8
+  num_epochs: 300
+  save_every_n_epochs: 50
+  grad_clip: 10.0
+
+logging:
+  log_dir: "logs/bc_prior_mlp"
+  monitor_demo_index: null
+
+auto_shift:
+  epochs: 50
+  batch_size: 512
+
+sample_weighting:
+  enabled: true
+  obs_stage_index: -1
+  default_weight: 1.0
+  normalize: true
+  weight_validation: true
+  stage_weights:
+    {}
+
+critic_pretraining:
+  enabled: false
+  gamma: 0.99
+  loss_coef: 1.0
+  normalize_targets: true

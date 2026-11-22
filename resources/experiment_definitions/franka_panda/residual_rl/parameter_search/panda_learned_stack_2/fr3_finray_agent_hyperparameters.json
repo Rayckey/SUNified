@@ -1,0 +1,14 @@
+{
+  "kind": "fr3_finray_residual_agent_hyperparameters_transfer",
+  "source_task": "FR3-FinRay-Table-Stack-2-f",
+  "source_config": "src/kuafu/isaac/learned/agents/FR3-FinRay-Table-Stack-2-f.yaml",
+  "target_task": "Panda-Table-Stack-2-fff3",
+  "transfer_note": "Alpha schedule and residual bounds match the canonical FR3FinRay Stack-2 setup; Panda retains its existing clip settings and fff3 actor units.",
+  "Hyperparameters": {
+    "clip_actions": 2.0,
+    "residual_bounds": [0.3, 0.3, 0.3, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+    "clip_composed_actions": true,
+    "alpha_final": 1.5,
+    "alpha_warmup_epochs": 600
+  }
+}

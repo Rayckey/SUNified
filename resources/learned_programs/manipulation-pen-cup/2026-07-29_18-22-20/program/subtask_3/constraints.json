@@ -1,0 +1,41 @@
+{
+    "Reasoning": "Use one position operator for the explicit 0.15 m lift of panda_fingertip along world +z, with the required 0.01 m completion tolerance. Keep the end-effector orientation frozen at the stage-start orientation with the specified 0.05 rad tolerance. Require the marker to remain physically grasped while the gripper is closed, which represents maintaining the held marker during the lift. The upward motion is the representable clearance motion away from the table. Stable bilateral finger effort/contact feedback, exact no-slip marker-to-fingertip rigidity, and continuous marker-grasp consistency monitoring are not directly representable beyond object_grasped plus the carried end-effector motion, so they are noted but omitted as separate constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        }
+    ]
+}

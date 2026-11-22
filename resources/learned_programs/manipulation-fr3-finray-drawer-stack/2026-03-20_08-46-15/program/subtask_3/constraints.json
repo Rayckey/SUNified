@@ -1,0 +1,43 @@
+{
+    "Reasoning": "The subtask is to translate the grasped top_drawer_handle_frame outward along its -y axis by 0.14 m, with the gripper closed and orientation fixed throughout.\n\nKey constraints:\n1. **Gripper closed**: The gripper must remain closed (grasping the handle) throughout \u2014 use `close_gripper`.\n2. **Directional move**: Translate along top_drawer_handle_frame -y in the object frame by 0.14 m \u2014 use `directional_move` with axis=\"-y\", reference_basis=\"object\", reference_origin=\"top_drawer_handle_frame\", travel_distance_m=0.14. The controlled entity is the gripped object (top_drawer_handle_frame).\n3. **Freeze orientation**: Keep tool orientation fixed \u2014 use `freeze_orientation` on panda_fingertip.\n4. **Stop condition (OR)**: Stop when 0.14 m traveled OR when effort spikes (manipulator_high_effort). The directional_move already encodes the 0.14 m stop. The effort spike is an alternative stop condition \u2014 this maps to an `or` logic with `manipulator_high_effort` condition. However, the TermAPI doesn't have a dedicated \"stop on effort\" operator beyond condition labels. The effort spike stop condition can be represented by adding a constraint with `manipulator_high_effort` condition using `or` logic. Since there's no dedicated effort-stop operator, I'll encode the effort feedback stop as an `or`-logic constraint on the directional_move itself by noting the condition includes `manipulator_high_effort`. Actually, the best approach is:\n   - First constraint: `directional_move` (geometry, gripper_closed) \u2014 the primary motion\n   - Second constraint (or): same directional_move but with `manipulator_high_effort` condition to represent the alternative stop \u2014 but this would duplicate the positional operator which is not allowed (at most one position constraint).\n   \n   Since I can only have ONE position constraint operator total, I'll encode the directional_move as the primary constraint with both conditions listed, and use `or` logic for the effort-based stop by adding a non-positional constraint. The effort spike stop condition cannot be directly represented as a separate positional operator. I'll include it as a condition label on the directional_move constraint itself, and note in reasoning that the effort-based stop cannot be fully represented.\n\n   Actually, re-reading the rules: \"condition is metadata only and does not enforce success by itself.\" So I can list both `geometry` and `manipulator_high_effort` as conditions on the directional_move, and use `or` logic on a subsequent constraint to represent the alternative stop. But since there's no operator for \"stop on effort\" without a positional op, I'll just include the effort condition on the directional_move and note the limitation.\n\n   The cleanest approach:\n   - Constraint 1 (and): `close_gripper` \u2014 gripper must be closed\n   - Constraint 2 (and): `directional_move` along object -y by 0.14 m \u2014 primary motion with condition [\"geometry\", \"gripper_closed\", \"manipulator_high_effort\"] to capture both stop conditions\n   - Constraint 3 (and): `freeze_orientation` \u2014 keep orientation fixed\n\n   For the OR stop condition (effort spike), I'll use `or` logic on constraint 2 and note the effort condition. But since the directional_move is the only positional op and the effort spike is an alternative termination, I'll mark the directional_move with `or` logic relative to the effort condition by listing `manipulator_high_effort` in conditions and using `or` for a subsequent freeze_orientation that also has manipulator_high_effort. This is getting complex.\n\n   Simplest valid encoding:\n   - C1 (and): close_gripper [gripper_closed]\n   - C2 (and): directional_move along -y 0.14m [geometry, gripper_closed] \n   - C3 (or): freeze_orientation [geometry, manipulator_high_effort] \u2014 the \"or\" here means: success if either the full travel is done OR effort spikes (orientation stays fixed either way)\n   - C4 (and): freeze_orientation [geometry] \u2014 keep orientation fixed\n\n   Actually the simplest and most correct:\n   - C1 (and): close_gripper\n   - C2 (and): directional_move [-y, 0.14m] with condition [\"geometry\", \"gripper_closed\", \"manipulator_high_effort\"] \u2014 the manipulator_high_effort is metadata indicating this is also a stop condition\n   - C3 (and): freeze_orientation\n\n   The `or` for the effort stop cannot be cleanly represented without a second positional op. I'll note this in reasoning and use `and` throughout, listing `manipulator_high_effort` as a condition on the directional_move to signal the effort-based stop is monitored.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "gripper_closed",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "top_drawer_handle_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.005
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

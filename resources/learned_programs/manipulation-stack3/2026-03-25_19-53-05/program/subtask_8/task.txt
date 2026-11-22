@@ -1,0 +1,1 @@
+[Approach] Use a top-down approach to move the open gripper above cube_3 without touching it.

@@ -1,0 +1,1 @@
+[Manipulate] Lift the grasped mug upward away from the table to create clearance from the table surface, with the gripper closed.

@@ -1,0 +1,150 @@
+### SCOPE & INPUTS
+
+Task
+* Current grounded stage requirements: {task_description}
+* Completed subtasks, context only: {completed}
+* Pending subtasks, context only: {pending}
+
+Observations
+* Robot Frames: {frames}
+* Observed Objects, visible + history: {history}
+* Only refer to names in Robot Frames and Observed Objects; there are no others. "world" is a reserved keyword.
+
+Previous grounded output to correct:
+* {previous_grounding}
+
+Current error message, primary signal:
+* {error_message}
+
+### YOUR JOB
+
+Return only the fields in the schema below. Correct geometry/contact conditions
+while preserving the intended target and required physical result.
+
+Diagnose the failure, then return corrected Constraint JSON that:
+1. Uses only TermAPI ops and exactly their allowed args keys.
+2. References only valid observed names.
+3. Preserves all intended success criteria for the current stage.
+4. Changes as little as possible: edit only fields implicated by the error, schema/API violations, missing coverage, unsupported top-level OR, or the one-position-op rule. Keep correct fields verbatim.
+
+### STAGE SEMANTICS AND REPAIR RULES
+
+The Constraints list represents ONE controller stage.
+* Cover all required components; do not drop a component because another is easier to encode.
+* Stage requirements are conjunctive unless a runtime/error message explicitly says top-level OR is supported.
+* For normal terms, set `logic` to `"and"`.
+* Do not rely on top-level `logic="or"` for alternatives. If the text gives a supported stop alternative such as geometric progress OR manipulator_high_effort, encode it in the same relevant term by including both condition labels, e.g. `["geometry", "manipulator_high_effort"]`. If the alternative cannot be represented, keep the required representable term and note the omitted alternative in Diagnosis or Reasoning.
+* Across the whole list, keep at most one position op: `reach_point` OR `directional_move` OR `freeze_position`. If violated, keep the one that best matches the explicit positional requirement and mention the dropped op in Diagnosis.
+* Remove only exact duplicates: same `op` and identical `args`; merge `condition` labels by unique union. Do not collapse merely similar constraints.
+* `gripper_opened` / `gripper_closed` are gripper-state metadata, not arm contact effort. `manipulator_high_effort` / `manipulator_low_effort` are arm/TCP contact effort, not finger squeeze. Use `object_grasped` when a real held object is required; do not represent contact/effort with gripper ops.
+
+### TERM API
+
+Use ONLY these ops and EXACTLY these args keys:
+
+```json
+{
+  "reach_point": {
+    "args": {
+      "controlled_entity": "robot_frame | gripped_object",
+      "controlled_target": "NAME",
+      "reference_basis": "world | object | robot_frame",
+      "reference_origin": "NAME | world",
+      "offset_from_origin_xyz": [float, float, float]
+    }
+  },
+  "directional_move": {
+    "args": {
+      "controlled_entity": "robot_frame | gripped_object",
+      "controlled_target": "NAME",
+      "reference_basis": "world | object | robot_frame",
+      "reference_origin": "NAME | world",
+      "axis": "+x | -x | +y | -y | +z | -z",
+      "travel_distance_m": float
+    }
+  },
+  "axis_align": {
+    "args": {
+      "controlled_entity": "robot_frame | gripped_object",
+      "controlled_target": "NAME",
+      "reference_basis": "world | object | robot_frame",
+      "reference_origin": "NAME | world",
+      "controlled_axis": "+x | -x | +y | -y | +z | -z",
+      "reference_axis": "+x | -x | +y | -y | +z | -z",
+      "alignment": "codirectional | antiparallel | bipolar | orthogonal"
+    }
+  },
+  "point_toward": {
+    "args": {
+      "controlled_entity": "robot_frame | gripped_object",
+      "controlled_target": "NAME",
+      "controlled_axis": "+x | -x | +y | -y | +z | -z",
+      "reference_basis": "world | object | robot_frame",
+      "reference_origin": "NAME | world",
+      "offset_from_origin_xyz": [float, float, float]
+    }
+  },
+  "directional_rotate": {
+    "args": {
+      "controlled_entity": "robot_frame | gripped_object",
+      "controlled_target": "NAME",
+      "reference_basis": "world | object | robot_frame",
+      "reference_origin": "NAME | world",
+      "rotation_axis": "+x | -x | +y | -y | +z | -z",
+      "rotation_angle_rad": float
+    }
+  },
+  "freeze_position": {
+    "args": {
+      "controlled_entity": "robot_frame | gripped_object",
+      "controlled_target": "NAME"
+    }
+  },
+  "freeze_orientation": {
+    "args": {
+      "controlled_entity": "robot_frame | gripped_object",
+      "controlled_target": "NAME"
+    }
+  },
+  "open_gripper": {"args": {}},
+  "close_gripper": {"args": {}},
+  "object_grasped": {"args": {}}
+}
+```
+
+NAME must be a valid robot frame or object/object-attached frame from Observations. Do not add or omit args keys.
+
+### FIELD AND OPERATOR RULES
+
+* `controlled_entity="robot_frame"` requires a robot-frame target; `controlled_entity="gripped_object"` requires an object/object-attached frame currently in the gripper.
+* `reference_basis` is the coordinate system for vectors/axes; `reference_origin` defines the pose. `_m` = meters; `_rad` = radians.
+* `reach_point`: concrete target point, pre-grasp, standoff, or approach offset; path unconstrained.
+* `directional_move`: strictly along one signed axis by positive distance; only when axis/direction plus distance is explicit. Otherwise use `reach_point`.
+* `axis_align`: axis relation; use `bipolar` when either direction is acceptable.
+* `point_toward`: make a controlled axis aim at a target point.
+* `directional_rotate`: explicit rotation about an axis by an angle.
+* Do not combine `directional_rotate` with `axis_align` in the same stage when the `axis_align` constrains or references the frame being rotated. Put approach/pre-grasp axis alignment in an earlier stage; the rotation stage should keep the finite `directional_rotate` goal.
+* `freeze_position`: keep current position fixed; not a target-reaching goal.
+* `freeze_orientation`: keep current orientation fixed; not goal alignment. If the stage establishes a new axis relation, corrected output must contain `axis_align` or `directional_rotate`.
+* `open_gripper`: open/released. `close_gripper`: mechanical closure only. `object_grasped`: real held object for grasp/hold/keep holding and later carrying/pulling/manipulating. Do not emit both `close_gripper` and `object_grasped`.
+
+### REQUIRED OUTPUT
+
+Return exactly one JSON object:
+
+```json
+{
+  "Diagnosis": "string",
+  "Reasoning": "string",
+  "Constraints": [
+    {
+      "logic": "and | or",
+      "condition": ["geometry", "gripper_opened", "gripper_closed", "manipulator_high_effort", "manipulator_low_effort"],
+      "op": "reach_point | directional_move | axis_align | point_toward | directional_rotate | freeze_position | freeze_orientation | open_gripper | close_gripper | object_grasped",
+      "args": {}
+    }
+  ]
+}
+```
+
+Diagnosis ties the failure to the error message. Reasoning explains success, each constraint, any condition-label alternative, and any unrepresented clause. Constraints are the corrected ordered list.

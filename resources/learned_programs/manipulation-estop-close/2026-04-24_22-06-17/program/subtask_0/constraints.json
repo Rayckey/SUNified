@@ -1,0 +1,66 @@
+{
+    "Reasoning": "The current subtask is a pre-approach move to a standoff pose near estop_cap_tip:\n\n1. **Position**: Reach the point defined as estop_cap_tip origin translated along estop_cap_tip +z by 0.12 m. Since the tool must approach along estop_cap_tip +z (from above/in front), the tool frame should be placed at +0.12 m offset along estop_cap_tip +z from the estop_cap_tip origin. This is encoded as `reach_point` with `reference_basis=\"object\"`, `reference_origin=\"estop_cap_tip\"`, `offset_from_origin_xyz=[0, 0, 0.12]`, tolerance 0.01 m.\n\n2. **Orientation constraint 1**: tool +z (panda_fingertip +z) is antiparallel with estop_cap_tip +z. This means the tool is pointing \"into\" the estop cap. Encoded as `axis_align` with controlled_axis=\"+z\", reference_axis=\"+z\", alignment=\"antiparallel\".\n\n3. **Orientation constraint 2**: tool +y is orthogonal to estop_cap_tip +z. This is a secondary orientation constraint. Encoded as `axis_align` with controlled_axis=\"+y\", reference_axis=\"+z\", alignment=\"orthogonal\".\n\n4. **Gripper state**: Both fingers fully closed \u2192 `close_gripper`.\n\nThe stop condition (within 0.01 m and 5 degrees) is captured by the tolerance values. The non-contact monitoring (separation >= 0.10 m) cannot be directly encoded in the TermAPI but is noted in Reasoning.\n\nAll constraints are conjunctive (\"and\").",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_tip",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "close_gripper",
+            "args": {}
+        }
+    ]
+}

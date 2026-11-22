@@ -1,0 +1,1 @@
+[Manipulate] Engage by moving the grasped mug inward along the branch in the hooking direction (tip toward base, inward along the branch) so that the branch passes through mug_handle_hole_frame, with the gripper closed.

@@ -1,0 +1,43 @@
+{
+    "Diagnosis": "The failure is caused by the compiler restriction reported in the error: this stage mixed `freeze_orientation` with another orientation constraint, specifically `axis_align`. To satisfy the runtime, the `axis_align` term is removed while keeping the explicit fixed-world gripper orientation constraint. This is the smallest change implicated by the error. The mug-handle-to-branch bipolar alignment was established in the preceding insertion/alignment stages and is preserved here indirectly by freezing the gripper orientation while executing the inward slide, but an explicit simultaneous `axis_align` monitor cannot be represented in the same controller stage with `freeze_orientation` under this runtime restriction.",
+    "Reasoning": "This stage keeps the mug held while sliding the mug handle inward along the hanger branch. The `directional_move` encodes the required 0.10 m inward translation of `mug_handle_hole_frame` along `cup_hanger_branch_1_tip_frame` local `-y`, within the observed 0.110 m exposed branch length. Its condition includes both `geometry` and `manipulator_high_effort` to represent the geometric insertion target and the supported early-stop/failure feedback for excessive engagement resistance or collision-like effort in the same term rather than using a top-level OR. The `freeze_orientation` constraint keeps `panda_fingertip` orientation fixed at the start-of-stage world orientation while carrying the grasped mug, which is the explicit orientation requirement and also preserves the prior engagement alignment as far as the controller can represent without mixing orientation ops. The `object_grasped` constraint with `gripper_closed` represents sustained holding of the mug with no commanded gripper opening. Separate left/right finger joint monitoring, detailed finger effort/contact discrimination, explicit slip thresholds, and an explicit simultaneous mug-handle axis-alignment residual are not directly representable here beyond `object_grasped`, `gripper_closed`, `manipulator_high_effort`, and `freeze_orientation`; the explicit axis alignment term was omitted only because the runtime rejects combining it with `freeze_orientation`.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

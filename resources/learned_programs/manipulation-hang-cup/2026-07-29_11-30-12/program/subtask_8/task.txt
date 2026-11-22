@@ -1,0 +1,1 @@
+[Release] Open the gripper to release mug_rim_frame_0 at the desired state while keeping both the gripper position and orientation fixed.

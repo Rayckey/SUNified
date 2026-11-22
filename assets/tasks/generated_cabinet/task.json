@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "generated_cabinet",
+  "title": "Video 28/29 cabinet",
+  "status": "agent_verified_example",
+  "task": "Open the top drawer by 10 cm.",
+  "object_description": "One cabinet with three sliding drawers: a large upper drawer and two small lower drawers.",
+  "target_joint": "upper_drawer_joint",
+  "target_travel_m": 0.1,
+  "tolerance_m": 0.01,
+  "other_drawer_max_motion_m": 0.005,
+  "asset_recipe": "assets/recipes/0028_0029.articulated.scene.json",
+  "program": "resources/learned_programs/generated-video28-29-cabinet/2026-10-17_19-34-23/program",
+  "environments": [
+    {
+      "robot_id": "franka_panda",
+      "gym_id": null,
+      "source": "src/kuafu/isaac/formulation/generated_drawer.py",
+      "entry_point": "kuafu.isaac.formulation.generated_drawer:GeneratedDrawerFormulationEnv",
+      "variants": []
+    }
+  ],
+  "object_assets": [],
+  "scene_source": "src/kuafu/isaac/formulation/generated_drawer.py",
+  "success_check": {
+    "summary": "Upper drawer travel 10 cm \u00b1 1 cm; lower drawer motion at most 5 mm.",
+    "source": "src/kuafu/programs/generated_drawer.py",
+    "method": "physical_result"
+  },
+  "formulation": [],
+  "program_families": [
+    "resources/learned_programs/generated-video28-29-cabinet"
+  ],
+  "saved_programs": [
+    {
+      "path": "resources/learned_programs/generated-video28-29-cabinet/2026-10-17_19-34-23",
+      "stages": 6,
+      "recorded_success": null
+    }
+  ],
+  "example_program": {
+    "path": "resources/learned_programs/generated-video28-29-cabinet/2026-10-17_19-34-23",
+    "stages": 6,
+    "recorded_success": null
+  },
+  "input_example": "examples/01_video_to_rollout/input/task.json",
+  "output_example": "examples/01_video_to_rollout/output/verification.json",
+  "agent_interface": {
+    "inspect": "kuafu_inspect_drawer",
+    "submit": "kuafu_submit_program",
+    "verify": "kuafu_verify_program"
+  }
+}

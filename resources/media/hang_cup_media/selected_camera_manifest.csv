@@ -1,0 +1,2 @@
+sensor,view,offset_x,offset_y,offset_z,target_bias_x,target_bias_y,target_bias_z,focal_length
+table_cam_0,front_close_hang_cup_success,0.12,-0.78,0.56,0.0,0.06,0.05,24.0

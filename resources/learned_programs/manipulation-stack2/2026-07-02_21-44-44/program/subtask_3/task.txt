@@ -1,0 +1,1 @@
+[Manipulate] Lift cube_1 clear of its resting contact with the gripper closed, keeping the grasp stable.

@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The subtask is to retract the open gripper away from top_drawer_handle_frame along the object -y axis by 0.15 m, keeping orientation fixed and gripper open.\n\n1. **directional_move**: The subtask explicitly specifies motion along a specific axis (top_drawer_handle_frame -y in object frame) with a specific distance (0.15 m). This is the primary positional constraint. The target point is top_drawer_handle_frame origin offset by -0.15 m along object -y, which matches the pre-grasp approach direction mirrored. I'll use directional_move since the subtask explicitly says \"translate along top_drawer_handle_frame -y in the object frame by 0.15 m\".\n\n2. **freeze_orientation**: The subtask explicitly says \"keep orientation fixed as established \u2014 do not apply any angular velocity.\" This maps to freeze_orientation on panda_fingertip.\n\n3. **open_gripper**: The subtask explicitly says \"keep both finger joints fully open (joint value = 1.0) throughout this action; do not apply any closing finger velocity.\" This maps to open_gripper.\n\n4. **axis_align** constraints for orientation: The subtask specifies tool +z antiparallel with top_drawer_handle_frame -y (i.e., tool +z antiparallel to object -y, which means tool +z codirectional with object +y), and tool +y orthogonal to top_drawer_handle_frame +x. However, since freeze_orientation already covers keeping orientation fixed, and the rule says at most one position constraint, I should not add axis_align on top of freeze_orientation as they'd be redundant. But freeze_orientation is the explicit \"keep fixed\" constraint, and axis_align would describe the target orientation state. Since freeze_orientation already handles \"don't change orientation\", I'll include freeze_orientation and skip redundant axis_align terms.\n\nActually, re-reading the rules: \"In the entire Constraints list, you may include AT MOST ONE position constraint operator: reach_point OR reach_distance OR directional_move OR freeze_position (never more than one of these).\" This restriction is only for position operators. axis_align, freeze_orientation, open_gripper are separate categories and can be combined freely.\n\nBut since freeze_orientation already captures \"keep orientation fixed\", adding axis_align would be redundant. I'll keep it clean with: directional_move + freeze_orientation + open_gripper.\n\nFor directional_move: controlled_entity = \"robot_frame\", controlled_target = \"panda_fingertip\", reference_basis = \"object\", reference_origin = \"top_drawer_handle_frame\", axis = \"-y\", travel_distance_m = 0.15, tolerance_m = 0.01.\n\nSuccess = gripper is open AND orientation is frozen AND has moved 0.15 m along object -y. All conditions must hold together \u2192 all \"and\" logic.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage is represented conjunctively. freeze_position keeps the panda_fingertip origin fixed at its stage-start world position within 0.01 m. object_grasped requires the marker to remain physically held in the closed gripper, rather than merely commanding closure. axis_align makes the grasped marker upright by requiring marker +y, its length axis, to be bipolar with world +z, leaving either marker tip direction acceptable. The exact 5 degree stopping tolerance and sustained bilateral finger contact/effort/no-slip feedback are not separately expressible with the available terms; the axis_align API tolerance is fixed at 0.2 rad, and object_grasped is the representable grasp-retention requirement.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "marker",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

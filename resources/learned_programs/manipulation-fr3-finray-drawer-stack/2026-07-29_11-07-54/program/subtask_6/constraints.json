@@ -1,0 +1,85 @@
+{
+    "Diagnosis": "The parser failed because the fourth constraint was an axis_align term comparing panda_fingertip to itself: controlled_target='panda_fingertip' and reference_origin='panda_fingertip' with reference_basis='robot_frame'. This is self-referential and invalid. The repair changes only that implicated axis_align reference to world +z; because panda_fingertip +z is already constrained antiparallel to world +z, requiring panda_fingertip +y orthogonal to world +z preserves the intended orthogonality to the tool +z direction without a self-reference.",
+    "Reasoning": "This stage moves the open panda_fingertip end-effector to the specified non-contact standoff point 0.12 m above strawberry_center_frame in world +z with 0.01 m tolerance. The open_gripper term commands and verifies the fully open gripper state. The first axis_align term enforces the top-down pose by making tool +z antiparallel to world +z. The second axis_align term keeps tool +y orthogonal to strawberry_center_frame +x for the cube-like strawberry grasp setup. The repaired third axis_align term keeps tool +y orthogonal to world +z, which is equivalent to the requested tool +y orthogonal to tool +z under the simultaneous top-down tool +z constraint and avoids the invalid self-referential frame relation. The reach_point term encodes the non-contact standoff target and includes manipulator_low_effort as the representable free-space/no-contact effort condition. Gripper-effort-specific contact monitoring is not separately representable in the available TermAPI beyond the open gripper state and low-effort condition label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "strawberry_center_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+y",
+                "reference_axis": "+z",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "strawberry_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

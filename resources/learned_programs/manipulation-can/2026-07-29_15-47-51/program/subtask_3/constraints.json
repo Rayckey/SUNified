@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This stage is a conjunctive lift while holding the can. The upward 0.15 m world-frame displacement of the panda_fingertip is represented by a directional_move with the specified 0.01 m completion tolerance. The fixed end-effector orientation is represented by freeze_orientation on panda_fingertip with a 5 degree tolerance. The requirement to keep the can firmly held, gripper closed, and prevent relative slip is represented by object_grasped with gripper_closed metadata. Finger joint-state feedback and finger squeeze effort feedback are not directly parameterizable in the available term API, and bilateral contact/micro-motion limits cannot be encoded more specifically than object_grasped.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.0872665
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

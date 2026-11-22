@@ -1,0 +1,1 @@
+[Manipulate] Move the upright can back down to the desired upright placement state while keeping the gripper closed.

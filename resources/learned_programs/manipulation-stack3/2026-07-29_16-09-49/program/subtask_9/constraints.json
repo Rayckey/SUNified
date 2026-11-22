@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage moves the open panda_fingertip to the cube_3 object-frame origin for intended contact, with 0.01 m contact/setup tolerance. The gripper orientation is frozen to preserve the start-of-stage orientation and avoid commanded tool rotations. The gripper is commanded/maintained open to represent the open joint-state requirement and absence of closing. The reach term includes geometry plus manipulator_high_effort to represent target contact/effort feedback as the available contact indication. Exact monitoring of left/right gripper joint values near 1.0 and finger-specific effort feedback cannot be encoded beyond open_gripper and the effort/contact condition label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_3",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

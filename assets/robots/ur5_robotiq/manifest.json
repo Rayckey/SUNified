@@ -1,0 +1,58 @@
+{
+  "robot_id": "ur5_robotiq",
+  "units": "metres/radians",
+  "quaternion_order": "wxyz",
+  "arm_joint_names": [
+    "shoulder_pan_joint",
+    "shoulder_lift_joint",
+    "elbow_joint",
+    "wrist_1_joint",
+    "wrist_2_joint",
+    "wrist_3_joint"
+  ],
+  "tcp_in_wrist_3_link": {
+    "position": [
+      0.0,
+      0.0,
+      0.162
+    ],
+    "quaternion": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "sources": {
+    "universal_robot": {
+      "repository": "https://github.com/ros-industrial/universal_robot",
+      "commit": "39ad110d8f2e8f66856a201cca88aa7a7025e3eb",
+      "license": "BSD-3-Clause",
+      "license_path": "LICENSES/UniversalRobots-BSD-3-Clause.txt"
+    },
+    "robotiq": {
+      "repository": "https://github.com/ros-industrial/robotiq",
+      "commit": "45196f6558fe8ba9d89bc8a105396c68c3e7e892",
+      "license": "BSD-2-Clause",
+      "license_path": "LICENSES/Robotiq-BSD-2-Clause.txt"
+    }
+  },
+  "source_urdf_sha256": {
+    "arm.urdf": "8958c86de71e0a58350de037f4ab26d7fdb9ddf931ef21bebcebb66dff957a4c",
+    "gripper.urdf": "0fb7e7ce87ded3ae917b104cc84ad4a5539e42d9da9d09f5564fc01c50e30e37"
+  },
+  "adaptations": [
+    "Expanded upstream Xacro to standalone URDF; mesh paths are relative to source/.",
+    "Gripper root link renamed base_link; negative mimic follower limits corrected to [-0.8, 0].",
+    "ROS UR5 link frames retained; gripper mounts at the wrist flange with a virtual TCP 0.162 m from its base.",
+    "Robotiq Collada meshes converted to OBJ in metres with baked scene transforms for portable import.",
+    "Enabled the upstream CAD finger inertias; pad inertias are estimated as uniform boxes at 1100 kg/m^3.",
+    "Fingertip collision instances are expanded so scenes can bind their contact material."
+  ],
+  "builder": "kuafu.isaac.learned.ur5.prepare_assets (Isaac Lab URDF importer)",
+  "uncertainty": "Virtual TCP at 162 mm; simulated mount and nominal UR5 geometry require hardware calibration.",
+  "outputs": {
+    "ur5_robotiq.usd": "0f8d9ab83fab78ade78a1e987ec5fd7c41600524e7f1b40aee2e1bab63fde5fd",
+    "ur5_controller.urdf": "b91ea059e51c5fedd37a0141d3ac1d6a5b9f243bdf2167b9c1301b15774eab91"
+  }
+}

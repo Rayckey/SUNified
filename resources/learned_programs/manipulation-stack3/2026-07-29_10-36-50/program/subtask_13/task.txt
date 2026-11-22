@@ -1,0 +1,1 @@
+[Manipulate] Move cube_3 with the gripper closed into contact with cube_2 to place cube_3 on cube_2.

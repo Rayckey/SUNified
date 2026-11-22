@@ -1,0 +1,37 @@
+{
+    "Reasoning": "This release stage requires:\n1. Open the gripper fingers (open_gripper) - primary action\n2. Keep the tool pose (panda_fingertip position) fixed throughout finger opening (freeze_position)\n3. Keep the tool orientation fixed throughout finger opening (freeze_orientation)\n4. Orientation continuity: tool +z antiparallel with estop_cap_center +z, and tool +y orthogonal to estop_cap_center +z - these were established in prior steps and must be maintained. Since the requirement says \"as established in prior approach and manipulate steps\" and we are freezing orientation, freeze_orientation covers this. However, the rules say if a new orientation relation is established, we must use axis_align. Here, no NEW orientation is being established - it's being maintained from prior steps. freeze_orientation is appropriate.\n\nThe stop condition mentions effort feedback dropping (manipulator_low_effort) OR fingers reaching fully open - the primary motion constraint is open_gripper, and the effort monitoring is a stop condition that cannot be directly encoded in TermAPI as a separate operator. I'll note this in Reasoning.\n\nConstraints:\n1. freeze_position on panda_fingertip (keep tool pose fixed) - geometry, \"and\"\n2. freeze_orientation on panda_fingertip (keep tool orientation fixed) - geometry, \"and\"\n3. open_gripper - gripper_opened, \"and\"\n\nThe orientation continuity (axis_align for tool +z antiparallel to estop_cap_center +z, and tool +y orthogonal to estop_cap_center +z) - since these are already established and we're freezing orientation, freeze_orientation covers them. No new orientation is being established. I will not add redundant axis_align constraints since freeze_orientation is sufficient here and no new alignment is being created.\n\nThe stop condition based on effort (manipulator_low_effort) cannot be directly encoded as a separate TermAPI operator - noted in Reasoning.\n\nLogic: all constraints are conjunctive (\"and\").",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.005
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

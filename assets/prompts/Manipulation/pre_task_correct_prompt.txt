@@ -1,0 +1,32 @@
+Top-level task: {task_description}
+
+Observations and execution state:
+* Optional scene image(s): {images}
+* Robot frames / joints: {frames}
+* Observed objects: {history}
+* Execution log / completed subtasks: {completed}
+
+Previous pre-task plan, untrusted:
+* Reasoning: {planner_reasoning}
+* Subtasks: {planner_subtasks}
+* Pending subtasks: {pending}
+* Completed subtasks from original plan: {completed_plan}
+
+Error / Issue:
+* Description: {error}
+
+Using the system instructions, return a corrected phase-labeled plan.
+
+Requirements:
+- Diagnose the issue.
+- Do not repeat completed actions.
+- Keep valid previous subtasks when possible.
+- Each corrected subtask must be one controller-stage-feasible conceptual action: one spatial change OR one gripper-state change, plus any required fixed-position/fixed-orientation condition.
+- Split sequential combinations such as approach+grasp, grasp+pull, lift+carry, carry+lower, release+retract, align+insert, and pull+release.
+
+Return exactly one JSON object:
+- "Diagnosis": "Evidence: ...; Cause: ...; Fix: ..."
+- "Reasoning": explanation of the correction.
+- "Subtasks": ordered array of corrected phase-labeled subtasks.
+
+Reply with JSON only: double-quoted keys/strings, no extra text, no code fences, no backticks.

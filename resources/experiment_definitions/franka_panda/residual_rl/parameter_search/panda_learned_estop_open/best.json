@@ -1,0 +1,118 @@
+{
+  "kind": "initial_constraint_sweep",
+  "stages": {
+    "0": {
+      "diagnosis": "{\"0\": \"Gripper-state validity for non-contact pre-grasp setup; no tunable tolerance.\", \"1\": \"Non-contact pre-grasp orientation setup via axis_align of tool +z antiparallel to cap +z; angular drift is acceptable as long as approach remains broadly correct, so non-mission-critical setup orientation.\", \"2\": \"Non-contact pre-grasp orientation setup via axis_align of tool +y orthogonal to cap +z; cap is rotationally symmetric and this only excludes degenerate orientation, so non-mission-critical setup orientation.\", \"3\": \"Reach_point to a specific non-contact pre-contact standoff target 0.12 m along cap +z; this is a pre-engagement setup point, not contact/fit/final validity. Use specific standoff/setup positional tolerance 0.03 m.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        },
+        "3": {
+          "tolerance_m": 0.03
+        }
+      },
+      "reasoning": "This stage is purely an open-gripper, non-contact approach to a pre-grasp pose. Component 3 is not a broad transport waypoint, but it is a specific pre-contact setup target for the immediate next engagement, so the positional rule is the non-contact pre-contact/pre-grasp setup tolerance of 0.03 m rather than the authored 0.01 m or any travel-distance scaling. Components 1 and 2 are axis-align setup terms before contact; a bit of hand rotation would still leave the current stage physically valid because there is no insertion, fit, actuation, or final object pose requirement here, so both angular tolerances should be 0.50 rad. Weighting: position is the primary progress signal for this stage, so it is slightly highest. Open gripper is important stage validity but simple state maintenance. The two orientation terms matter for clean approach setup yet are not mission-critical angular constraints, so they stay moderate and below the primary positional progress term.",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.5
+      }
+    },
+    "1": {
+      "diagnosis": "{\"0\": \"reach_point on robot/tool pose to estop cap center; this is an open-gripper first-contact approach to a constrained feature. Relevant contact size from cap is 0.04 m, so positional cap uses min(0.03, s/2)=0.02 m.\", \"1\": \"freeze_orientation on robot/tool during open-gripper contact approach; orientation is maintained for approach continuity, but small rotation would not by itself invalidate current-stage contact success.\", \"2\": \"open_gripper state validity throughout approach.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.02
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "Component 0 is not a broad free-space waypoint and not receiver placement; it is immediate contact approach to the cap center with no standoff. Using the direct first-contact rule with known relevant size s=0.04 m gives tolerance_m=0.02. Component 1 uses the angular validity test: this stage succeeds by reaching/contacting the cap with the gripper open, and a bit of tool rotation would still leave the current stage physically valid, so tolerance_rad=0.50 rather than a tighter mission-critical value. Component 2 has no tunable tolerance and remains important because losing the open state invalidates the approach/contact semantics. Weighting emphasizes the primary progress/contact term slightly above orientation maintenance; open-gripper is also slightly elevated because it is a hard stage-state requirement.",
+      "weights": {
+        "0": 2.0,
+        "1": 1.0,
+        "2": 1.5
+      }
+    },
+    "2": {
+      "diagnosis": "{\"0\": \"freeze_position on robot/tool pose during grasp_closing while maintaining contact on a constrained feature (e-stop cap). Positional hold matters for keeping the same-stage grasp acquisition centered on a small solid contact region; use grasp-hold positional cap 0.02 m from known cap size 0.04 m -> s/2.\", \"1\": \"freeze_orientation on robot/tool pose during grasp_closing. Current stage success is firm bilateral finger contact while closing, not an insertion/fit/twist/final-orientation validity check; small tool rotation would usually still allow valid grasp closure here, so broad angular tolerance 0.50 rad.\", \"2\": \"object_grasped state validity for firm two-finger contact on the cap; grasp state is the primary completion condition.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.02
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "Component 0 is not free-space transport or release; it is a pose hold during active grasp closing on a small solid body/contact region of size about 0.04 m. By the grasp-closing rule, positional tolerance should be max(0.01, min(0.03, s/2)) = 0.02 m. Component 1 is freeze_orientation, but this stage is not yet the twist actuation and does not require angular fit/insertion/final object orientation; if the hand rotates a bit, the stage can still remain physically valid as long as grasp contact is achieved, so use 0.50 rad. For weights, object_grasped is the key completion signal and should be strongest. The pose holds support grasp acquisition but are maintenance terms, with position more important than orientation because off-position directly risks missing symmetric finger contact on the small cap. Thus use simple relative ratios 1.5 : 1.0 : 2.0.",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "3": {
+      "diagnosis": "{\"0\": \"freeze_position on panda_fingertip during active force transmission while twisting a constrained centered-axis feature; position drift would break same-stage contact/torque transmission. Relevant contact feature size from estop cap is 0.04 m, so use size-capped centered-contact hold tolerance.\", \"1\": \"directional_rotate of panda_fingertip about estop_cap_center -z is precision directional progress because completed rotation amount determines current unlock/actuation validity. Known rotation angle is 2.0 rad, so use explicit 20% rotation-progress tolerance.\", \"2\": \"object_grasped state validity during manipulation; grasp must persist throughout twist or all progress is invalid.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.02
+        },
+        "1": {
+          "tolerance_rad": 0.4
+        }
+      },
+      "reasoning": "{\"0\": \"Current component is a robot/tool pose hold during active manipulation of a constrained feature, not free-space transport and not release. The e-stop cap is a centered-axis mechanism feature; keeping the fingertip near the grasp center matters for torque transfer while twisting. Relevant size s=0.04 m from the cap frame size, so by centered constrained-feature hold rule tolerance_m=max(0.01,min(0.03,s/2))=0.02.\", \"1\": \"This rotation is not a coarse setup motion; the stage success depends on rotating enough to unlock a twist mechanism. Therefore classify as precision_directional_progress. With known theta=2.0 rad, tolerance_rad=max(0.30,min(0.50,0.20*theta))=0.40. This is the required explicit progress formula and is not tightened below 20%.\", \"2\": \"Grasp retention is essential because losing the grasp makes the twist invalid. Weight it above the maintenance term. The precision rotation is the primary progress term, so it gets the highest weight. The position hold is important but secondary to actual rotational progress and grasp validity.\"}",
+      "weights": {
+        "0": 1.5,
+        "1": 2.5,
+        "2": 2.0
+      }
+    },
+    "4": {
+      "diagnosis": "{\"0\": \"freeze_position on panda_fingertip during open_gripper release; robot/tool pose hold only, with cap already unlocked and no longer requiring active force transmission; release target is tool_release_guard on a constrained, spring-loaded feature, so use release-hold positional tolerance 0.05 m.\", \"1\": \"freeze_orientation on panda_fingertip during open_gripper release; orientation continuity is only being maintained while opening, not establishing a new fit/insertion/actuation condition; small tool rotation would still leave this release stage valid, so use non-critical angular tolerance 0.50 rad.\", \"2\": \"open_gripper is the primary release/state-validity component; no tunable tolerance.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"Current stage is a gripper-opening release while holding robot/tool pose fixed at an already achieved unlocked pose. By precedence, freeze_position during release uses release logic before size or constrained-feature logic. The cap is a constrained mechanism feature and the tool pose is held only to avoid disturbing it during release, so tool_release_guard => tolerance_m 0.05.\", \"1\": \"This freeze_orientation is maintenance during release, not current twisting, insertion, seating, or axis-critical actuation. If the hand rotates a bit while the fingers open, the release can still be physically valid; the next stage handles retract. Therefore use 0.50 rad, not a mission-critical 0.30. Also current 0.2 is below the allowed minimum and must be corrected.\", \"2\": \"open_gripper defines the main stage completion/state transition, so it should carry the highest relative weight. The two tool-pose hold terms are support guards to prevent disturbance during release, but they are not the final object-validity condition and should not outweigh the release itself. Keep simple init-sweep ratios without inflation.\"}",
+      "weights": {
+        "0": 1.0,
+        "1": 1.0,
+        "2": 1.5
+      }
+    },
+    "5": {
+      "diagnosis": "{\"0\": \"Gripper state validity during release/retract; open state must persist but has no tunable tolerance.\", \"1\": \"Robot/tool orientation hold during post-release free-space retract; release/retract orientation maintenance, not current fit/insertion/actuation validity -> non-critical angular hold.\", \"2\": \"Reach_point to non-contact retract/clearance waypoint at object +z offset 0.12 m; this is retract_or_clearance_progress/free-space waypoint, not receiver placement or precision contact. Use free-space retract cap tolerance_m=0.05.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_m": 0.05
+        }
+      },
+      "reasoning": "{\"0\": \"Open gripper defines release-state validity, so it should remain one of the primary terms, but this is a broad release/retract stage rather than a small-feature manipulation stage.\", \"1\": \"Although the text says keep orientation fixed, the current stage is already open-gripper non-contact retract. A bit of tool rotation would still leave the stage physically valid because there is no current fit, insertion, final object orientation, or torque-axis actuation to preserve. Per angular policy, use tolerance_rad=0.50 and keep weight modest.\", \"2\": \"The positional goal is to back away to a non-contact clearance point after release. This matches free-space retract/back-away, so tolerance_m=0.05 by precedence. Do not use the current 0.01 m, and do not treat the 0.12 m offset as a precision progress amount. This is the main progress term for the stage, so weight it above the non-critical orientation term. Weight ratios keep emphasis on successful open-state plus retract completion without inflating all terms.\"}",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 1.5
+      }
+    }
+  },
+  "task": "Panda-Table-EStop-Open"
+}

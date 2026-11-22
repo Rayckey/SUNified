@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage transports the currently grasped cube_3 to the non-contact pose 0.15 m above cube_2 while preserving the current panda_fingertip orientation. The reach_point term makes the gripped object cube_3 reach cube_2's world-frame origin plus [0, 0, 0.15] m with the required 0.01 m stop tolerance; the manipulator_low_effort condition records the requirement to avoid unintended external contact during transport. The freeze_orientation term keeps panda_fingertip at its start-of-stage world orientation, representing no commanded tool rotation. The object_grasped term represents cube_3 remaining firmly held by the closed gripper and preserving the rigid grasp relationship without slip. The explicit closed joint values near 0.0 and detailed opposing-finger/finger-effort feedback cannot be parameterized directly by the available API, so they are approximated by object_grasped with gripper_closed metadata.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

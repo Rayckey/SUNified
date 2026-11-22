@@ -1,0 +1,41 @@
+{
+    "Reasoning": "The stage is a vertical lift while maintaining the existing grasp. A directional_move on panda_fingertip encodes the explicit world +z translation of 0.15 m with 0.01 m terminal tolerance; because it is a strict directional move, lateral coordinates are held as much as this operator represents. freeze_orientation keeps the tool orientation fixed at the start-of-stage world orientation. object_grasped represents the requirement to keep mug_rim_frame_0 physically held with closed gripper/contact feedback and no release during the lift; close_gripper is not emitted because object_grasped is the appropriate hold constraint and the API forbids emitting both together. The requested conservative mug-table separation clearance of 0.615 m, explicit monitoring signals, and detailed opposing finger effort/contact/no-slip feedback cannot be directly represented by the available operators, so they are noted here but omitted from the Constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

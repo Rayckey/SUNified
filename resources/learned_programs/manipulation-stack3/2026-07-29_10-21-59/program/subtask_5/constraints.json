@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Use object_grasped to require cube_2 to remain physically held with the gripper closed throughout the lowering stage, representing the firm grasp/no-slip requirement as far as the API supports. Use one position goal to place the gripped cube_2 origin at the stacking target: cube_1 origin plus 0.05 m in world +z, with 0.01 m tolerance; this also encodes the final lateral alignment tolerance. The reach term includes both geometry and manipulator_high_effort condition labels so aligned geometric arrival and supported downward contact/effort feedback can both confirm completion. Freeze cube_2 orientation to represent pure lowering without intentional rotation while preserving the grasped-system configuration. Continuous strictly world -z path motion with unknown numeric travel distance, continuous lateral alignment during the whole path, explicit finger-joint effort/contact details, fingertip-to-cube_2 relative transform, and cube_2-to-cube_3 minimum clearance cannot be represented directly with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.05
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

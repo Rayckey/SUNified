@@ -1,0 +1,5 @@
+{
+  "artifact": "resources/experiment_definitions/kinova_gen3/residual_rl/parameter_search/kinova_learned_stack_2/params_best.json",
+  "description": "Verified program, evaluated BC prior and parameter/weight records",
+  "path_base": "repository root"
+}

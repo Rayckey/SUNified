@@ -1,0 +1,1 @@
+[Manipulate] Move the grasped mug_rim_frame_0 to pass cup_hanger_branch_1_tip_frame through mug_handle_hole_frame and seat mug_handle_hole_frame on cup_hanger_branch_1_tip_frame, keeping the gripper closed and orientation fixed.

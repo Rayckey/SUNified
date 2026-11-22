@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage moves the robot fingertip into contact with mug_rim_frame_0 while the gripper remains open and the fingertip orientation is held fixed. The open_gripper term maintains the open finger configuration. The freeze_orientation term preserves the current panda_fingertip orientation, representing fixed world-frame directions of its tool +z and +y axes from the start of the stage. The reach_point term drives the panda_fingertip origin to the mug_rim_frame_0 origin with the required 0.01 m contact tolerance. Its condition includes both geometry and manipulator_high_effort to represent the requested geometric contact tolerance together with touch/effort feedback as the stopping indication. Detailed monitoring of pose, joint state, and contact feedback is runtime instrumentation and is not separately expressible as a Constraint term.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "mug_rim_frame_0",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

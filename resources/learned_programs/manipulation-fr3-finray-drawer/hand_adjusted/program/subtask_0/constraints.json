@@ -1,0 +1,59 @@
+{
+    "Reasoning": "Success for this subtask means the open gripper (end-effector, panda_fingertip) is brought to a pre-grasp position near the top_drawer_handle_frame using an axis approach, without contacting the handle. The gripper/tool must be oriented such that its +z axis (tool axis) is antiparallel with the handle's -y axis (the pull-out axis), ensuring correct approach direction. Additionally, the tool +y must be orthogonal to the handle's +x axis (handle's long axis), setting roll alignment. The position must maintain a separation of at least 10 cm along the tool's +z axis from the handle's frame origin to prevent accidental contact. All constraints must be satisfied together to match the 'and' logic; the order ensures orientation is correct first, then the position is validated. Only position feedback is used and the gripper must be open, but explicit open_gripper is not required unless closing/opening is part of the current step (not the case here as gripper is already open).",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+z",
+                "reference_axis": "-y",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "distance_m": 0.1,
+                "tolerance_m": 0.03
+            }
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+# Auto-generated BC prior config for Panda-Table-Pen-Cup from Trajectories/panda_Panda-Table-Pen-Cup_2026-06-09_19-19-07.hdf5.
+dataset:
+  dataset: "Trajectories/panda_Panda-Table-Pen-Cup_2026-06-09_19-19-07.hdf5"
+  demo: null
+  obs_key: "state"
+  action_mode: "absolute_ee"
+  time_shift: 0
+  val_fraction: 0.1
+  split_mode: "random"
+  seed: 1999
+preprocessing:
+  action_chunk_size: 10
+  action_chunk_stride: 1
+  obs_history: 1
+model:
+  hidden_dims: [1024, 512, 256, 512, 1024]
+  activation: "relu"
+  dropout: 0.1
+optimization:
+  lr: 1e-05
+  weight_decay: 1e-05
+  batch_size: 1024
+  num_workers: 8
+  num_epochs: 300
+  save_every_n_epochs: 50
+  grad_clip: 10.0
+logging:
+  log_dir: "logs/bc_prior_mlp/franka_panda/pen_cup/2026-06-09_19-19-07"
+  monitor_demo_index: null
+auto_shift:
+  epochs: 50
+  batch_size: 512
+sample_weighting:
+  enabled: true
+  obs_stage_index: -1
+  default_weight: 1.0
+  normalize: true
+  weight_validation: true
+  stage_weights: {}
+critic_pretraining:
+  enabled: false
+  gamma: 0.99
+  loss_coef: 1.0
+  normalize_targets: true

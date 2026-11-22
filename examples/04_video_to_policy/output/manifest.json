@@ -1,0 +1,63 @@
+{
+  "run_id": "release-video-to-policy-20261105",
+  "recorded_utc": "2026-11-05",
+  "seed": 42,
+  "evaluation_seed": 46,
+  "steps": {
+    "prepare-video": {
+      "status": "complete",
+      "attempt_id": "8834327fc84a4b7aa65b656e220c41b0"
+    },
+    "build-asset": {
+      "status": "complete",
+      "attempt_id": "fec6b8ee52944a69b6e3fb6f20f76a1b"
+    },
+    "inspect": {
+      "status": "complete",
+      "attempt_id": "9669f0f7423b4f549f1c5148baa2c76f"
+    },
+    "form-program": {
+      "status": "complete",
+      "attempt_id": "27b7f1ef3cda4279bad3a7b2fc7b3692"
+    },
+    "verify-program": {
+      "status": "complete",
+      "attempt_id": "c79ad2c416e24ed0ba5d0e5dd51d50c6"
+    },
+    "collect": {
+      "status": "complete",
+      "attempt_id": "aa60c1b899124741bcac665c4a3764fe"
+    },
+    "train-prior": {
+      "status": "complete",
+      "attempt_id": "1c18e3753c874d979e269c84fa11a72e"
+    },
+    "eval-prior": {
+      "status": "complete",
+      "attempt_id": "55f33fea798d40b09646ee3bbc327188"
+    }
+  },
+  "inputs": {
+    "examples/04_video_to_policy/input/task.json": "62cc8d67037b1499e5f58dc421cb27ce22cb795c740b52ee4b4210c78126bdcb",
+    "examples/01_video_to_rollout/input/task.json": "dbd42dfb2a63476d4a29041012c01f3c1c261f5f2d14aedcae8c71be38404c20",
+    "examples/01_video_to_rollout/input/IMG_0028.mov": "cc844c59e948d8525b14b893adcaa1579c39a0b55634ce6e3585ac53871c865d",
+    "examples/01_video_to_rollout/input/IMG_0029.mov": "97fab4492376b16c7c43ad6a8818538a37dbe16ea411795478527d7e56c36ab2",
+    "examples/01_video_to_rollout/input/program.json": "72698a93ea924c1fb0eaa78b1edde557f70859be66f4c36f7cd9f85d3d02b4ea",
+    "assets/recipes/0028_0029.articulated.scene.json": "f4f9a7cb7f89b4e424e205dada450f710e9353d12f0ccee7a477131c85d5b2ae"
+  },
+  "outputs": {
+    "output/collection.json": "c45a92a33dfcfade53a29fdfffcbd1adf36562cb81868250568d4507d0457378",
+    "output/demonstrations.hdf5": "7a46666d65cfc45d24ff3a88bd780a0430f242f5ee1e05d20b3488fb1223f04e",
+    "output/evaluation.json": "75c51fea8b1198da5267f201fb8678c69dacc0435c06e92f020809fdc7f46617",
+    "output/policy.pth": "a2504bd74aac7be6214151404be59032ca9782453140ec9a377b705309d328b7",
+    "output/rollout.png": "a3a3569a2d94f953f2607bdb4176981f6bc5dbca298a21529d4fb19fa005d30e",
+    "output/training.json": "c3daa940dc704e8e771cfb696bd2daae71d2ce801fde26b5919026a1dcbf8d7f"
+  },
+  "scope": "Same cabinet pose; three training episodes, one validation episode, one policy rollout.",
+  "source_files": {
+    "src/kuafu/programs/generated_drawer.py": "6ac5cd83467556d94762c2c9c1ee290456c1eb7eaeee02ea91dfb349e58f63fd",
+    "src/kuafu/bc/generated_drawer.py": "b3bcedf93f8d9475bdcf5f9e82e0c7db3fb144695d77c5a8c3900dcb8af2dfe4",
+    "src/kuafu/data/generated_drawer.py": "b295a552297a802d6b032158286ffe27f3910141f57d962953b86699e9155cfa",
+    "src/kuafu/pipeline/drawer_policy.py": "38966684fd21d5b9186cca51b6bbf4980f1e408f186dcf1866763b518deb71d4"
+  }
+}

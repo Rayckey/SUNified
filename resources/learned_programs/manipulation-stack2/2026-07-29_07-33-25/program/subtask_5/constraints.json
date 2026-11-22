@@ -1,0 +1,54 @@
+{
+    "Reasoning": "This stage keeps cube_1 grasped while lowering it. object_grasped represents maintaining the closed physical hold on cube_1 without emitting a separate close_gripper term. directional_move is the single position constraint: it lowers the gripped cube_1 along world -z by the explicitly specified 0.11 m with 0.015 m tolerance. Its condition includes geometry for the nominal target stop and manipulator_high_effort to represent the supported-contact/effort early-stop alternative. Because the previous stage placed cube_1 above cube_2, a strict world -z move preserves lateral alignment and is intended to reach the cube_2 +z stacking target, but the API allows only one position op, so a separate reach_point to cube_2+[0,0,0.05] is not also emitted. freeze_orientation on panda_fingertip preserves the current gripper orientation within 0.05 rad without adding any new tool-axis relation. freeze_orientation on cube_1 helps preserve the held object's orientation during the fixed-gripper lowering. Unrepresented details: exact finger joint positions, opposing finger contact/effort, full six-DOF cube_1-to-panda_fingertip relative-pose/no-slip monitoring, detailed stable-placement verification, and explicit impact-force limiting beyond the effort-labeled early stop.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "-z",
+                "travel_distance_m": 0.11,
+                "tolerance_m": 0.015
+            }
+        }
+    ]
+}

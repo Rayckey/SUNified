@@ -1,0 +1,46 @@
+{
+    "Reasoning": "The stage success is represented by carrying the currently gripped cube_1 center to the point 0.15 m above cube_2 in the world +z direction with 0.02 m tolerance, while keeping the panda_fingertip orientation frozen within 0.05 rad and requiring cube_1 to remain physically grasped with the gripper closed. The reach_point term uses cube_2 as the reference origin and world as the reference basis so the offset is world +z, not cube_2-local +z. object_grasped represents the required firm maintained grasp and closed-gripper holding state without also emitting close_gripper, per the API rule. manipulator_low_effort is included on the carry-to-target term to reflect free-space/non-contact carrying feedback. The exact path-wide clearance inequality that cube_1 remain at least 0.15 m from cube_2 until the final target, bilateral finger contact details, no-slip relative transform monitoring, and fault-stop behavior for unexpected contact are not directly representable as separate API constraints, so they are noted but omitted beyond object_grasped, freeze_orientation, and low-effort/free-space condition labeling.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_1",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

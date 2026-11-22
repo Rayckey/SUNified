@@ -1,0 +1,284 @@
+{
+  "kind": "initial_constraint_sweep",
+  "stages": {
+    "0": {
+      "diagnosis": "{\"0\": \"axis_align on robot/tool orientation for non-contact pre-grasp top-down setup; angular mission is not precision-critical beyond maintaining a broad top-down approach, so use broad orientation tolerance.\", \"1\": \"reach_point to a specific non-contact pre-contact standoff above the cube; this is setup for immediate contact in the next stage, so use pre-contact setup positional tolerance rather than coarse transport or receiver-placement rules.\", \"2\": \"open_gripper state validity; no tunable tolerance.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_rad": 0.5
+        },
+        "1": {
+          "tolerance_m": 0.03
+        }
+      },
+      "reasoning": "Component 0 is an angular setup term for an open-gripper top-down pre-grasp pose. For this current stage, a bit of hand rotation would still leave the stage physically valid because there is no contact, fit, insertion, actuation, or final object-pose requirement yet; therefore tolerance_rad should be 0.50, not a mission-critical 0.30. Component 1 is a reach_point to a specific standoff 0.125 m above the cube center. This is not a broad transport waypoint, but a non-contact pre-contact/pre-grasp setup for the next interaction, so the positional tolerance should be 0.03 m by the setup rule. It should not use the current 0.10 m stop threshold as the tuned learnable tolerance target. Component 2 is open_gripper and has no tunable parameter. For weights, reach_point is the primary progress signal, so it is slightly emphasized. Orientation and open-gripper are important but non-critical maintenance terms for this stage, so they remain moderate. Simple init-sweep ratios avoid inflating all terms.",
+      "weights": {
+        "0": 1.0,
+        "1": 1.5,
+        "2": 1.0
+      }
+    },
+    "1": {
+      "diagnosis": "{\"0\": \"freeze_orientation on robot/tool during open-gripper first-contact approach; angular steadiness is not mission-critical for current stage validity beyond maintaining broad top-down approach\", \"1\": \"reach_point to cube center with zero offset as first-contact positional goal; direct contact approach to a small solid body with relevant contact/grasp cross-section about 0.039 m, so use contact cap s/2 -> 0.0195 m\", \"2\": \"freeze_orientation duplicate/or-contact-stop companion term during same first-contact approach; same angular role as component 0\", \"3\": \"open_gripper state validity throughout approach\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_rad": 0.5
+        },
+        "1": {
+          "tolerance_m": 0.0195
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "This stage is an open-gripper approach from standoff into first contact with a small solid cube. The positional metric is a direct first-contact reach_point, not a broad free-space waypoint and not receiver placement. Using the cube size from the current description, the relevant contact/grasp cross-section is 0.039 m, so the first-contact rule gives max(0.01, min(0.03, s/2)) = 0.0195 m. For both orientation terms, the current stage would still be physically valid if the hand rotated a bit: this is a broad top-down contact approach to a symmetric cube, with position/contact being the real success condition, not angular fit/insertion/final object orientation. Therefore both tolerance_rad values should be 0.50, not tighter. Weights stay simple: make the contact-reaching term slightly primary, keep both orientation-maintenance terms modest, and keep gripper-open state important but not dominant.",
+      "weights": {
+        "0": 1.0,
+        "1": 1.5,
+        "2": 1.0,
+        "3": 1.5
+      }
+    },
+    "10": {
+      "diagnosis": "{\"0\": \"freeze_position on robot/tool pose during grasp_closing at cube contact. Controlled quantity is tool pose; contact state is grasp_closing. Manipulated object is a small_or_slender_body because the grasp-relevant cross-section is 0.03 m, so use positional grasp-lock cap s/2 -> 0.015 m.\", \"1\": \"freeze_orientation on robot/tool pose during grasp_closing. Current stage success is closing onto a small, top-down grasp where appreciable hand rotation could break same-stage grasp/contact validity, so this is mission-critical angular control.\", \"2\": \"object_grasped state validity for successful firm grasp acquisition; losing it invalidates the whole stage and is the primary completion signal.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.015
+        },
+        "1": {
+          "tolerance_rad": 0.3
+        }
+      },
+      "reasoning": "Component 0 is not a free-space hold or release; it is freeze_position while closing on a 0.03 m grasp cross-section. By the grasp-closing rule for a small_or_slender_body, tolerance_m = max(0.01, min(0.03, s/2)) = 0.015. Component 1 asks whether the stage would still be valid if the hand rotated a bit during this close. Here the current success depends on preserving the same-stage top-down grasp/contact on a small cube, so use the smaller mission-critical angular tolerance 0.30 rad, not 0.50. Component 2 is the core grasp-validity term and should carry the highest weight. Position hold is next most important because drift can spoil grasp acquisition. Orientation matters, but should not outweigh grasp validity or the primary positional grasp-lock. Weight ratios therefore emphasize grasp > position > orientation without inflating every term.",
+      "weights": {
+        "0": 2.0,
+        "1": 1.5,
+        "2": 2.5
+      }
+    },
+    "11": {
+      "diagnosis": "{\"0\": \"directional_move of robot/tool pose upward along world +z for free-space lift clearance while carrying a grasped small solid body; classified as coarse_directional_progress, so use coarse free-space translation tolerance 0.05 m rather than travel-distance scaling.\", \"1\": \"axis_align maintaining top-down tool orientation during free-space lift/carry of a grasped object; angular steadiness is not mission-critical to current-stage physical validity, so use non-critical angular tolerance 0.50 rad.\", \"2\": \"object_grasped state validity during lift; losing grasp invalidates all progress, so keep it as the highest-weight core validity term.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"The current translation is a lift to create clearance above the surface for a later carry. Although 0.15 m is specified, this is a free-space clearance motion, not a fit/seating/insertion/actuation metric. Per coarse directional translation policy, tolerance_m = 0.05.\", \"1\": \"This component checks tool-axis alignment during a broad top-down lift. A bit of hand rotation would still leave the current stage physically valid because the stage success is upward transport with maintained grasp, not insertion, final object orientation validity, or axis-critical actuation. Therefore tolerance_rad = 0.50.\", \"2\": \"The grasp state is crucial because dropping the object defeats the stage regardless of lift progress, so it should outweigh ordinary pose-maintenance terms. Weighting keeps translation primary among geometric terms, orientation secondary, and grasp validity strongest without inflating every component.\"}",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "12": {
+      "diagnosis": "{\"0\": \"reach_point for broad free-space lateral carry waypoint above the support cube; robot/tool pose target with fixed Z offset, coarse_directional_progress, not receiver placement or contact fit. Use free-space waypoint positional tolerance 0.05 m.\", \"1\": \"axis_align for maintaining top-down tool orientation during free-space carry of a grasped small solid cube; angular drift is not mission-critical to current stage validity. Use non-critical angular tolerance 0.50 rad.\", \"2\": \"object_grasped state validity during transport; grasp retention is essential because losing grasp invalidates the carry stage.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"The stage is a lateral carry in free space to get the grasped cube above the stack before the later lowering stage. The reach_point target is a broad transport waypoint at maintained lifted height, not current placement, insertion, contact, or final object validity. By precedence, broad free-space carry/transport reach_point uses tolerance_m = 0.05, not the authored 0.01 stop text and not a size-based cap.\", \"1\": \"This axis alignment keeps a top-down grasp during free-space transport. Asking whether the current stage would still be physically valid if the hand rotated a bit: yes, a modest rotation does not by itself break this carry waypoint or grasp of a small solid cube here. So tolerance_rad = 0.50. The prior 0.2 is below the allowed range and must be relaxed to the policy minimum choices.\", \"2\": \"The grasped-object state is the key validity condition for carrying; if lost, all progress is invalid. It should therefore have the highest relative weight. The reach_point term is the primary motion-progress term. The orientation term is supportive and non-critical, so it stays lower than grasp retention and not above the main transport term.\"}",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "13": {
+      "diagnosis": "{\"0\": \"object_grasped: grasp state validity while lowering a small solid body; losing grasp invalidates the stage.\", \"1\": \"axis_align: top-down tool orientation maintenance during broad vertical lowering onto a broad support target; angular drift is not the current placement validity check.\", \"2\": \"reach_point: receiver/support placement target at cube_1 top support location; final resting placement position is the current success condition. Relevant support is broad with no narrow fit, so use receiver/support placement tolerance cap 0.03 m.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_m": 0.03
+        }
+      },
+      "reasoning": "Component 2 is not a coarse waypoint: the target point encodes the current placement/resting height over the support, so this is receiver_or_support_placement / final placement validity. The support is a broad cube top face, with no slot/opening/fit-sensitive clearance, so tolerance_m should be 0.03 rather than inheriting 0.01 or using travel-based scaling. Component 1 is an orientation-maintenance term during top-down lowering of a grasped cube onto a broad top face; a bit of hand rotation would usually still leave the current stage physically valid because there is no angular fit/insertion/twist axis or final object orientation requirement, so tolerance_rad = 0.50. Weighting: grasp state and placement target are the two core success factors, so both are elevated equally to 2.0. Orientation maintenance is helpful but not mission-critical here, so keep it lower at 1.0.",
+      "weights": {
+        "0": 2.0,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "14": {
+      "diagnosis": "{\"0\": \"directional_move of robot/tool along world +z by 0.15 m; this is free-space retract/back-away after release, so coarse retract_or_clearance_progress applies with tolerance_m = 0.05\", \"1\": \"axis_align maintaining top-down tool orientation during post-release retract; small rotation would still keep the current stage physically valid, so non-mission-critical angular hold uses tolerance_rad = 0.50\", \"2\": \"open_gripper state validity for release/retract completion; important terminal state but not a geometric tolerance component\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"The motion occurs after releasing the object and its purpose is to back away to non-contact clearance above the placed cube. By policy, free-space retract/back-away after open_gripper uses tolerance_m = 0.05, not 20% of 0.15 m and not the prior 0.01 m contact-style tolerance.\", \"1\": \"This orientation term is a robot/tool pose maintenance term during open-gripper release/retract. A bit of hand rotation would not invalidate the current stage's physical success because there is no current insertion, fit, actuation axis, or final object orientation check on the tool itself. Therefore tolerance_rad = 0.50.\", \"2\": \"The gripper-open condition defines release validity and should be weighted above ordinary maintenance, but this is a broad-object release/retract context rather than a small/slender or fit-critical manipulation. Keep simple ratios: primary retract progress 1.5, orientation maintenance 1.0, gripper-open state 2.0.\"}",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "2": {
+      "diagnosis": "{\"0\": \"freeze_position on robot/tool pose during grasp_closing at the cube center; manipulated object is a small_solid_body with relevant grasp cross-section 0.039 m, so use centered grasp-hold cap s/2 -> 0.0195 m, rounded to 0.02 m.\", \"1\": \"freeze_orientation on robot/tool pose during top-down grasp_closing; current success is grasp acquisition by finger contact, and small tool rotation would usually still allow a valid same-stage grasp on a broad cube top grasp, so non-mission-critical angular hold -> 0.50 rad.\", \"2\": \"object_grasped state validity; grasp/contact establishment is the primary completion condition for this stage and losing it invalidates all progress.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.02
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"This is not release, retract, or free-space transport. It is freeze_position while grasp_closing on a small solid cube. The relevant failure size for grasp drift is the cube cross-section 0.039 m, giving max(0.01, min(0.03, s/2)) = 0.0195 m, so 0.02 m.\", \"1\": \"For angular tolerance, ask whether the current stage would still be physically valid if the hand rotated a bit during closing. Here the stage is simply closing on a symmetric cube from an already established top-down pose; orientation maintenance is helpful but a bit of rotation does not by itself break the current grasp-contact success predicate. Therefore use 0.50 rad, not a mission-critical 0.30 rad.\", \"2\": \"object_grasped is the decisive stage outcome, so it gets the highest relative weight. Pose holds support grasp acquisition but are not the terminal physical validity condition themselves.\", \"weights\": \"Use simple semantic ratios on init sweep: object_grasped highest at 2.5; freeze_position next at 2.0 because drift can spoil centered grasp closing on a small solid body; freeze_orientation lower at 1.0 because it is maintenance rather than mission-critical angular fit.\"}",
+      "weights": {
+        "0": 2.0,
+        "1": 1.0,
+        "2": 2.5
+      }
+    },
+    "3": {
+      "diagnosis": "{\"0\": \"directional_move of the gripped object upward by 0.15 m; this is coarse free-space lift/clearance progress rather than contact/fit/placement. Use coarse directional translation tolerance.\", \"1\": \"axis_align of robot/tool +z antiparallel to world +z during free-space lift of a grasped broad body; orientation maintenance is not mission-critical to current-stage validity if the hand rotates a bit.\", \"2\": \"object_grasped state validity during lift; losing grasp invalidates all stage progress.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"The move is a free-space lift to create clearance above the surface. The exact endpoint is not a contact, insertion, seating, or fit condition for this stage, so classify as coarse_directional_progress. Per policy, coarse free-space directional_move uses tolerance_m = 0.05, not 20% of travel distance and not the current 0.01.\", \"1\": \"This is an angular maintenance term during a top-down free-space lift of a small solid cube. A little tool rotation would still leave the current stage physically valid because the stage success is lift clearance with grasp maintained, not angular fit, insertion, actuation axis, or final object orientation validity. Therefore use tolerance_rad = 0.50. Weight should remain modest and not exceed the primary progress/state terms.\", \"2\": \"The grasp state must persist throughout the lift; if the object is dropped, the stage fails regardless of translation or orientation progress. Therefore weight it above the non-critical orientation term and at least as high as the lift progress term. Since this is a small solid body grasp but not a narrow fit/insertion/final-pose stage, a simple elevated ratio is appropriate.\"}",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "4": {
+      "diagnosis": "{\"0\": \"reach_point on robot/tool pose during free-space horizontal carry of a grasped small_solid_body toward a broad pre-placement waypoint above a support object; coarse_directional_progress / broad non-contact setup waypoint, so use coarse positional tolerance 0.05 m.\", \"1\": \"axis_align on tool +z during free-space carry; orientation maintenance is not current fit/insertion/final-pose validity, so non-mission-critical angular hold with tolerance 0.50 rad.\", \"2\": \"object_grasped state validity for maintaining grasp of the carried cube; losing grasp invalidates the stage.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"The current stage is a horizontal carry in free space to get above the target object before a later lowering stage. The exact XY endpoint is not yet a receiver/support final placement validity check; it is a transport/setup waypoint. The stage text itself uses a broad lateral stop threshold of 0.05 m. Per coarse free-space reach_point policy, tolerance_m = 0.05.\", \"1\": \"This is top-down orientation maintenance during free-space transport. A bit of hand/tool rotation would still leave the current stage physically valid because this stage is not yet insertion, seating, actuation, or final object orientation validity. Therefore use the larger angular tolerance 0.50 rad, not the tighter prior value.\", \"2\": \"Keeping the object grasped is essential because all carry progress is lost if grasp is lost. Since this is a small solid cube being transported, grasp validity should be weighted above ordinary free-space pose/orientation maintenance, but not inflated into narrow-fit or final-placement levels.\", \"weight_ratio\": \"Position progress and grasp validity are the primary stage requirements, so both get 1.5. Orientation maintenance is secondary and non-mission-critical here, so it stays at 1.0.\"}",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 1.5
+      }
+    },
+    "5": {
+      "diagnosis": "{\"0\": \"object_grasped state validity while lowering a grasped small_solid_body; losing grasp invalidates the stage.\", \"1\": \"axis_align of robot/tool +z antiparallel to world +z during top-down lowering; broad orientation maintenance for current placement, not a tight angular fit/insertion axis.\", \"2\": \"reach_point to cube_2 top-support placement height for lowering a grasped cube onto a receiver/support target; receiver/support placement rule applies with broad support and no narrower clearance dimension than the object/support scale.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_m": 0.03
+        }
+      },
+      "reasoning": "{\"0\": \"The grasp state is core because the stage is defined on a grasped object being lowered; if grasp is lost, all progress is invalid. Use elevated but not extreme weight.\", \"1\": \"This is orientation maintenance during a top-down lowering/placement of a symmetric cube onto a broad top face. A bit of hand rotation would usually still leave the current stage physically valid, so use the non-mission-critical angular tolerance 0.50 rad. Weight should stay moderate and below the primary placement/grasp terms.\", \"2\": \"This is not coarse free-space motion: the current success depends on placing/lowering the held object onto the top face of a support target. Apply receiver_or_support_placement. The support is broad and no fit-sensitive narrow opening/slot is involved, so use tolerance_m = 0.03 rather than deriving from travel distance or preserving the prior 0.01. This component is the primary geometric progress term, so give it the highest weight among the three, but still within a simple init-sweep ratio.\"}",
+      "weights": {
+        "0": 2.0,
+        "1": 1.0,
+        "2": 2.5
+      }
+    },
+    "6": {
+      "diagnosis": "{\"0\": \"freeze_position on robot/tool pose during gripper-opening release while cube_1 is already supported on cube_2; release-hold semantics on a freestanding placed object near contact => near_contact_release_hold positional tolerance.\", \"1\": \"freeze_orientation on robot/tool pose during gripper-opening release; angular steadiness is not the final object validity check, and small tool rotation during release would usually still leave the placement valid => non-mission-critical release orientation hold.\", \"2\": \"open_gripper state-validity component for completing release; object is intended to be released and fully opened / low-effort confirms success.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"This is a gripper-opening release stage with the tool held at the release pose after the object has been lowered onto a supporting surface. By precedence, freeze_position during open_gripper uses release logic before size/contact-fit rules. The object is a freestanding placed object that could still be nudged during finger opening, so use near_contact_release_hold tolerance_m = 0.03, not the prior 0.005 and not size-based s/2.\", \"1\": \"For angular tolerance, ask whether the current stage would still be physically valid if the hand rotated a bit during opening. Here the object is already resting on the support and the orientation hold is mainly to avoid disturbance, not to satisfy insertion, actuation, or final object orientation validity. So use tolerance_rad = 0.50, not a tighter mission-critical value.\", \"2\": \"open_gripper is the core release-validity component, so it should be weighted above the pose guards. The position and orientation holds are important but are release guards rather than the primary success state. Use simple relative weights: open_gripper highest, freeze_position next, freeze_orientation slightly lower.\"}",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 2.0
+      }
+    },
+    "7": {
+      "diagnosis": "{\"0\": \"open_gripper state validity during post-release retract; no tunable tolerance.\", \"1\": \"directional_move of robot/tool along world +z by 0.15 m; classified as retract_or_clearance_progress / coarse free-space retract after release, so use tolerance_m = 0.05 rather than precision-distance tightening.\", \"2\": \"axis_align keeping tool +z antiparallel to world +z during post-release retract; angular maintenance is non-mission-critical free-space orientation hold, so tolerance_rad = 0.50.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_m": 0.05
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "The current stage is explicitly a post-release upward retract to non-contact with the gripper already open. Component 1 is not validating placement, fit, contact, insertion, or final object pose; it is a clearance motion away from the released cube, so by precedence it uses the free-space retract rule with tolerance_m = 0.05. The specified 0.15 m travel is a clearance amount, not precision directional progress for current physical validity. Component 2 is an orientation maintenance term during free-space retract. A bit of hand rotation would not make this stage physically invalid because success is clearing upward with the object already released, so tolerance_rad = 0.50. Weighting keeps the retract motion as primary, while open-gripper state remains important and axis alignment is supportive but not mission-critical. Relative ratios are simple and avoid inflating non-critical orientation.",
+      "weights": {
+        "0": 1.5,
+        "1": 1.5,
+        "2": 1.0
+      }
+    },
+    "8": {
+      "diagnosis": "{\"0\": \"reach_point to a specific non-contact pre-grasp standoff above the object; non_contact_setup, not first contact or final placement; use pre-contact setup positional tolerance\", \"1\": \"axis_align for top-down tool +z antiparallel to world +z during open-gripper setup; angular maintenance is not mission-critical for current stage validity beyond broad top-down configuration\", \"2\": \"axis_align for tool +y orthogonal to world +z; redundant broad horizontal-plane condition in current non-contact setup, not a mission-critical angular fit\", \"3\": \"open_gripper state validity during approach\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"This is a reach_point to a specific pre-grasp standoff that prepares the immediate next contact/grasp. By policy for specific non-contact pre-contact/pre-grasp setup, use tolerance_m = 0.03. Do not use the authored 0.01 from current parameters, and do not scale by the 0.125 m offset because the offset defines the target, not progress amount.\", \"1\": \"For the current stage, a bit of hand rotation would still leave the pre-grasp setup physically valid as long as the tool remains broadly top-down; this is not insertion, actuation, or final object orientation validity. Therefore use tolerance_rad = 0.50 rather than a tight angular cap.\", \"2\": \"This orthogonality condition only enforces that the finger axis stays in the horizontal plane, and the stage text explicitly allows free orientation within that plane. Small tool rotation is acceptable for this setup stage, so use tolerance_rad = 0.50.\", \"3\": \"Open gripper is a core state-validity term because the approach must remain non-contact and grasp-ready. It should be weighted above ordinary maintenance terms but not inflated to constrained-fit levels.\", \"weights\": \"Component 0 is primary progress in this stage, so it gets the highest weight among geometric terms. Component 3 is also important because losing open state invalidates the stage, so it matches the primary term. Components 1 and 2 are broad non-critical orientation maintenance terms and stay lower, with the redundant Y-orthogonality term slightly lower than the main top-down Z alignment.\"}",
+      "weights": {
+        "0": 2.0,
+        "1": 1.25,
+        "2": 1.0,
+        "3": 2.0
+      }
+    },
+    "9": {
+      "diagnosis": "{\"0\": \"reach_point on robot/tool to first contact target at cube center; current stage is open-gripper first-contact approach, not final placement or insertion. Relevant size from cube cross-section is 0.03 m, so direct-contact size cap gives tolerance_m = min(0.03, s/2) = 0.015 m.\", \"1\": \"freeze_orientation on robot/tool during open-gripper contact approach; orientation is maintained top-down, but current success is making contact/approach, and small rotation would not invalidate this stage for a symmetric cube, so use broad non-mission-critical angular tolerance.\", \"2\": \"open_gripper state validity throughout approach; state loss would invalidate the approach/contact setup.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.015
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"The positional component is a reach_point to a contact target, not a broad waypoint and not a receiver/support placement. Apply direct first-contact rule. The smallest failure-relevant dimension available for this metric is the cube size 0.03 m, yielding s/2 = 0.015 m, within the allowed [0.01, 0.05] range.\", \"1\": \"For angular tolerance, ask whether the current stage would still be physically valid if the hand rotated a bit. Here the object is symmetric and the stage only requires approaching into contact with the gripper open; slight tool rotation does not break current-stage contact validity. Therefore use tolerance_rad = 0.50, not a tighter mission-critical value. Also correct current 0.2 upward to the allowed minimum policy range.\", \"2\": \"Keep open_gripper weighted above ordinary maintenance because losing the open state breaks the approach-to-contact setup, but it is still not a small-feature grasp-lock or final-validity term. Weight the contact-reaching term highest, orientation maintenance lowest of the core terms because it is not mission-critical here. Simple init-sweep ratios: reach/contact 1.5, orientation 1.0, gripper-open state 1.5.\"}",
+      "weights": {
+        "0": 1.5,
+        "1": 1.0,
+        "2": 1.5
+      }
+    }
+  },
+  "task": "Panda-Table-Stack-3"
+}

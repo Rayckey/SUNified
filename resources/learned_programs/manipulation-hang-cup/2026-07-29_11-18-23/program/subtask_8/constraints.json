@@ -1,0 +1,43 @@
+{
+    "Reasoning": "The stage is an open-gripper retract. A directional_move encodes the required positive 0.10 m retract of panda_fingertip along its own tool -z axis. freeze_orientation preserves the start-of-stage world-frame orientation without adding any new axis relation. open_gripper keeps the gripper commanded open and uses gripper_opened feedback for success. manipulator_low_effort is included to reflect the required free-space/no renewed load-bearing contact feedback during retract. The exact world-frame minimum separation inequality between panda_fingertip and mug_rim_frame_0, the hooked support/contact-change condition that mug_handle_hole_frame remains supported by cup_hanger_branch_1_tip_frame, and explicit monitoring requirements cannot be directly represented with the available operators, so they are noted here but omitted as separate constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "robot_frame",
+                "reference_origin": "panda_fingertip",
+                "axis": "-z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened",
+                "manipulator_low_effort"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

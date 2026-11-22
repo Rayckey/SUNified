@@ -1,0 +1,41 @@
+{
+    "Reasoning": "Success for this subtask requires: (1) raising the tool (and thus the grasped mug_center_frame) at least 0.2 m upward in the world +z direction, strictly as a translation, to provide sufficient clearance above the table for safe transport; (2) maintaining the current tool orientation fixed in world frame throughout the lift (no rotation/tilt/roll/pitch/yaw change); (3) keeping the gripper in a closed, secure grasp\u2014so the relative pose between the tool and mug_center_frame does not change (no slipping); (4) actively monitoring for loss of mug contact or slippage and ceasing lift if detected (this is captured as a logic 'or' stop condition before reaching the height goal, based on gripper effort/feedback). The height goal is implicitly: lift by at least 0.2 m from the initial lift-off (i.e., where the grasp was established), OR until the mug is at least 0.1 m above the table, whichever is greater, but as both are vertical distances, the minimal solution is to command at least a 0.2 m lift. Only one position constraint (directional_move along +z) is permitted by the rules. 'freeze_orientation' enforces the fixed tool orientation. 'close_gripper' enforces continued grasp. The 'or' logic is justified since, per instruction, the lift should stop EITHER when the lift height is met, OR if loss of grasp occurs, whichever occurs first.",
+    "Constraints": [
+        {
+            "logic": "or",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.2,
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+{
+  "artifact": "src/kuafu/programs/examples/scene.json",
+  "description": "Observed scene frames, task and skill constraints",
+  "path_base": "repository root"
+}

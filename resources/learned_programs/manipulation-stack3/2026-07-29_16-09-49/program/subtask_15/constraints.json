@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The stage is encoded as a conjunctive retract controller: move the panda_fingertip strictly 0.10 m along world +z with 0.01 m tolerance, keep its start-of-stage orientation fixed, and keep the gripper open. The directional move also carries a manipulator_low_effort condition to represent the required non-contact/free-space feedback during and after retraction. The open gripper command represents the required released/open finger state near 1.0. The released cube_3 stack preservation relative to cube_2 cannot be directly represented because the API has no operator for constraining a non-gripped object's pose relative to another object; controlled gripped_object is not valid after release. Exact gripper joint numeric values and finger squeeze/effort feedback are also not directly representable beyond open_gripper and the available manipulator_low_effort contact label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

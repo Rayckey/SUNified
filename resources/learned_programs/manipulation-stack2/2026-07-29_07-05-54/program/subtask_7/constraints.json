@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage retracts the already-open panda_fingertip straight upward by the specified 0.10 m in the world +z direction, with 0.02 m completion tolerance, and uses manipulator_low_effort feedback on that motion to represent free-space/decreasing residual contact and no unintended firm contact during retract. The panda_fingertip orientation is frozen at its start-of-stage orientation with 0.05 rad tolerance to preserve the tool +z and +y directions. The gripper is commanded/required open to represent both fingers staying near the fully open state and no intentional closing. Unrepresented clauses: exact finger joint value 1.0, explicit cube_1 pose stability on cube_2, cube_1-relative non-contact distance >= 0.125 m, and explicit avoidance of cube_2 contact cannot be directly encoded with the available operators without adding an unsupported object-freeze or distance/avoidance constraint.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.02
+            }
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+  "Constraints": [
+    {
+      "logic": "and",
+      "condition": [
+        "geometry"
+      ],
+      "op": "axis_align",
+      "args": {
+        "controlled_entity": "robot_frame",
+        "controlled_target": "panda_fingertip",
+        "reference_basis": "world",
+        "reference_origin": "world",
+        "controlled_axis": "+z",
+        "reference_axis": "+z",
+        "alignment": "antiparallel",
+        "tolerance_rad": 0.2
+      }
+    },
+    {
+      "logic": "and",
+      "condition": [
+        "geometry"
+      ],
+      "op": "directional_move",
+      "args": {
+        "controlled_entity": "robot_frame",
+        "controlled_target": "panda_fingertip",
+        "reference_basis": "world",
+        "reference_origin": "top_drawer_center_frame",
+        "axis": "+z",
+        "travel_distance_m": 0.15,
+        "tolerance_m": 0.01
+      }
+    },
+    {
+      "logic": "and",
+      "condition": [
+        "gripper_opened"
+      ],
+      "op": "open_gripper",
+      "args": {}
+    }
+  ]
+}

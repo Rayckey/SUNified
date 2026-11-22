@@ -1,0 +1,87 @@
+{
+    "Reasoning": "Success for this subtask is defined as moving the fully open gripper to a pre-grasp (standoff) pose near the drawer handle, while ensuring a specific orientation and distance relative to the drawer_top_handle_frame. The orientation constraints require the gripper's tool +z to be antiparallel with both the handle's +x axis and with the vector from handle origin to tool origin (ensuring the approach comes directly along the handle's pulling direction), and tool +y to be orthogonal to the handle's +y axis (ensuring the gripper jaws are not twisted relative to the handle bar). The standoff requirement is fulfilled by maintaining a minimum separation (at least 5 cm) between the tool origin (panda_fingertip) and drawer_top_handle_frame origin. The gripper must remain fully open throughout this movement. No axis-specific motion nor explicit fixed orientation/position is required, so the constraints must combine via 'and'. All constraints derive directly from the subtask instructions.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_distance",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "drawer_top_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "distance_m": 0.05,
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "drawer_top_handle_frame",
+                "controlled_axis": "+z",
+                "reference_axis": "+x",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "point_toward",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "controlled_axis": "+z",
+                "reference_basis": "world",
+                "reference_origin": "drawer_top_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "drawer_top_handle_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+y",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_open"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

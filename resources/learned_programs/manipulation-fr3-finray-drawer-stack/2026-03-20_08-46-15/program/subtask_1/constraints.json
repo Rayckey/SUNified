@@ -1,0 +1,42 @@
+{
+    "Reasoning": "The subtask is to move the open gripper from the pre-grasp standoff into contact with top_drawer_handle_frame, translating along object +y by 0.10 m, while keeping orientation fixed and fingers open throughout.\n\nKey constraints:\n1. **Directional move**: Translate along object +y by 0.10 m (closing the standoff gap). The subtask explicitly states \"Translate along object +y in the object frame by 0.10 m\" \u2014 this is a directional_move with axis +y in object frame, travel_distance_m=0.10. The controlled entity is panda_fingertip (robot frame), reference_basis is object frame of top_drawer_handle_frame.\n\n2. **Freeze orientation**: Keep tool orientation fixed throughout \u2014 use freeze_orientation on panda_fingertip.\n\n3. **Open gripper**: Fingers fully open throughout \u2014 use open_gripper.\n\n4. **Contact/effort stop condition**: Stop when contact or effort feedback rises above free-space baseline. This maps to manipulator_high_effort condition. The subtask says \"Stop when contact or effort feedback rises above free-space baseline\" \u2014 this is an OR condition with the directional_move (stop when either the distance is covered OR contact is detected). So the directional_move and the effort stop are alternatives: success when EITHER the 0.10 m travel is complete OR high effort is detected.\n\nActually, re-reading: \"Stop when contact or effort feedback rises above free-space baseline, indicating the gripper fingertips have made contact with the handle bar.\" The motion goal is to reach the handle (directional_move of 0.10 m), but it should stop early if contact is detected. This is an OR between completing the travel and detecting contact. However, the TermAPI only allows one position operator. I'll use directional_move as the primary position constraint, and add a manipulator_high_effort condition as an OR alternative stop condition.\n\nBut wait \u2014 the TermAPI says I can only have AT MOST ONE position constraint operator. The contact stop is not a position operator; it's a condition. I can represent the \"stop on contact\" as an OR with a non-position constraint. However, there's no standalone \"detect contact\" operator in the TermAPI. The condition field is metadata only and doesn't enforce success by itself.\n\nThe best representation: \n- directional_move (OR logic, condition: geometry + manipulator_low_effort) \u2014 succeeds when travel is complete in free space\n- A second constraint with OR logic and condition manipulator_high_effort \u2014 but there's no suitable op for \"contact detected\" alone.\n\nActually, looking at the rules more carefully: \"condition is metadata only and does not enforce success by itself.\" So I can't use condition alone to represent the contact stop. The contact stop is a real-world stopping criterion that can't be fully represented in the TermAPI. I'll note this in Reasoning.\n\nThe practical approach: use directional_move as the position constraint (the nominal goal), freeze_orientation, open_gripper, and note that the contact/effort stop condition cannot be represented by the available TermAPI operators.\n\nFor the OR logic on contact: since there's no op for \"effort threshold exceeded,\" I'll include the directional_move with OR logic and note the limitation. The freeze_orientation and open_gripper are AND conditions that must hold throughout.\n\nFinal structure:\n1. directional_move (logic: \"and\", condition: [\"geometry\", \"manipulator_low_effort\"]) \u2014 move along +y by 0.10 m; OR with effort\n2. freeze_orientation (logic: \"and\") \u2014 keep orientation fixed\n3. open_gripper (logic: \"and\") \u2014 fingers open\n\nWait, but the contact stop is an OR alternative to completing the move. Since I can't represent it as a separate op, I'll use \"or\" logic on the directional_move with a manipulator_high_effort condition, acknowledging the limitation. But the condition field doesn't enforce success... \n\nI'll keep it simple and practical: directional_move as the position goal (with \"and\" logic), freeze_orientation (\"and\"), open_gripper (\"and\"). The contact stop is noted as unrepresentable in TermAPI. The condition on directional_move includes manipulator_low_effort to indicate this is a free-space motion that should stop on contact.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "+y",
+                "travel_distance_m": 0.1,
+                "tolerance_m": 0.005
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

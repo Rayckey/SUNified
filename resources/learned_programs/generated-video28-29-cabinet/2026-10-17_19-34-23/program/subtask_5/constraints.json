@@ -1,0 +1,58 @@
+{
+    "Reasoning": "Success is reaching the non-contact retract target for panda_fingertip at the top_drawer_handle_frame origin offset 0.10 m along the handle frame -y direction, while the gripper stays open, the fingertip orientation is held fixed, and interaction effort remains low/free-space-like. The reach_point encodes the specified same-side 0.10 m offset from the handle. freeze_orientation encodes preserving the current panda_fingertip orientation from the prior handle interaction. open_gripper encodes keeping/commanding the fingers open and no closing. The low-effort requirement is represented as a manipulator_low_effort condition on the retract motion. Unrepresented clauses: exact left/right finger-axis geometry about panda_fingertip +y/-y cannot be expressed beyond open_gripper; maintaining top_drawer_center_frame at the prior opened state and detecting drawer motion after release cannot be directly encoded because there is no non-gripped object freeze/monitor operator or numeric opened-state target; explicit failure conditions such as renewed gripper effort, high end-effector resistance, or orientation failure are represented only indirectly by the positive open/low-effort/frozen-orientation constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.1,
+                    0.0
+                ],
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ],
+    "TolerancePolicy": {
+        "version": "operator_geometry_v2",
+        "profile": "mpc",
+        "source": "receiver",
+        "decisions": {
+            "0": {
+                "tolerance_m": "MPC precision cap; release/retract free-space tolerance"
+            },
+            "1": {
+                "tolerance_rad": "MPC angular default; release/retract angular tolerance"
+            }
+        }
+    }
+}

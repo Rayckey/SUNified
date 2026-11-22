@@ -1,0 +1,44 @@
+{
+    "Reasoning": "Success is defined by cube_2, as the gripped object, reaching the world-frame point directly above cube_1 at offset [0, 0, 0.16] within 0.01 m while panda_fingertip maintains its current world-frame orientation within 0.05 rad and cube_2 remains physically held. The reach_point constraint encodes the above-cube_1 carry goal for the gripped object. The freeze_orientation constraint encodes preserving the current panda_fingertip orientation throughout the motion. The object_grasped constraint encodes maintaining a firm closed grasp/hold on cube_2; close_gripper is not emitted because the stage requires continued physical grasp, not merely commanding closure. Rigid coupling of panda_fingertip and cube_2 is represented indirectly by controlling cube_2 as the gripped_object and requiring object_grasped. The requested explicit monitoring of individual gripper joint values, gripper effort/contact feedback, slip detection, signed-axis decomposition according to current pose error, and continuous non-contact clearance from cube_1/cube_3 are not directly representable with the available operators; the final non-contact above-cube_1 offset is represented by the target point.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_2",
+                "reference_basis": "world",
+                "reference_origin": "cube_1",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.16
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

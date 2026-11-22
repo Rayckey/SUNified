@@ -1,0 +1,42 @@
+{
+    "Reasoning": "This stage keeps the already grasped top_drawer_handle_frame held while pulling it open. object_grasped with gripper_closed represents maintaining the closed, physical grasp on the handle. freeze_orientation keeps the panda_fingertip orientation fixed within the required 0.05 rad and imposes no additional tool +z or +y axis relation. directional_move commands the grasped handle to translate 0.14 m along top_drawer_handle_frame local -y with 0.01 m tolerance; because directional_move is a strict signed-axis motion, it also represents the off-axis motion constraint. The directional_move condition includes both geometry and manipulator_high_effort to represent stopping either at the geometric open distance or at a sustained high-effort mechanical stop. Detailed no-slip finger effort verification, continuous monitoring, pausing/failing on grasp loss, distinguishing unexpected resistance from a valid drawer stop, and compliance exceptions cannot be represented more specifically with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "top_drawer_handle_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

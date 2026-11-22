@@ -1,0 +1,5 @@
+{
+  "artifact": "src/kuafu/programs/examples/scene.json",
+  "description": "Scene observations and independent physical success measurements",
+  "path_base": "repository root"
+}

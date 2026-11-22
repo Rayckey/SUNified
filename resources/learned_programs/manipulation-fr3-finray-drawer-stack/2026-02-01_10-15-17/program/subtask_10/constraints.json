@@ -1,0 +1,44 @@
+{
+    "Reasoning": "Success for this subtask requires: (1) moving the grasped strawberry so its center aligns in x and y with the top_drawer_center_frame within 0.03 m tolerance, while maintaining a center-to-center standoff along the world z axis of at least 0.115 m, (2) preserving the tool's current orientation (no rotation relative to agent frame), and (3) maintaining a rigid grasp (gripper must remain closed throughout the motion). These requirements are conjunctive ('and'), as all must be satisfied at the same time for success: pose alignment to location above the drawer, a set minimum height above the drawer, fixed tool orientation, and persistent grasp. Only one position constraint (reach_point) is used, placing the strawberry center directly above the drawer center at the required standoff with position tolerance. freeze_orientation enforces that the robot does not rotate its tool (relative to itself). close_gripper ensures the grasp does not release. All constraints use 'and' logic, as all must be achieved simultaneously.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry",
+                "reference_basis": "world",
+                "reference_origin": "top_drawer_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.115
+                ],
+                "tolerance_m": 0.03
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

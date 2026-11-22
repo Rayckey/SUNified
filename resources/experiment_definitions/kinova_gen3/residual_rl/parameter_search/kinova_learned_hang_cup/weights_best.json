@@ -1,0 +1,367 @@
+{
+  "bc_prior_rollout_stats": {
+    "false_complete_count": 245,
+    "stats_path": "/home/zhi/isaac/IsaacLab/logs/residual_rl/kinova_gen3/Kinova-Table-Gen3-Hang-Cup-fff3/2026-07-09_02-18-16/bc_prior_rollout_stats.json",
+    "timeout_count": 5558,
+    "total_episodes": 8513,
+    "total_steps": 600,
+    "true_success_count": 2710
+  },
+  "kind": "initial_weight_sweep",
+  "prior_checkpoint": "/home/zhi/isaac/IsaacLab/Priors/kinova_gen3/hang_cup/hang_cup_2026-07-08_18-15-11_chunking_10_fff3/best.pth",
+  "stages": {
+    "0": {
+      "diagnosis": "{\"0\": {\"role\": \"keep gripper fully open during approach\", \"main_blocker\": \"not a blocker\"}, \"1\": {\"role\": \"primary orientation alignment for safe approach axis; tool +z antiparallel to mug rim +z\", \"main_blocker\": \"poor progress / control\"}, \"2\": {\"role\": \"secondary orientation disambiguation; tool +y orthogonal to mug rim +x\", \"main_blocker\": \"not the main blocker\"}, \"3\": {\"role\": \"reach the 10 cm standoff pre-grasp point without contact/effort\", \"main_blocker\": \"poor progress / control\"}}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        },
+        "3": {
+          "tolerance_m": 0.03
+        }
+      },
+      "reasoning": "{\"0\": \"Component 0 is already always satisfied in timeout cases, so it does not block stage completion. Its weight can be reduced slightly to free normalized reward budget for actual blockers while still preserving the open-gripper behavior.\", \"1\": \"Component 1 fails in 45.71% of timed-out stage-0 cases, making it a meaningful blocker. Since component 3 never satisfies, the BC prior likely needs stronger incentive to orient correctly during approach so translational progress becomes feasible. Increase this weight moderately. Note the current parameter tolerance is looser than the original semantic intent; that is a parameter issue, but parameters are not editable here.\", \"2\": \"Component 2 is satisfied in 90.48% of timeout cases, so it is mostly adequate and not the main cause of failure. Keep it near current value; only a slight reduction is justified to prioritize the stronger blockers without removing this orientation disambiguation signal.\", \"3\": \"Component 3 is the dominant blocker: 100% of timed-out cases fail the positional standoff requirement. This indicates the BC prior does not reliably drive to the pre-grasp target, not merely a small precision miss. Because meaningful stage completion requires actually reaching the standoff pose, this component should receive the largest increase. Its current parameter tolerance is also looser than the intended 1 cm, so the failure is not due to an overly strict threshold; it reflects insufficient progress/control and weight tradeoff. Strongly increasing this term is the highest-priority change.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 210,
+          "rate": 1.0,
+          "reward": 0.9976659138997396,
+          "total": 210
+        },
+        "1": {
+          "met": 114,
+          "rate": 0.5428571428571428,
+          "reward": 0.07582943325950986,
+          "total": 210
+        },
+        "2": {
+          "met": 190,
+          "rate": 0.9047619047619048,
+          "reward": 0.457787105015346,
+          "total": 210
+        },
+        "3": {
+          "met": 0,
+          "rate": 0.0,
+          "reward": 0.24246255783807663,
+          "total": 210
+        }
+      },
+      "weights": {
+        "0": 1.0,
+        "1": 1.5,
+        "2": 0.9,
+        "3": 3.0
+      }
+    },
+    "1": {
+      "diagnosis": "{\"0\": \"Positional reach is not the main blocker. Most timed-out cases already satisfy it, so geometry to mug_rim_frame_0 is generally achievable under the BC prior. Keep it important but do not over-increase it.\", \"1\": \"Freeze-orientation is the dominant blocker by far. Very high timeout non-satisfaction indicates poor ability to preserve the required fixed pose during approach, more a control/weight-tradeoff issue than lack of positional incentive.\", \"2\": \"Open-gripper is a secondary blocker. Moderate non-satisfaction suggests the policy sometimes closes or fails to maintain full opening during approach; this should be reinforced, but it is less blocking than orientation.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.025
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"Component 0 has only 24.17% non-satisfaction among stage-1 timeouts, so increasing it aggressively would mostly overweight something the prior often already achieves. Since reward is normalized by total weight, too much weight here would reduce pressure on the true blockers. Slight reduction is appropriate to free capacity for orientation/open-state while preserving approach semantics.\", \"1\": \"Component 1 has 78.20% non-satisfaction, the clearest blocking term. The weighted reward being high despite poor constraint satisfaction is consistent with shaping progress without actually meeting the tolerance; therefore reward magnitude should not be taken as evidence that orientation is close enough. This is primarily a weight-tradeoff/control issue in this pass, so orientation should receive the strongest increase.\", \"2\": \"Component 2 has 46.45% non-satisfaction, meaning maintaining a fully open gripper is also frequently violated and can invalidate meaningful contact approach. It should be strengthened to prevent premature closure, but not as much as orientation since it is a smaller blocker. This also helps preserve semantic validity of the interaction.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 160,
+          "rate": 0.7582938388625592,
+          "reward": 0.11325736746403843,
+          "total": 211
+        },
+        "1": {
+          "met": 46,
+          "rate": 0.21800947867298578,
+          "reward": 0.8333563782027548,
+          "total": 211
+        },
+        "2": {
+          "met": 113,
+          "rate": 0.5355450236966824,
+          "reward": 0.7000830772363744,
+          "total": 211
+        }
+      },
+      "weights": {
+        "0": 1.2,
+        "1": 2.0,
+        "2": 1.8
+      }
+    },
+    "2": {
+      "diagnosis": "{\"0\": \"Primary blocker. Freeze-position is violated in nearly all timed-out stage-2 cases, indicating the BC prior tends to translate the tool while attempting to close. This is mainly a weight-tradeoff / poor hold-control issue, not evidence that the threshold is too strict.\", \"1\": \"Secondary blocker. Freeze-orientation is also frequently violated, but less severely than position. This is consistent with the hand rotating during closure; mostly a weight-tradeoff issue.\", \"2\": \"Important but not the main blocker. Grasp/contact is often not achieved, but it is satisfied more often than either hold constraint in timed-out cases. The agent seems to move/rotate while closing rather than stably squeezing in place. Keep strong incentive for real grasp, but do not let it dominate the freeze requirements.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.025
+        },
+        "1": {
+          "tolerance_rad": 0.3
+        }
+      },
+      "reasoning": "{\"0\": \"Stage semantics require no translation at all during grasp closure. Since component 0 is unsatisfied in 98.85% of stuck cases, this is the clearest stage-specific failure mode and should receive the largest increase. Reward normalization means increasing its relative share is the right lever.\", \"1\": \"Orientation preservation matters for maintaining the pre-established grasp approach, but meaningful completion depends first on staying at the mug rim. Increase orientation weight moderately so closure happens with less wrist drift, but keep it slightly below position because its timeout failure rate is lower.\", \"2\": \"A firm grasp is necessary for semantic validity, so component 2 should remain high. However, because the timeout data show hold constraints fail even more often than grasp, further emphasizing grasp alone would likely continue encouraging closing while drifting. Slightly reduce its relative dominance to favor stable in-place closure, while still keeping it the largest or co-largest term.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 1,
+          "rate": 0.011494252873563218,
+          "reward": 0.8141858331088362,
+          "total": 87
+        },
+        "1": {
+          "met": 13,
+          "rate": 0.14942528735632185,
+          "reward": 1.1917809672739315,
+          "total": 87
+        },
+        "2": {
+          "met": 22,
+          "rate": 0.25287356321839083,
+          "reward": 1.1639239431797772,
+          "total": 87
+        }
+      },
+      "weights": {
+        "0": 3.0,
+        "1": 2.2,
+        "2": 2.2
+      }
+    },
+    "3": {
+      "diagnosis": "{\"0\": \"Supportive safety term, not the main blocker. Most timed-out cases still keep the grasp, so gripper closure is not what primarily prevents stage completion.\", \"1\": \"Secondary blocker. Many timeouts violate fixed-orientation, suggesting either control conflict during lift or that the orientation tolerance is somewhat strict, but this is not as dominant as the failed upward travel.\", \"2\": \"Primary blocker. Almost all timed-out cases fail the required +z travel, so the BC prior is not producing enough meaningful upward progress before timeout. This is mainly a progress/control and weight-tradeoff issue, though parameter strictness may also contribute.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_m": 0.05
+        }
+      },
+      "reasoning": "{\"0\": \"Because component 0 is satisfied in 75% of stuck cases, reducing it too much would risk semantic invalidity via slip, but increasing it is unlikely to improve completion much. Keep it important but not dominant.\", \"1\": \"Component 1 should stay meaningful because the stage explicitly requires preserving the grasp pose during lift. However, with 59% unsatisfied and component 2 failing in 98% of timeouts, over-prioritizing orientation likely steals capacity from making the required upward displacement. Slightly downweight to let the policy move while still preserving orientation as a guardrail.\", \"2\": \"Component 2 is the stage-defining objective: lift 0.20 m straight upward to clear the table. Its near-universal failure in timed-out episodes is the clearest evidence of the blocker. Since reward is normalized by sum of weights, increasing this term relative to 0 and 1 is the correct acquisition-pass change. This should bias behavior toward actually achieving clearance, while 0 and 1 still enforce grasp retention and pose validity.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 183,
+          "rate": 0.75,
+          "reward": 0.9216612518810835,
+          "total": 244
+        },
+        "1": {
+          "met": 99,
+          "rate": 0.4057377049180328,
+          "reward": 0.7558189767305968,
+          "total": 244
+        },
+        "2": {
+          "met": 4,
+          "rate": 0.01639344262295082,
+          "reward": 1.22898802210073,
+          "total": 244
+        }
+      },
+      "weights": {
+        "0": 2.0,
+        "1": 0.7,
+        "2": 3.0
+      }
+    },
+    "4": {
+      "diagnosis": "{\"0\": \"Secondary issue. Gripper maintenance is mostly satisfied during timeouts, so it is not the main blocker. Keep enough weight to preserve grasp but do not over-prioritize it against transport.\", \"1\": \"Major blocker signal, but likely dominated by threshold/parameter mismatch rather than pure weighting. Orientation preservation is semantically important, yet the reward is already high while constraint satisfaction is very low, indicating shaping progresses but tolerance is much stricter than what the current parameter state allows. Still needs moderate weight so the mug remains in a carry-valid pose.\", \"2\": \"Primary actionable blocker. The BC prior overwhelmingly times out without reaching the carry target, and this component also has by far the weakest weighted reward, indicating poor translational progress and/or weight tradeoff against easier components. Increase this weight to make approaching the hanger-tip offset the dominant objective for this stage.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_m": 0.05
+        }
+      },
+      "reasoning": "{\"0\": \"Component 0 enforces holding the mug. Since ~80% of timed-out cases still satisfy it, increasing it is unlikely to unlock completion. Slightly reducing its relative share is safe because semantic validity still requires grasp retention, and it already has strong natural satisfaction.\", \"1\": \"Component 1 represents freezing the grasp-established orientation. This should remain important for meaningful carry and later hooking setup. However, the combination of very low timeout satisfaction (13.77%) and very high reward suggests the agent often stays near the desired orientation but misses the hard constraint; this points more to a tolerance issue than insufficient reward weight. Therefore only a small increase is justified: enough to discourage orientation drift during transport, but not so much that it suppresses translation further.\", \"2\": \"Component 2 is the stage's transport objective and is the clearest bottleneck: only 10.95% satisfied among timeouts, with much lower reward than the other components. Given reward normalization, raising its relative weight is the most direct way to shift behavior from merely holding pose/grasp toward actually carrying the mug to the intended pre-hook approach point. This aligns with stage semantics: completion depends on meaningfully arriving near the branch-tip offset while maintaining clearance, not just staying stable.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 1159,
+          "rate": 0.7982093663911846,
+          "reward": 0.9280450994318182,
+          "total": 1452
+        },
+        "1": {
+          "met": 200,
+          "rate": 0.13774104683195593,
+          "reward": 0.8956271925576791,
+          "total": 1452
+        },
+        "2": {
+          "met": 159,
+          "rate": 0.10950413223140495,
+          "reward": 0.1357583500465414,
+          "total": 1452
+        }
+      },
+      "weights": {
+        "0": 1.5,
+        "1": 1.2,
+        "2": 3.0
+      }
+    },
+    "5": {
+      "diagnosis": "{\"0\": \"Primary blocker. Reach/position-to-standoff is almost never satisfied at timeout, indicating the BC prior is not translating the grasped mug handle hole to the required pre-insertion point reliably enough. This is mainly a poor progress/control issue, not evidence that the threshold alone is wrong.\", \"1\": \"Secondary blocker. Axis alignment is unsatisfied in a substantial minority of stuck cases, so orientation relative to branch matters, but it blocks far fewer cases than the positional target. This is mostly a weight tradeoff issue relative to the dominant reach objective, not clearly a threshold issue from these stats.\", \"2\": \"Generally healthy support term. Grasp maintenance is satisfied in most timeout cases, so it is not the main blocker. It should remain important for semantic validity, but its current dominance in realized reward suggests it may be over-incentivized relative to the actual stage objective.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.3
+        }
+      },
+      "reasoning": "{\"0\": \"Component 0 encodes the core semantic goal of this stage: place mug_handle_hole_frame at the correct axial standoff and lateral alignment relative to the hanger branch tip. With 98.56% non-satisfaction at timeout, the BC prior most often fails here. Because stage completion requires this geometric pre-insertion state, increasing its relative weight is the strongest lever to improve meaningful completion.\", \"1\": \"Component 1 ensures the hole axis faces the branch for insertion readiness. Since over half of stuck cases already satisfy it, it is not the dominant bottleneck. Still, preserving a meaningful insertion-ready pose matters; reducing it too much would risk false progress toward a position that is not actually hookable. A modest increase can help couple approach with correct orientation, but it should remain below the positional emphasis.\", \"2\": \"Component 2 preserves the mug grasp and should not be removed or weakened drastically, because dropping the mug or loosening the grasp invalidates the interaction. However, it already has high satisfaction (88.59%) and the largest realized weighted reward, which implies the normalized reward may be overly biased toward 'keep grasping' instead of 'reach the standoff pose.' Lowering its relative weight should free optimization pressure for the true blocker while still keeping enough incentive to hold the object securely.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 37,
+          "rate": 0.014402491241728299,
+          "reward": 0.17576559325886776,
+          "total": 2569
+        },
+        "1": {
+          "met": 1410,
+          "rate": 0.5488516932658623,
+          "reward": 0.13011683207534547,
+          "total": 2569
+        },
+        "2": {
+          "met": 2276,
+          "rate": 0.8859478396263137,
+          "reward": 1.3624137857629428,
+          "total": 2569
+        }
+      },
+      "weights": {
+        "0": 4.0,
+        "1": 3.0,
+        "2": 1.5
+      }
+    },
+    "6": {
+      "diagnosis": "{\"0\": \"Primary blocker. Gripper-closed/firm-hold is rarely satisfied at timeout, indicating the mug often slips or the policy trades grasp maintenance against the inward motion. This is mainly a weight tradeoff / poor hold-maintenance issue, not evidence that the predicate is too strict.\", \"1\": \"Least blocking component. Orientation freeze is satisfied much more often than the others, so it is not the main source of timeout. Current weight may be slightly over-prioritizing pose preservation relative to actually completing the insertion.\", \"2\": \"Primary blocker tied to meaningful task completion. Directional inward translation with lateral tolerance is rarely satisfied at timeout, so the BC prior is not reliably driving the mug handle onto/through the branch. This is mainly poor progress/control plus weight tradeoff, not evidence that the tolerance is too loose.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.3
+        },
+        "2": {
+          "tolerance_m": 0.03
+        }
+      },
+      "reasoning": "{\"0\": \"Because reward is normalized by sum of weights, increasing the grasp-maintenance weight should make the policy preserve a firm hold during translation instead of sacrificing contact stability. This is important semantically: without a stable grasp, any apparent inward progress is not meaningful for hooking.\", \"1\": \"Orientation still matters for preserving the established grasp geometry, but its satisfaction rate is materially better than the other two. Reducing it moderately frees relative weight budget for the real blockers while still keeping orientation important enough to avoid gross rotation during insertion.\", \"2\": \"This component directly captures the core stage objective: translating inward along branch -y while staying laterally aligned. Its very high timeout non-satisfaction means the agent often fails to achieve actual through-hole insertion. Raising this weight is the most direct way to bias behavior toward meaningful stage completion. Since this motion must happen with the mug still grasped, component 2 should be increased together with component 0 rather than alone.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 66,
+          "rate": 0.10696920583468396,
+          "reward": 0.12750438275947756,
+          "total": 617
+        },
+        "1": {
+          "met": 222,
+          "rate": 0.35980551053484605,
+          "reward": 1.2732652760015701,
+          "total": 617
+        },
+        "2": {
+          "met": 71,
+          "rate": 0.11507293354943274,
+          "reward": 1.1154058076187703,
+          "total": 617
+        }
+      },
+      "weights": {
+        "0": 2.4,
+        "1": 1.4,
+        "2": 4.0
+      }
+    },
+    "7": {
+      "diagnosis": "{\"0\": \"Primary blocker. Freeze-position/manipulator-low-effort constraint is unsatisfied in all timed-out stage-7 cases, while gripper opening is always satisfied. This indicates the BC prior can open the gripper but tends to disturb or keep loading the mug during release. Main issue is poor hold/control during release, with some possibility that the low-effort/position tolerance is somewhat strict; weights should emphasize maintaining a truly fixed, low-effort release pose.\", \"1\": \"Secondary blocker. Freeze-orientation fails in a substantial minority of stuck cases, suggesting some rotational drift during opening. This is a weight-tradeoff/control issue, but less severe than component 0.\", \"2\": \"Not a blocker. Open-gripper is satisfied in all stuck cases, so its current emphasis is already sufficient and likely too dominant relative to the hold-still objectives.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.03
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"Because reward is normalized by sum of weights, stage completion should improve by shifting relative emphasis toward the component that actually blocks completion. Here, component 0 has 100% non-satisfaction on stuck cases, so release stability/low translational effort must dominate. Increasing this weight should encourage the policy to keep the tool pose fixed and avoid imparting force as the fingers open, which is essential for a meaningful hook-and-release rather than just opening while still supporting or nudging the mug.\", \"1\": \"Orientation preservation matters semantically for holding the established hooked pose during release. Its failure rate is meaningful but clearly below component 0, so it should be increased moderately to reduce rotational disturbance without overtaking the primary freeze-position objective.\", \"2\": \"Since component 2 is already always satisfied, extra reward on opening provides little marginal benefit and may be pulling policy effort away from the actual blocker by encouraging aggressive opening regardless of induced motion/load. Lowering it should preserve release behavior while reallocating normalized reward mass to the hold-still objectives. I am not driving it too low because the stage still requires an opened gripper final state.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 0,
+          "rate": 0.0,
+          "reward": 0.3271781458999171,
+          "total": 33
+        },
+        "1": {
+          "met": 18,
+          "rate": 0.5454545454545454,
+          "reward": 0.7283658692331025,
+          "total": 33
+        },
+        "2": {
+          "met": 33,
+          "rate": 1.0,
+          "reward": 1.332612471147017,
+          "total": 33
+        }
+      },
+      "weights": {
+        "0": 3.0,
+        "1": 1.5,
+        "2": 1.0
+      }
+    },
+    "8": {
+      "diagnosis": "{\"0\": \"Not a blocker. Gripper-open constraint is always satisfied in timed-out stage-8 cases, so its current weight is sufficient and can be slightly deemphasized relative to the actual blockers.\", \"1\": \"Secondary blocker. Freeze-orientation fails in a substantial minority of timed-out cases, suggesting some control/tradeoff issue during retraction, but it is not the dominant cause. This looks more like weight tradeoff than threshold strictness from the available evidence.\", \"2\": \"Primary blocker. Upward directional retract with low-effort condition is overwhelmingly unsatisfied in timed-out cases, so this is the main component blocking stage completion. The issue is most consistent with poor progress/control and insufficient emphasis relative to other terms; tolerance may also be somewhat strict, but parameters are not editable here.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_m": 0.05
+        }
+      },
+      "reasoning": "{\"0\": \"Since component 0 is satisfied in 100% of stuck cases, increasing it would not improve completion. Because reward is normalized by sum of weights, reducing it slightly helps reallocate emphasis to the true blockers without risking semantic validity; the open gripper behavior already appears stable.\", \"1\": \"Component 1 matters for a valid non-contact upward retract, but the timeout data show it is a partial rather than dominant blocker. It should retain meaningful weight so the agent does not solve the upward motion by introducing rotational drift, yet overemphasizing it could further suppress vertical progress. A modest increase is appropriate to preserve release semantics while still prioritizing translation.\", \"2\": \"Component 2 encodes the core stage objective: move upward 0.15 m along world +z and do so in low-effort/free-space fashion. With only 5.93% satisfaction among timed-out cases, this is the clearest bottleneck. Its weighted reward being nontrivially high despite very low satisfaction indicates shaping progress exists but is not enough to cross the constraint, so increasing this weight should improve completion pressure on the actual stop condition. This is the main adjustment for this pass.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 135,
+          "rate": 1.0,
+          "reward": 0.9999143247251158,
+          "total": 135
+        },
+        "1": {
+          "met": 77,
+          "rate": 0.5703703703703704,
+          "reward": 0.6765280264395255,
+          "total": 135
+        },
+        "2": {
+          "met": 8,
+          "rate": 0.05925925925925926,
+          "reward": 0.8079736780237269,
+          "total": 135
+        }
+      },
+      "weights": {
+        "0": 1.0,
+        "1": 1.2,
+        "2": 3.0
+      }
+    }
+  },
+  "task": "Kinova-Table-Gen3-Hang-Cup-fff3"
+}

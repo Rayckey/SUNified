@@ -1,0 +1,44 @@
+{
+    "Reasoning": "Success for this subtask means moving the open gripper (panda_fingertip) from its pre-grasp standoff position vertically down along the world's -z axis until it makes contact with mug_center_frame, keeping the gripper's orientation fixed throughout. The tool origin must stop once it coincides with the mug_center_frame position (contact, via proximity or force feedback). The gripper must remain fully open the entire time. Only one position operator is allowed, so reach_point is used to encode the goal of the gripper's frame origin matching mug_center_frame's position in the world. The orientation constraint ensures the tool's orientation does not change during the move. The open_gripper constraint guarantees the gripper stays open throughout motion. All conditions must be met simultaneously, so 'and' logic is used.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "mug_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This stage pulls the already-grasped top_drawer_handle_frame open. object_grasped represents maintaining the closed, stable grasp without issuing a separate close_gripper command. freeze_orientation keeps panda_fingertip at its start-of-stage orientation in the robot base/world frame. directional_move commands the grasped handle to translate 0.14 m along its local -y opening direction, with 0.01 m tolerance matching the stop condition. Detailed opposing finger contact/effort slip detection and continuous low-level monitoring of joint states/effort are not separately expressible beyond object_grasped and the gripper_closed condition label.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "top_drawer_handle_frame",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "axis": "-y",
+                "travel_distance_m": 0.14,
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

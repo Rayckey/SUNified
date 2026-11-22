@@ -1,0 +1,1 @@
+[Release] Retract the open gripper upward away from the released marker and pen_holder to a non-contact configuration.

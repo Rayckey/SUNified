@@ -1,0 +1,45 @@
+{
+    "Reasoning": "Use a single gripped-object reach target to place cube_3 at cube_2 origin plus 0.05 m in world +z with 0.01 m tolerance, which also represents the required horizontal alignment of cube_3 to cube_2 at the final placement. The reach term is labeled with geometry and manipulator_high_effort to include the supported-contact/effort feedback expected when cube_3 reaches cube_2. Preserve the current panda_fingertip orientation with freeze_orientation. Maintain the physical grasp of cube_3 with object_grasped; close_gripper is not also emitted because object_grasped is the required held-object condition. Unrepresented clauses: exact strictly vertical no-lateral path during lowering cannot be fully represented together with the concrete target because only one position op is allowed and the lowering distance is not numerically specified for directional_move; balanced left/right finger joint positions and finger effort/no-slip monitoring, cube_2-only contact filtering, and unexpected cube_1 contact monitoring are not directly representable with the available ops.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.05
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

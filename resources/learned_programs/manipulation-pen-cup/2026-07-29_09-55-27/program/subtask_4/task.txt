@@ -1,0 +1,1 @@
+[Manipulate] Rotate marker to an upright pose with the gripper closed while keeping the gripper position fixed.

@@ -1,0 +1,41 @@
+{
+    "Reasoning": "This stage is a conjunctive lift while continuing to hold cube_1. The directional_move term commands the panda_fingertip frame origin to move 0.15 m along world +z and stop within 0.01 m of the lifted target position. The freeze_orientation term preserves the start-of-stage full panda_fingertip orientation within the requested 0.05 rad tolerance, which preserves both the tool +z and tool +y directions. The object_grasped term represents maintaining a physical closed grasp on cube_1 throughout the lift without issuing an opening command. Because only one position operator is allowed, the cube center's simultaneous upward translation is represented through the maintained grasp rather than by a separate position constraint on cube_1. Detailed bilateral finger contact/effort feedback, no-slip slip detection, left/right gripper joint monitoring, and excessive slip-consistent effort-change monitoring are not directly representable by the available operators or condition labels beyond object_grasped and gripper_closed metadata.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "axis": "+z",
+                "travel_distance_m": 0.15,
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

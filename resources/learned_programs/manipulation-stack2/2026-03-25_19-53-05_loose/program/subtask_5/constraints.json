@@ -1,0 +1,50 @@
+{
+    "Reasoning": "Success for this subtask means: (1) the gripper remains closed/grasping cube_1 throughout the lowering motion; (2) the tool orientation is maintained with tool +z antiparallel to world +z (top-down configuration); (3) the tool frame origin (panda_fingertip) reaches the target height of cube_2 center + 0.05 m along world +z (= cube_2 half-height 0.025 m + cube_1 half-height 0.025 m above cube_2 center), placing cube_1 bottom face flush on cube_2 top face.\n\nConstraint 1 \u2014 close_gripper [gripper_closed]: The subtask explicitly requires both gripper fingers to remain closed (finger state \u2248 0.0) throughout the entire lowering motion to maintain the grasp on cube_1.\n\nConstraint 2 \u2014 axis_align [geometry]: The subtask requires tool +z in agent frame to remain antiparallel to world +z (top-down configuration from prior grasp). axis_align with controlled_axis=\"+z\", reference_axis=\"+z\", alignment=\"antiparallel\" encodes this orientation requirement. This also captures the \"apply zero angular velocity / orientation fixed\" requirement.\n\nConstraint 3 \u2014 reach_point [geometry, manipulator_high_effort]: The primary stop condition (4a) is reaching within 0.01 m of the target height (cube_2 center z + 0.05 m). This is encoded as reach_point to cube_2 origin + offset [0, 0, 0.05] in world basis, with tolerance_m=0.01. The manipulator_high_effort condition tag captures the alternative stop condition (4b): if effort feedback on the gripper fingers rises above free-space levels indicating cube_1 has made contact with cube_2 top face, motion should also stop. The OR between position and effort stop conditions cannot be fully expressed as separate OR-branched constraints without a dedicated effort-only op in the TermAPI; the effort condition is therefore captured as metadata on this constraint. The grasp-loss monitoring (constraint 6) is captured by the gripper_closed condition on close_gripper \u2014 if effort drops indicating loss of grasp, the close_gripper constraint would no longer be satisfied, signaling halt.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "world",
+                "controlled_axis": "+z",
+                "reference_axis": "+z",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.4
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.05
+                ],
+                "tolerance_m": 0.02
+            }
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The subtask is to move the open gripper into contact with cube_3, starting from 0.125 m above cube_3 center, translating along world -z until the tool frame origin is within 0.01 m of cube_3 center OR contact effort is detected.\n\nConstraints needed:\n1. **reach_point**: Move panda_fingertip to cube_3 center (offset [0,0,0] from cube_3 origin in world basis). This is the contact target. Tolerance 0.01 m as specified.\n2. **freeze_orientation**: Keep the tool orientation fixed throughout (zero angular velocity, top-down configuration maintained).\n3. **open_gripper**: Gripper must remain fully open (state=1.0) throughout and at completion.\n\nThe stop condition is: position within 0.01 m of cube_3 center along world +z OR effort rises above free-space levels. This is an \"or\" between position and effort. However, the TermAPI doesn't have a direct \"effort threshold\" operator \u2014 manipulator_high_effort condition can be used as a condition label on a constraint. I'll use \"or\" logic for the effort-based stop: a separate constraint with condition [\"manipulator_high_effort\"] using freeze_position (stop moving = freeze when contact detected). But the rules say at most ONE position constraint operator. So I'll encode the primary goal as reach_point, and the effort stop as an \"or\" alternative using manipulator_high_effort condition on the same reach_point (since the effort condition is an alternative stop, not a separate positional goal).\n\nActually, re-reading the rules: \"or\" in logic is for alternatives. The subtask says \"stop on whichever condition triggers first\" \u2014 position OR effort. I can represent this as:\n- Constraint 1 (and): reach_point to cube_3 center with tolerance 0.01 m [geometry]\n- Constraint 2 (or): manipulator_high_effort \u2014 but there's no pure effort op in TermAPI without a geometry op.\n\nThe best approach: use reach_point as the primary positional goal (condition: geometry OR manipulator_high_effort), with \"or\" logic to capture the effort alternative. Then add freeze_orientation and open_gripper with \"and\".\n\nSince I can only have one position op, I'll structure:\n1. reach_point (and, geometry) \u2014 move to cube_3 center\n2. freeze_orientation (and, geometry) \u2014 keep orientation fixed\n3. open_gripper (and, gripper_opened) \u2014 keep gripper open\n\nFor the effort stop condition, I'll add it as an \"or\" condition on the reach_point constraint by using condition: [\"geometry\", \"manipulator_high_effort\"] with logic \"or\" \u2014 but that's the first constraint so logic \"and\" is the initial value. Actually the first constraint's logic field is the initial truth value seed, so I'll set it to \"and\" for the first constraint.\n\nThe effort-based stop is an alternative to position. I'll add a separate constraint with logic \"or\", condition [\"manipulator_high_effort\"], using freeze_position (stop/hold position when effort detected). But that would be two position operators (reach_point + freeze_position). The rules say at most one.\n\nGiven the TermAPI limitations, I'll encode the effort stop as part of the condition metadata on the reach_point constraint (condition: [\"geometry\", \"manipulator_high_effort\"]) and note in reasoning that the effort-based stop cannot be fully represented as a separate operator. The \"or\" between position and effort is captured by the condition list on the reach_point term, and I'll use logic \"or\" for a subsequent constraint that has manipulator_high_effort condition but uses freeze_orientation (which is already needed). \n\nSimplest valid approach:\n1. reach_point (and, [geometry, manipulator_high_effort]) \u2014 primary goal, stop at cube_3 center OR on contact effort\n2. freeze_orientation (and, [geometry]) \u2014 orientation fixed\n3. open_gripper (and, [gripper_opened]) \u2014 gripper open\n\nThe \"or\" for effort vs position is noted in reasoning as not fully representable but captured via condition metadata.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "world",
+                "reference_origin": "cube_3",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        }
+    ]
+}

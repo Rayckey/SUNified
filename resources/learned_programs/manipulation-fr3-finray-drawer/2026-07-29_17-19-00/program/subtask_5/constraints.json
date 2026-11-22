@@ -1,0 +1,45 @@
+{
+    "Reasoning": "This stage retracts the already-open panda_fingertip to a non-contact clearance point behind the handle while preserving the current end-effector orientation. The reach_point constraint sends panda_fingertip to the top_drawer_handle_frame origin offset by 0.11 m along the handle frame -y axis, with 0.01 m tolerance as required. The same term includes manipulator_low_effort to represent the required non-contact/free-space effort monitoring and stopping condition. freeze_orientation preserves the start-of-stage orientation within the controller threshold. open_gripper represents maintaining both fingers open near joint state 1.0. Detailed gripper finger effort consistency is not separately representable beyond the gripper_opened metadata and the low manipulator effort condition.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.11,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

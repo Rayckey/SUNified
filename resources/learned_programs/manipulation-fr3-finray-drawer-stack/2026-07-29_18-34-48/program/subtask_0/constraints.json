@@ -1,0 +1,66 @@
+{
+    "Reasoning": "This stage is a conjunctive non-contact approach to a standoff pose near top_drawer_handle_frame. The gripper is commanded open for the stage. The fingertip pose target is the handle origin offset 0.10 m along the handle frame local -y axis, with 0.01 m tolerance for the required stop condition. Two axis_align constraints encode the required approach orientation: panda_fingertip +z antiparallel to top_drawer_handle_frame -y, and panda_fingertip +y orthogonal to the handle bar axis top_drawer_handle_frame +x. The API fixes axis_align tolerance at 0.2 rad, so the exact 5 degree orientation stop threshold cannot be represented exactly. Monitoring panda_fingertip gripper joint states and confirming finger-effort no-contact feedback are also not directly representable; the 0.10 m standoff represents the non-contact clearance geometrically.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+z",
+                "reference_axis": "-y",
+                "alignment": "antiparallel",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+x",
+                "alignment": "orthogonal",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "top_drawer_handle_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    -0.1,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

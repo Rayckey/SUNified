@@ -1,0 +1,1 @@
+[Release] Open the gripper to release mug_rim_frame_0 with mug_handle_hole_frame seated on cup_hanger_branch_1_tip_frame while keeping both the gripper position and orientation fixed.

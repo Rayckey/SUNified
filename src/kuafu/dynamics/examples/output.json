@@ -1,0 +1,5 @@
+{
+  "artifact": "src/kuafu/dynamics/examples/dataset.json",
+  "description": "Learned dynamics model and evaluation metrics",
+  "path_base": "repository root"
+}

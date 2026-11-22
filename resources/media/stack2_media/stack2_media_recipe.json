@@ -1,0 +1,77 @@
+{
+  "name": "stack2_best_ema_front_close_screenshot",
+  "date_created": "2026-05-16",
+  "purpose": "Recreate the final clean and debug-frame screenshots for the FR3FinRay Stack-2 task with a close negative-Y camera that keeps both cubes and the gripper readable.",
+  "task": "FR3-FinRay-Table-Stack-2-ff",
+  "seed": 20260516,
+  "deterministic_policy": true,
+  "camera_bank": "best",
+  "selected_view": "front_close_stack_action",
+  "camera_spec": {
+    "offset_xyz": [
+      0.08,
+      -0.7,
+      0.52
+    ],
+    "target_bias_xyz": [
+      0.0,
+      0.08,
+      0.04
+    ],
+    "focal_length": 22.0
+  },
+  "resolved_camera_pose_from_final_run": {
+    "eye_xyz": [
+      0.49925506114959717,
+      -1.0118452310562134,
+      0.5799999833106995
+    ],
+    "target_xyz": [
+      0.4192550778388977,
+      -0.23184524476528168,
+      0.09999999403953552
+    ],
+    "focal_length": 22.0
+  },
+  "policy_inputs": {
+    "checkpoint": "Residuals/FR3-FinRay-Table-Stack-2-ff/2026-04-21_19-57-10/rl_runs/2026-04-22_05-06-01_Run-2/nn/last_FR3-FinRay-Table-Stack-2_ep_900_rew__14910.703_.pth",
+    "prior_checkpoint": "Priors/potential_useful/stack_2_damped_higher_noise_state/stack2_chunking_15_ff_damped_higher/best.pth",
+    "prior_mode": "residual_rl",
+    "weights_params_json": "Residuals/FR3-FinRay-Table-Stack-2-ff/2026-04-21_19-57-10/best.json"
+  },
+  "render_settings": {
+    "capture_backend": "viewport",
+    "headless": true,
+    "device": "cuda:0",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "max_steps": 700,
+    "video_every": 1,
+    "no_video": true,
+    "viewport_settle_frames": 0,
+    "screenshot_steps": "0,90,180,220,225,226,227,228,229"
+  },
+  "final_outputs": {
+    "clean_run_dir": "outputs/media/stack2_best_ema/2026-05-16_14-43-09_best_clean_seed20260516",
+    "clean_final_screenshot": "outputs/media/stack2_best_ema/2026-05-16_14-43-09_best_clean_seed20260516/screenshots/front_close_stack_action/final.png",
+    "debugframes_run_dir": "outputs/media/stack2_best_ema/2026-05-16_14-44-21_best_debugframes_seed20260516",
+    "debugframes_final_screenshot": "outputs/media/stack2_best_ema/2026-05-16_14-44-21_best_debugframes_seed20260516/screenshots/front_close_stack_action/final.png",
+    "success_policy_step": 226
+  },
+  "capture_notes": {
+    "video_capture": "Viewport MP4 capture perturbed this Stack-2 rollout during testing; every-step and every-5-step video runs timed out at policy step 598 around stage 2. The final recreate path is screenshot-only by default.",
+    "final_still_cache": "capture_stack2_best_ema_media.py caches the last scheduled pre-step capture so final.png is not overwritten by an auto-reset pose after done."
+  },
+  "candidate_sweeps": {
+    "front_stack_close_first_pass": "outputs/media/stack2_best_ema/2026-05-16_14-30-48_front_stack_close_clean_seed20260516",
+    "front_stack_close_success_window": "outputs/media/stack2_best_ema/2026-05-16_14-33-17_front_stack_close_clean_seed20260516",
+    "best_clean_verified": "outputs/media/stack2_best_ema/2026-05-16_14-43-09_best_clean_seed20260516",
+    "best_debug_verified": "outputs/media/stack2_best_ema/2026-05-16_14-44-21_best_debugframes_seed20260516"
+  },
+  "source_scripts": {
+    "capture_python": "src/kuafu/data/collection/capture_stack2_best_ema_media.py",
+    "capture_wrapper": "src/kuafu/data/collection/capture_stack2_best_ema_media.sh",
+    "recreate_wrapper": "resources/media/stack2_media/recreate_stack2_media.sh"
+  }
+}

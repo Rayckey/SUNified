@@ -1,0 +1,44 @@
+{
+    "Reasoning": "The stage is represented as a transport of the currently grasped cube_3 to the hover target 0.15 m above cube_2 in world +z, while maintaining the grasp and preserving the panda_fingertip orientation from the start of the stage. The reach_point on the gripped object encodes the completion condition that cube_3's object-frame origin is within 0.01 m of the hover target above cube_2. object_grasped encodes the required firm closed grasp/continued holding of cube_3; close_gripper is not also emitted because object_grasped is the stronger held-object requirement. freeze_orientation on panda_fingertip encodes preserving the end-effector world-frame orientation during the transport. The fixed grasp transform/no relative rotation of cube_3 with respect to the gripper is only indirectly represented by object_grasped plus frozen gripper orientation. Non-contact clearance from cube_1 and cube_2, explicit inter-object separation distances, stable gripper effort/contact feedback, monitoring requirements, and cube_2 remaining stacked on cube_1 cannot be directly represented with the available operators, especially because only the gripped object or robot frames can be controlled and there is no clearance/contact-monitoring operator.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "cube_3",
+                "reference_basis": "world",
+                "reference_origin": "cube_2",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.15
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

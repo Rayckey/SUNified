@@ -1,0 +1,352 @@
+{
+  "schema_version": 1,
+  "id": "drawer",
+  "title": "Open drawer",
+  "status": "registered",
+  "task": "open the top drawer by 14 cm",
+  "environments": [
+    {
+      "robot_id": "fr3_finray",
+      "gym_id": "FR3-FinRay-Table-Drawer",
+      "registration_module": "kuafu.isaac.learned",
+      "entry_point": "kuafu.isaac.learned.fr3_finray_drawer_env_learned:FR3FinRayDrawerEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.fr3_finray_drawer_env_learned:FR3FinRayDrawerEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/fr3_finray_drawer_env_learned.py",
+      "variants": [
+        "FR3-FinRay-Table-Drawer-Long-Long-U",
+        "FR3-FinRay-Table-Drawer-f",
+        "FR3-FinRay-Table-Drawer-l",
+        "FR3-FinRay-Table-Drawer-c",
+        "FR3-FinRay-Table-Drawer-lf",
+        "FR3-FinRay-Table-Drawer-ff"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/fr3_ft_robotiq_2f_85_finrays_tcp/usd/fr3_ft_robotiq_2f_85_finrays.usd",
+          "table": "assets/objects/table/table_flattened_instanceable_meshes.usd",
+          "cabinet": "assets/objects/two_layer_drawer_iphone_with_link/two_layer_drawer_iphone_with_link.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-04-01_14-56-05",
+        "interaction_frames": {
+          "cabinet": {
+            "description": "mesh of the cabinet, local frame +z is up direction, local frame -y is the forward direction, estimated size: (0.15, 0.25, 0.2)",
+            "prim_path": "/World/envs/env_*/Cabinet"
+          },
+          "top_drawer_center_frame": {
+            "description": "center frame of top drawer, estimated size: (0.15, 0.25, 0.05)",
+            "prim_path": "/Visuals/top_drawer_center_frame"
+          },
+          "top_drawer_handle_frame": {
+            "description": "frame of top drawer's handle, handle is a bar along local frame x axis, local frame -y is pulling out direction",
+            "prim_path": "/Visuals/top_drawer_handle_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "franka_panda",
+      "gym_id": "Panda-Table-Drawer",
+      "registration_module": "kuafu.isaac.learned.panda",
+      "entry_point": "kuafu.isaac.learned.panda.panda_drawer_env_learned:PandaDrawerEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.panda.panda_drawer_env_learned:PandaDrawerEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/panda/panda_drawer_env_learned.py",
+      "variants": [
+        "Panda-Table-Drawer-Long-Long-U",
+        "Panda-Table-Drawer-f",
+        "Panda-Table-Drawer-l",
+        "Panda-Table-Drawer-c",
+        "Panda-Table-Drawer-lf",
+        "Panda-Table-Drawer-ff",
+        "Panda-Table-Drawer-fff3",
+        "Panda-Table-Drawer-f3",
+        "Panda-Table-Drawer-ff3"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "cabinet": "assets/objects/two_layer_drawer_iphone_with_link/two_layer_drawer_iphone_with_link.usd",
+          "robot": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-04-01_14-56-05",
+        "interaction_frames": {
+          "cabinet": {
+            "description": "mesh of the cabinet, local frame +z is up direction, local frame -y is the forward direction, estimated size: (0.15, 0.25, 0.2)",
+            "prim_path": "/World/envs/env_*/Cabinet"
+          },
+          "top_drawer_center_frame": {
+            "description": "center frame of top drawer, estimated size: (0.15, 0.25, 0.05)",
+            "prim_path": "/Visuals/top_drawer_center_frame"
+          },
+          "top_drawer_handle_frame": {
+            "description": "frame of top drawer's handle, handle is a bar along local frame x axis, local frame -y is pulling out direction",
+            "prim_path": "/Visuals/top_drawer_handle_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "kinova_gen3",
+      "gym_id": "Kinova-Table-Gen3-Drawer",
+      "registration_module": "kuafu.isaac.learned.kinova",
+      "entry_point": "kuafu.isaac.learned.kinova.kinova_drawer_env_learned:KinovaDrawerEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.kinova.kinova_drawer_env_learned:KinovaDrawerEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/kinova/kinova_drawer_env_learned.py",
+      "variants": [
+        "Kinova-Table-Gen3-Drawer-Long-Long-U",
+        "Kinova-Table-Gen3-Drawer-f",
+        "Kinova-Table-Gen3-Drawer-l",
+        "Kinova-Table-Gen3-Drawer-c",
+        "Kinova-Table-Gen3-Drawer-lf",
+        "Kinova-Table-Gen3-Drawer-ff",
+        "Kinova-Table-Gen3-Drawer-ff3",
+        "Kinova-Table-Gen3-Drawer-fff",
+        "Kinova-Table-Gen3-Drawer-fff3"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/kinova/usd/kinova_gen3_7dof_robotiq_2f85_vision_official_contact_stable.usd",
+          "cabinet": "assets/objects/two_layer_drawer_iphone_with_link/two_layer_drawer_iphone_with_link.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-04-01_14-56-05",
+        "interaction_frames": {
+          "cabinet": {
+            "description": "mesh of the cabinet, local frame +z is up direction, local frame -y is the forward direction, estimated size: (0.15, 0.25, 0.2)",
+            "prim_path": "/World/envs/env_*/Cabinet"
+          },
+          "top_drawer_center_frame": {
+            "description": "center frame of top drawer, estimated size: (0.15, 0.25, 0.05)",
+            "prim_path": "/Visuals/top_drawer_center_frame"
+          },
+          "top_drawer_handle_frame": {
+            "description": "frame of top drawer's handle, handle is a bar along local frame x axis, local frame -y is pulling out direction",
+            "prim_path": "/Visuals/top_drawer_handle_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "ur5_robotiq",
+      "gym_id": "UR5-Table-Drawer",
+      "registration_module": "kuafu.isaac.learned.ur5",
+      "entry_point": "kuafu.isaac.learned.ur5.tasks:UR5DrawerEnv",
+      "config_entry_point": "kuafu.isaac.learned.ur5.tasks:UR5DrawerEnvCfg",
+      "source": "src/kuafu/isaac/learned/ur5/tasks.py",
+      "variants": [],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/ur5_robotiq/ur5_robotiq.usd",
+          "cabinet": "assets/objects/two_layer_drawer_iphone_with_link/two_layer_drawer_iphone_with_link.usd"
+        },
+        "controller_inputs": {
+          "urdf_path": "assets/robots/ur5_robotiq/ur5_controller.urdf",
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-04-01_14-56-05",
+        "interaction_frames": {
+          "cabinet": {
+            "description": "mesh of the cabinet, local frame +z is up direction, local frame -y is the forward direction, estimated size: (0.15, 0.25, 0.2)",
+            "prim_path": "/World/envs/env_*/Cabinet"
+          },
+          "top_drawer_center_frame": {
+            "description": "center frame of top drawer, estimated size: (0.15, 0.25, 0.05)",
+            "prim_path": "/Visuals/top_drawer_center_frame"
+          },
+          "top_drawer_handle_frame": {
+            "description": "frame of top drawer's handle, handle is a bar along local frame x axis, local frame -y is pulling out direction",
+            "prim_path": "/Visuals/top_drawer_handle_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    }
+  ],
+  "object_assets": [
+    "assets/objects/table/table_flattened_instanceable_meshes.usd",
+    "assets/objects/two_layer_drawer_iphone_with_link/two_layer_drawer_iphone_with_link.usd"
+  ],
+  "scene_source": "src/kuafu/isaac/learned/fr3_finray_drawer_env_learned.py",
+  "interaction_frames_source": "src/kuafu/isaac/learned/fr3_finray_drawer_env_learned.py:detectable_objects",
+  "interaction_frames": {
+    "cabinet": {
+      "description": "mesh of the cabinet, local frame +z is up direction, local frame -y is the forward direction, estimated size: (0.15, 0.25, 0.2)",
+      "prim_path": "/World/envs/env_*/Cabinet"
+    },
+    "top_drawer_center_frame": {
+      "description": "center frame of top drawer, estimated size: (0.15, 0.25, 0.05)",
+      "prim_path": "/Visuals/top_drawer_center_frame"
+    },
+    "top_drawer_handle_frame": {
+      "description": "frame of top drawer's handle, handle is a bar along local frame x axis, local frame -y is pulling out direction",
+      "prim_path": "/Visuals/top_drawer_handle_frame"
+    },
+    "panda_link4": {
+      "description": "frame of robot link 4",
+      "prim_path": "/Visuals/panda_link4_frame"
+    },
+    "panda_fingertip": {
+      "description": "frame of robot tool frame",
+      "prim_path": "/Visuals/panda_hand_frame"
+    }
+  },
+  "success_check": {
+    "summary": "The top drawer opens, the gripper releases it and moves clear of the handle.",
+    "source": "src/kuafu/isaac/learned/fr3_finray_drawer_env_learned.py",
+    "method": "_external_get_dones",
+    "thresholds": "Use the selected robot configuration and implementation."
+  },
+  "formulation": [
+    {
+      "gym_id": "Formulate-Panda-Drawer-v0",
+      "runner": "src/kuafu/programs/fr3_finray_drawer_learn_programs.py"
+    }
+  ],
+  "program_families": [
+    "resources/learned_programs/manipulation-fr3-finray-drawer",
+    "resources/learned_programs/manipulation-cabinet"
+  ],
+  "saved_programs": [
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-01-06_21-21-38",
+      "stages": 4,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-02-01_10-15-17",
+      "stages": 4,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-02-26_09-33-35",
+      "stages": 4,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-02-26_09-33-35_loose",
+      "stages": 4,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-04-01_14-56-05",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-07-02_20-31-54",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-07-29_07-43-50",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-07-29_08-11-00",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-07-29_17-13-58",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-07-29_17-19-00",
+      "stages": 6,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-fr3-finray-drawer/hand_adjusted",
+      "stages": 4,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-cabinet/opened_one_drawer_constraint_1",
+      "stages": 1,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-cabinet/opened_one_drawer_constraint_2",
+      "stages": 6,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-cabinet/opened_one_drawer_constraint_2 copy",
+      "stages": 6,
+      "recorded_success": null
+    }
+  ],
+  "example_program": {
+    "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-07-29_17-19-00",
+    "stages": 6,
+    "recorded_success": "True"
+  },
+  "agent_interface": {
+    "discovery": [
+      "kuafu_list_tasks",
+      "kuafu_get_task"
+    ],
+    "learning": "kuafu_start_stage with a compatible task manifest",
+    "scene_verification": "Use the task-specific scene and success implementation. The exported-video cabinet tool has its own task entry."
+  },
+  "robot_setup": {
+    "default": "docs/INSTALL.md",
+    "ur5_robotiq": "docs/UR5.md"
+  },
+  "related_sources": [
+    "src/kuafu/isaac/base/manipulation/open_drawer_env.py",
+    "src/kuafu/isaac/base/manipulation/open_fr3_finray_drawer_env.py",
+    "src/kuafu/isaac/tasks/open_drawer/open_drawer_env_learned.py",
+    "src/kuafu/isaac/tasks/open_drawer/open_fr3_finray_drawer_env_learned.py"
+  ],
+  "external_assets": [
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+  ]
+}

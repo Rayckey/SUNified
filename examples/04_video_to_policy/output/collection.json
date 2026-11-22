@@ -1,0 +1,140 @@
+{
+  "episodes": 4,
+  "transitions": 693,
+  "contract": {
+    "observation_layout": [
+      "robot_joint_position",
+      "robot_joint_velocity",
+      "cabinet_joint_position",
+      "handle_position_world_m",
+      "handle_quaternion_wxyz",
+      "sun_stage_index"
+    ],
+    "joint_names": [
+      "panda_joint1",
+      "panda_joint2",
+      "panda_joint3",
+      "panda_joint4",
+      "panda_joint5",
+      "panda_joint6",
+      "panda_joint7",
+      "panda_finger_joint1",
+      "panda_finger_joint2"
+    ],
+    "cabinet_joint_names": [
+      "upper_drawer_joint",
+      "lower_left_drawer_joint",
+      "lower_right_drawer_joint"
+    ],
+    "asset_hashes": {
+      "asset_dynamic.usda": "57dc395fe6125ad7ed62f8d9badfe204a0b5056771c18d68385cc671a44b5812",
+      "asset_geometry.usda": "20b4458022cb004088e75831d353dbb2883764fc93fe37573df293c8822fb8fc",
+      "semantics.json": "ac515ff8e3c3cb25ffca383541a24a4e5b5169db9ad6b68ccc5e10d7c86281d8"
+    },
+    "program_hashes": {
+      "subtask_0/atomic.txt": "56ff71a283488e5df84d1ace700acbbcc611fb517aba3611a72f6834efd359ab",
+      "subtask_0/constraints.json": "dbcf5a6420dfe59ae9e924a1e1a3813220197fab23598ac2638b324e4835aaf1",
+      "subtask_0/status.txt": "91d131f92074451d32c385a516013cee9ea034df5373747d7c345d2ec7012f64",
+      "subtask_0/task.txt": "e2b9debdd7ba0215c75cfad355774aec489cccdf381e1b74c873ce3fa9205498",
+      "subtask_1/atomic.txt": "7ac4113837988d5dd36c8004b05c98e9ec7e51e3936436449307b4a4e92601a0",
+      "subtask_1/constraints.json": "0b40deed19e2456d3f0fa117205d9a8c505189ab20f14971116eed7607819846",
+      "subtask_1/status.txt": "91d131f92074451d32c385a516013cee9ea034df5373747d7c345d2ec7012f64",
+      "subtask_1/task.txt": "c8bd5c259288fb9b7131505bc040b46bef711bffcbbb437d9ea933a5cb98fd3b",
+      "subtask_2/atomic.txt": "a0ba250b798eede7ae35a709a89045fc77324cc3b9c77d1bb38c3d2cc994a08d",
+      "subtask_2/constraints.json": "59990f2976234480944cce897145adad4bb43f958743053081cd962cf8e661e6",
+      "subtask_2/status.txt": "91d131f92074451d32c385a516013cee9ea034df5373747d7c345d2ec7012f64",
+      "subtask_2/task.txt": "28913e7bf3afa2a376041c0e8a7f64d915f706196add35a7c46dbf8aee8a461f",
+      "subtask_3/atomic.txt": "18b8bf99889763881e0bba934016740cf8e7116e4361d07037200b665a232dbd",
+      "subtask_3/constraints.json": "188f6168dccacc287e46835e69ea8bcc7e05a90a9951ddd5ace4df9962645556",
+      "subtask_3/status.txt": "91d131f92074451d32c385a516013cee9ea034df5373747d7c345d2ec7012f64",
+      "subtask_3/task.txt": "485b46d03e51877d84f05959094d522fb8de801390be8fbd3ae37c5a7b7a5d0e",
+      "subtask_4/atomic.txt": "d744316f1dfebfbcca3a39c068e38b4f1d3a8424eb98b1af2c076681ab7e89cd",
+      "subtask_4/constraints.json": "752647136d59c9adbce4e088ef059c2044eb85bc7314eb0df8a85ee1f505615e",
+      "subtask_4/status.txt": "91d131f92074451d32c385a516013cee9ea034df5373747d7c345d2ec7012f64",
+      "subtask_4/task.txt": "c98a0a7b8a9eb1c7f107ac5f4fd9dd62412c11abdf4c4c76d14c543458b73329",
+      "subtask_5/atomic.txt": "fda2a9c65d3c06289a3eed1b335cf369d120db6468dec70ecb9390cb3bf558ea",
+      "subtask_5/constraints.json": "c78b3c08bfdd7d40e1de1520794bcb9c8d0680040a0a4e000b926f6934782ffc",
+      "subtask_5/status.txt": "91d131f92074451d32c385a516013cee9ea034df5373747d7c345d2ec7012f64",
+      "subtask_5/task.txt": "4d0230bb53fa36335c43b74b62a52c0019d4c49d7c21d0c89031e3189072eaea"
+    },
+    "target_travel_m": 0.1
+  },
+  "episode_results": [
+    {
+      "mode": "replay",
+      "program_passed": true,
+      "physical": {
+        "passed": true,
+        "target_travel_m": 0.1,
+        "tolerance_m": 0.01,
+        "actual_travel_m": 0.09470042363813747,
+        "other_drawer_max_motion_m": 8.448311383801865e-08,
+        "finite_states": true
+      },
+      "passed": true,
+      "controller": "mpc",
+      "solver_passed": true,
+      "control_steps": 165,
+      "mpc_solves": 34,
+      "model_requests": 0,
+      "error": null
+    },
+    {
+      "mode": "replay",
+      "program_passed": true,
+      "physical": {
+        "passed": true,
+        "target_travel_m": 0.1,
+        "tolerance_m": 0.01,
+        "actual_travel_m": 0.09392768667152751,
+        "other_drawer_max_motion_m": 8.960300057481163e-08,
+        "finite_states": true
+      },
+      "passed": true,
+      "controller": "mpc",
+      "solver_passed": true,
+      "control_steps": 175,
+      "mpc_solves": 36,
+      "model_requests": 0,
+      "error": null
+    },
+    {
+      "mode": "replay",
+      "program_passed": true,
+      "physical": {
+        "passed": true,
+        "target_travel_m": 0.1,
+        "tolerance_m": 0.01,
+        "actual_travel_m": 0.09375166670492519,
+        "other_drawer_max_motion_m": 8.601907985905655e-08,
+        "finite_states": true
+      },
+      "passed": true,
+      "controller": "mpc",
+      "solver_passed": true,
+      "control_steps": 168,
+      "mpc_solves": 35,
+      "model_requests": 0,
+      "error": null
+    },
+    {
+      "mode": "replay",
+      "program_passed": true,
+      "physical": {
+        "passed": true,
+        "target_travel_m": 0.1,
+        "tolerance_m": 0.01,
+        "actual_travel_m": 0.09468643144777644,
+        "other_drawer_max_motion_m": 9.472288731160461e-08,
+        "finite_states": true
+      },
+      "passed": true,
+      "controller": "mpc",
+      "solver_passed": true,
+      "control_steps": 185,
+      "mpc_solves": 38,
+      "model_requests": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+    "Reasoning": "Use one position goal to place the grasped mug_handle_hole_frame at the non-contact alignment standoff: 0.12 m along cup_hanger_branch_1_tip_frame +y, with 0.01 m tolerance. This also encodes the required positive axial standoff and lateral alignment to the branch axis, and the low-effort condition indirectly represents non-contact alignment. Align the mug_handle_hole_frame +y axis bipolar with the cup_hanger_branch_1_tip_frame +y axis within the requested 0.05 rad because the handle opening axis is bidirectional. Require object_grasped rather than close_gripper so mechanical closure alone is not treated as sufficient; the gripper_closed condition records the intended closed holding state. Unrepresented details: exact bilateral finger contact/effort thresholds, finger joint position near 0.0 with effort-based exceptions, explicit no-slip verification, and explicit collision avoidance against table/cup_hanger beyond standoff and low-effort feedback are not directly expressible with the available operators.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.12,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_handle_hole_frame",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "controlled_axis": "+y",
+                "reference_axis": "+y",
+                "alignment": "bipolar",
+                "tolerance_rad": 0.05
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

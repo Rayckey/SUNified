@@ -1,0 +1,45 @@
+{
+    "Reasoning": "The stage success is represented by carrying the currently grasped mug_rim_frame_0 to the specified non-contact staging point: the cup_hanger_branch_1_tip_frame origin offset by +0.15 m along that frame's +y axis, with 0.01 m tolerance. object_grasped represents maintaining the closed, firm grasp without intentional opening. freeze_orientation preserves the current carried mug orientation during the carry, supporting the no-slip rigid-body carry intent. manipulator_low_effort is included on the reaching motion to represent the required absence of unintended non-gripper collision/effort feedback during the carry. The API cannot directly encode minimum clearance inequalities from table/cup_hanger, sustained finger effort/contact feedback, explicit no-slip relative transform between panda_fingertip and all mug-attached frames, or separate collision exclusions against named objects, so those clauses are noted but omitted as direct constraints.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_rim_frame_0",
+                "reference_basis": "object",
+                "reference_origin": "cup_hanger_branch_1_tip_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.15,
+                    0.0
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "mug_rim_frame_0",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "Reasoning": "This stage carries the already-grasped strawberry to the above-drawer target. The gripped-object reach_point places strawberry_center_frame at top_drawer_center_frame translated by 0.245 m along world +z with the required 0.01 m stop tolerance, which also represents the above-target non-contact separation at the goal. freeze_orientation preserves the start-of-stage panda_fingertip orientation throughout the carry. object_grasped requires continued stable holding of the strawberry with the gripper closed. Continuous monitoring of pose, gripper state, and grasp/contact feedback is reflected by the geometry and gripper_closed/object_grasped constraints. Path-wide collision avoidance with cabinet, top_drawer_center_frame, top_drawer_handle_frame, exact bilateral finger contact verification, no-slip details, and explicit monitoring signals cannot be directly represented with the available operators, beyond maintaining object_grasped and targeting the non-contact offset.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "gripped_object",
+                "controlled_target": "strawberry_center_frame",
+                "reference_basis": "world",
+                "reference_origin": "top_drawer_center_frame",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.245
+                ],
+                "tolerance_m": 0.01
+            }
+        }
+    ]
+}

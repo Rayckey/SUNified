@@ -1,0 +1,5 @@
+{
+  "artifact": "examples/02_program_to_rollout/output/verification.json",
+  "description": "Control trajectory, solver trace and physical verification",
+  "path_base": "repository root"
+}

@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "id": "can",
+  "title": "Stand up can",
+  "status": "registered",
+  "task": "Pick up the fallen over can and place it back down in upright position",
+  "environments": [
+    {
+      "robot_id": "fr3_finray",
+      "gym_id": "FR3-FinRay-Table-Can",
+      "registration_module": "kuafu.isaac.learned",
+      "entry_point": "kuafu.isaac.learned.fr3_finray_can_env_learned:FR3FinRayCanEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.fr3_finray_can_env_learned:FR3FinRayCanEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/fr3_finray_can_env_learned.py",
+      "variants": [
+        "FR3-FinRay-Table-Can-Long-Long-U",
+        "FR3-FinRay-Table-Can-f",
+        "FR3-FinRay-Table-Can-l",
+        "FR3-FinRay-Table-Can-c",
+        "FR3-FinRay-Table-Can-lf",
+        "FR3-FinRay-Table-Can-ff"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/fr3_ft_robotiq_2f_85_finrays_tcp/usd/fr3_ft_robotiq_2f_85_finrays.usd",
+          "table": "assets/objects/table/table_flattened_instanceable_meshes.usd",
+          "can": "assets/objects/pepper/pepper.usdc"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-can/2026-03-21_08-45-33",
+        "interaction_frames": {
+          "can": {
+            "description": "cylindrical coke can rigid body, local -y is the upright axis and long axis, size (0.04, 0.1, 0.04)",
+            "prim_path": "/World/envs/env_*/Can"
+          },
+          "can_center_frame": {
+            "description": "cylindrical coke can, local -y is the upright axis and long axis, size (0.04, 0.1, 0.04)",
+            "prim_path": "/Visuals/can_center_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "franka_panda",
+      "gym_id": "Panda-Table-Can",
+      "registration_module": "kuafu.isaac.learned.panda",
+      "entry_point": "kuafu.isaac.learned.panda.panda_can_env_learned:PandaCanEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.panda.panda_can_env_learned:PandaCanEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/panda/panda_can_env_learned.py",
+      "variants": [
+        "Panda-Table-Can-Long-Long-U",
+        "Panda-Table-Can-f",
+        "Panda-Table-Can-l",
+        "Panda-Table-Can-c",
+        "Panda-Table-Can-lf",
+        "Panda-Table-Can-ff",
+        "Panda-Table-Can-f3",
+        "Panda-Table-Can-fff3",
+        "Panda-Table-Can-ff3"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "can": "assets/objects/pepper/pepper.usdc",
+          "robot": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-can/2026-03-21_08-45-33",
+        "interaction_frames": {
+          "can": {
+            "description": "cylindrical coke can rigid body, local -y is the upright axis and long axis, size (0.04, 0.1, 0.04)",
+            "prim_path": "/World/envs/env_*/Can"
+          },
+          "can_center_frame": {
+            "description": "cylindrical coke can, local -y is the upright axis and long axis, size (0.04, 0.1, 0.04)",
+            "prim_path": "/Visuals/can_center_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "kinova_gen3",
+      "gym_id": "Kinova-Table-Gen3-Can",
+      "registration_module": "kuafu.isaac.learned.kinova",
+      "entry_point": "kuafu.isaac.learned.kinova.kinova_can_env_learned:KinovaCanEnvLearned",
+      "config_entry_point": "kuafu.isaac.learned.kinova.kinova_can_env_learned:KinovaCanEnvLearnedCfg",
+      "source": "src/kuafu/isaac/learned/kinova/kinova_can_env_learned.py",
+      "variants": [
+        "Kinova-Table-Gen3-Can-Long-Long-U",
+        "Kinova-Table-Gen3-Can-f",
+        "Kinova-Table-Gen3-Can-l",
+        "Kinova-Table-Gen3-Can-c",
+        "Kinova-Table-Gen3-Can-lf",
+        "Kinova-Table-Gen3-Can-ff",
+        "Kinova-Table-Gen3-Can-fff3"
+      ],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/kinova/usd/kinova_gen3_7dof_robotiq_2f85_vision_official_contact_stable.usd",
+          "can": "assets/objects/pepper/pepper.usdc"
+        },
+        "controller_inputs": {
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-can/2026-03-21_08-45-33",
+        "interaction_frames": {
+          "can": {
+            "description": "cylindrical coke can rigid body, local -y is the upright axis and long axis, size (0.04, 0.1, 0.04)",
+            "prim_path": "/World/envs/env_*/Can"
+          },
+          "can_center_frame": {
+            "description": "cylindrical coke can, local -y is the upright axis and long axis, size (0.04, 0.1, 0.04)",
+            "prim_path": "/Visuals/can_center_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    },
+    {
+      "robot_id": "ur5_robotiq",
+      "gym_id": "UR5-Table-Can",
+      "registration_module": "kuafu.isaac.learned.ur5",
+      "entry_point": "kuafu.isaac.learned.ur5.tasks:UR5CanEnv",
+      "config_entry_point": "kuafu.isaac.learned.ur5.tasks:UR5CanEnvCfg",
+      "source": "src/kuafu/isaac/learned/ur5/tasks.py",
+      "variants": [],
+      "success_method": "_external_get_dones",
+      "configuration": {
+        "assets": {
+          "robot": "assets/robots/ur5_robotiq/ur5_robotiq.usd",
+          "can": "assets/objects/pepper/pepper.usdc"
+        },
+        "controller_inputs": {
+          "urdf_path": "assets/robots/ur5_robotiq/ur5_controller.urdf",
+          "initial_residual": "src/kuafu/skills/constraints/rewards.py",
+          "initial_predicate": "src/kuafu/skills/constraints/predicates.py"
+        },
+        "default_program": "resources/learned_programs/manipulation-can/2026-03-21_08-45-33",
+        "interaction_frames": {
+          "can": {
+            "description": "cylindrical coke can rigid body, local -y is the upright axis and long axis, size (0.04, 0.1, 0.04)",
+            "prim_path": "/World/envs/env_*/Can"
+          },
+          "can_center_frame": {
+            "description": "cylindrical coke can, local -y is the upright axis and long axis, size (0.04, 0.1, 0.04)",
+            "prim_path": "/Visuals/can_center_frame"
+          },
+          "panda_link4": {
+            "description": "frame of robot link 4",
+            "prim_path": "/Visuals/panda_link4_frame"
+          },
+          "panda_fingertip": {
+            "description": "frame of robot tool frame",
+            "prim_path": "/Visuals/panda_hand_frame"
+          }
+        }
+      }
+    }
+  ],
+  "object_assets": [
+    "assets/objects/pepper/pepper.usdc",
+    "assets/objects/table/table_flattened_instanceable_meshes.usd"
+  ],
+  "scene_source": "src/kuafu/isaac/learned/fr3_finray_can_env_learned.py",
+  "interaction_frames_source": "src/kuafu/isaac/learned/fr3_finray_can_env_learned.py:detectable_objects",
+  "interaction_frames": {
+    "can": {
+      "description": "cylindrical coke can rigid body, local -y is the upright axis and long axis, size (0.04, 0.1, 0.04)",
+      "prim_path": "/World/envs/env_*/Can"
+    },
+    "can_center_frame": {
+      "description": "cylindrical coke can, local -y is the upright axis and long axis, size (0.04, 0.1, 0.04)",
+      "prim_path": "/Visuals/can_center_frame"
+    },
+    "panda_link4": {
+      "description": "frame of robot link 4",
+      "prim_path": "/Visuals/panda_link4_frame"
+    },
+    "panda_fingertip": {
+      "description": "frame of robot tool frame",
+      "prim_path": "/Visuals/panda_hand_frame"
+    }
+  },
+  "success_check": {
+    "summary": "The can is upright and nearly stationary, with an open gripper clear of it.",
+    "source": "src/kuafu/isaac/learned/fr3_finray_can_env_learned.py",
+    "method": "_external_get_dones",
+    "thresholds": "Use the selected robot configuration and implementation."
+  },
+  "formulation": [
+    {
+      "gym_id": "Formulate-Panda-Can-v0",
+      "runner": "src/kuafu/programs/can_learn_programs.py"
+    }
+  ],
+  "program_families": [
+    "resources/learned_programs/manipulation-can"
+  ],
+  "saved_programs": [
+    {
+      "path": "resources/learned_programs/manipulation-can/2026-03-21_08-17-05",
+      "stages": 6,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-can/2026-03-21_08-45-33",
+      "stages": 7,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-can/2026-03-21_08-45-33_loose",
+      "stages": 7,
+      "recorded_success": null
+    },
+    {
+      "path": "resources/learned_programs/manipulation-can/2026-07-29_09-16-00",
+      "stages": 8,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-can/2026-07-29_09-44-00",
+      "stages": 8,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-can/2026-07-29_15-47-51",
+      "stages": 8,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-can/2026-07-29_17-36-35",
+      "stages": 8,
+      "recorded_success": "True"
+    },
+    {
+      "path": "resources/learned_programs/manipulation-can/2026-07-29_18-05-40",
+      "stages": 8,
+      "recorded_success": "True"
+    }
+  ],
+  "example_program": {
+    "path": "resources/learned_programs/manipulation-can/2026-07-29_18-05-40",
+    "stages": 8,
+    "recorded_success": "True"
+  },
+  "agent_interface": {
+    "discovery": [
+      "kuafu_list_tasks",
+      "kuafu_get_task"
+    ],
+    "learning": "kuafu_start_stage with a compatible task manifest",
+    "scene_verification": "Use the task-specific scene and success implementation. The exported-video cabinet tool has its own task entry."
+  },
+  "robot_setup": {
+    "default": "docs/INSTALL.md",
+    "ur5_robotiq": "docs/UR5.md"
+  },
+  "related_sources": [
+    "src/kuafu/isaac/base/manipulation/can_env.py"
+  ],
+  "external_assets": [
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd"
+  ]
+}

@@ -1,0 +1,19 @@
+dataset:
+  dataset: examples/03_demonstrations_to_policy/input/demonstrations.hdf5
+  obs_key: state
+  action_mode: absolute_ee
+  time_shift: 0
+  val_fraction: 0.25
+  split_mode: random
+  seed: 42
+model:
+  hidden_dims: [32, 32]
+  dropout: 0.0
+optimization:
+  lr: 0.001
+  batch_size: 64
+  num_workers: 0
+  num_epochs: 8
+  save_every_n_epochs: 4
+logging:
+  log_dir: examples/bc-training

@@ -1,0 +1,300 @@
+{
+  "stages": [
+    {
+      "task": "[Approach] Use an appropriate axis approach to move the open gripper near top_drawer_handle_frame without touching it.",
+      "atomic_actions": [
+        "[Approach] Move the open gripper to a non-contact pre-approach pose near top_drawer_handle_frame using the top_drawer_handle_frame -y axis.\nConstraints:\n1. Keep the gripper open throughout this stage, with panda_fingertip tool +y as the finger axis and no intended contact with top_drawer_handle_frame.\n2. Orient panda_fingertip tool +z antiparallel to top_drawer_handle_frame -y, so the tool aiming direction points toward top_drawer_handle_frame from the front side of the cabinet.\n3. Orient panda_fingertip tool +y orthogonal to top_drawer_handle_frame +x, the handle bar direction, to prepare a grasp across the elongated handle.\n4. Move panda_fingertip to the target point defined as the top_drawer_handle_frame origin translated along top_drawer_handle_frame -y by 0.10 m in the top_drawer_handle_frame frame.\n5. Stop when panda_fingertip reaches that axis-offset target geometry while maintaining non-contact separation from top_drawer_handle_frame; gripper finger effort should remain at free-space baseline, with any unexpected contact-like effort before reaching the target treated as a failure condition."
+      ],
+      "constraints": {
+        "Reasoning": "This stage establishes an open-gripper, non-contact pre-approach pose for panda_fingertip relative to top_drawer_handle_frame. The reach_point term sends panda_fingertip to the handle-frame origin offset 0.10 m along that frame's -y axis, with geometry and low manipulator effort indicating free-space/non-contact approach. The two axis_align terms encode the requested pre-grasp orientation: panda_fingertip +z antiparallel to top_drawer_handle_frame -y, and panda_fingertip +y orthogonal to the handle bar direction top_drawer_handle_frame +x. The open_gripper term keeps the gripper open for the stage. No separate minimum-distance/non-contact constraint or gripper finger-effort baseline/failure condition is available in the provided operators; these are represented only indirectly by the -0.10 m standoff target, open_gripper, and manipulator_low_effort condition on the reach.",
+        "Constraints": [
+          {
+            "logic": "and",
+            "condition": [
+              "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip",
+              "reference_basis": "object",
+              "reference_origin": "top_drawer_handle_frame",
+              "controlled_axis": "+z",
+              "reference_axis": "-y",
+              "alignment": "antiparallel"
+            }
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry"
+            ],
+            "op": "axis_align",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip",
+              "reference_basis": "object",
+              "reference_origin": "top_drawer_handle_frame",
+              "controlled_axis": "+y",
+              "reference_axis": "+x",
+              "alignment": "orthogonal"
+            }
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry",
+              "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip",
+              "reference_basis": "object",
+              "reference_origin": "top_drawer_handle_frame",
+              "offset_from_origin_xyz": [
+                0.0,
+                -0.1,
+                0.0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "task": "[Approach] Use the same axis approach to move the open gripper into contact with top_drawer_handle_frame while keeping the gripper orientation fixed.",
+      "atomic_actions": [
+        "[Approach] Move the open gripper from the prior top_drawer_handle_frame -y pre-approach side into contact with top_drawer_handle_frame while keeping the gripper orientation fixed.\nConstraints:\n1. Keep the gripper open throughout this stage, with panda_fingertip tool +y remaining the finger axis and no gripper closing command applied.\n2. Keep the current panda_fingertip orientation fixed in the robot base frame throughout this approach stage.\n3. Move the panda_fingertip position toward the top_drawer_handle_frame origin, using the previously established same-axis approach from the top_drawer_handle_frame -y side, without specifying any new tool-axis orientation relation.\n4. The contact target is the top_drawer_handle_frame origin expressed in the top_drawer_handle_frame frame; contact with top_drawer_handle_frame is intended at that target.\n5. Stop when panda_fingertip reaches the top_drawer_handle_frame origin geometry or when fingertip/gripper effort feedback indicates first contact with top_drawer_handle_frame, and treat excessive unexpected effort before reaching the intended contact geometry as a failure condition."
+      ],
+      "constraints": {
+        "Reasoning": "This stage keeps the gripper open, preserves the current panda_fingertip orientation, and moves the panda_fingertip to the top_drawer_handle_frame origin for intended contact. The reach_point target is the handle-frame origin expressed in the top_drawer_handle_frame basis. Its condition includes both geometry and manipulator_high_effort to represent stopping either on reaching the intended contact geometry or on first fingertip/gripper contact effort. The previously established -y-side approach is preserved by context and the fixed orientation; no new tool-axis relation is added. Excessive unexpected effort before the intended geometry as a failure condition cannot be explicitly encoded beyond the manipulator_high_effort stop condition.",
+        "Constraints": [
+          {
+            "logic": "and",
+            "condition": [
+              "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip"
+            }
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry",
+              "manipulator_high_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip",
+              "reference_basis": "object",
+              "reference_origin": "top_drawer_handle_frame",
+              "offset_from_origin_xyz": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "task": "[Manipulate] Close the gripper to grasp top_drawer_handle_frame while keeping both the gripper position and orientation fixed.",
+      "atomic_actions": [
+        "[Manipulate] Close the gripper to grasp top_drawer_handle_frame while keeping the current panda_fingertip pose fixed.\nConstraints:\n1. Keep the panda_fingertip position fixed at its current position in the robot base frame, with no commanded translation of the end effector.\n2. Keep the panda_fingertip orientation fixed at its current orientation in the robot base frame, with no commanded rotation of the end effector.\n3. Command the left and right gripper fingers to close symmetrically along the panda_fingertip tool +y finger axis onto top_drawer_handle_frame, with the intended grasp contact centered at the top_drawer_handle_frame origin expressed in the top_drawer_handle_frame frame.\n4. Stop closing when gripper effort feedback indicates firm opposing contact with top_drawer_handle_frame sufficient for a stable grasp while the panda_fingertip pose remains fixed.\n5. Treat reaching the fully closed gripper joint limit without contact-like effort on top_drawer_handle_frame as a grasp failure, and treat excessive effort or any loss of the fixed panda_fingertip pose in the robot base frame as a failure condition."
+      ],
+      "constraints": {
+        "Reasoning": "This stage keeps the panda_fingertip pose fixed while executing a grasp. freeze_position and freeze_orientation encode no commanded translation or rotation of the end effector in the current robot-base pose. object_grasped encodes successful physical holding/stable grasp of the intended handle after finger closure, rather than merely reaching a closed gripper state. The available schema has no arguments on object_grasped or close_gripper, so the specific target top_drawer_handle_frame, symmetric finger closure along panda_fingertip +y, centered contact at the handle-frame origin, finger-effort stop criterion, fully-closed-without-contact failure, excessive finger effort failure, and explicit pose-loss failure cannot be represented directly; they are therefore omitted from Constraints beyond the fixed-pose and grasp-success requirements.",
+        "Constraints": [
+          {
+            "logic": "and",
+            "condition": [
+              "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip"
+            }
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip"
+            }
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry",
+              "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+          }
+        ]
+      }
+    },
+    {
+      "task": "[Manipulate] Pull top_drawer_handle_frame away from cabinet until top_drawer_center_frame reaches the requested open state, with the gripper closed and the gripper orientation fixed.",
+      "atomic_actions": [
+        "[Manipulate] Pull the grasped top_drawer_handle_frame until top_drawer_center_frame opens by 0.10 m, with the gripper closed and panda_fingertip orientation fixed.\nConstraints:\n1. Keep the left and right gripper fingers closed on top_drawer_handle_frame throughout this stage, maintaining firm opposing contact effort sufficient for a stable grasp without commanding any gripper opening.\n2. Keep the panda_fingertip orientation fixed at its current orientation in the robot base frame throughout the pull, with no commanded rotation of the end effector.\n3. Translate the grasped top_drawer_handle_frame and attached top_drawer_center_frame along top_drawer_center_frame -y in the top_drawer_center_frame frame by 0.10 m from the top_drawer_center_frame pose at the start of this stage.\n4. Maintain the grasp contact centered at the top_drawer_handle_frame origin expressed in the top_drawer_handle_frame frame, allowing the panda_fingertip position in the robot base frame to move only as needed to produce the drawer-opening translation.\n5. Stop when top_drawer_center_frame has reached the requested open state, defined as 0.10 m displacement along the start-of-stage top_drawer_center_frame -y opening direction, while the gripper remains closed and grasp contact effort remains stable.\n6. Monitor gripper effort and end-effector/contact force feedback; treat loss of firm grasp, slip-like reduction of contact effort, excessive pulling resistance, or deviation from the fixed panda_fingertip orientation in the robot base frame as failure conditions."
+      ],
+      "constraints": {
+        "Reasoning": "This stage keeps the already grasped top_drawer_handle_frame held with the gripper closed, keeps panda_fingertip orientation fixed, and pulls the grasped drawer handle 0.10 m along the top_drawer_center_frame -y opening direction. The directional move is applied to the gripped top_drawer_handle_frame using top_drawer_center_frame as the object-frame reference, so the attached top_drawer_center_frame reaches the requested open displacement. Exact left/right finger effort, slip detection, excessive pulling resistance thresholds, and failure monitoring are not directly representable beyond requiring object_grasped, gripper_closed, and fixed orientation.",
+        "Constraints": [
+          {
+            "logic": "and",
+            "condition": [
+              "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip"
+            }
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry"
+            ],
+            "op": "directional_move",
+            "args": {
+              "controlled_entity": "gripped_object",
+              "controlled_target": "top_drawer_handle_frame",
+              "reference_basis": "object",
+              "reference_origin": "top_drawer_center_frame",
+              "axis": "-y",
+              "travel_distance_m": 0.1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "task": "[Release] Open the gripper to release top_drawer_handle_frame at the requested open state while keeping both the gripper position and orientation fixed.",
+      "atomic_actions": [
+        "[Release] Open the gripper to release top_drawer_handle_frame at the requested open drawer state while keeping the panda_fingertip pose fixed.\nConstraints:\n1. Keep the panda_fingertip position fixed at its current position in the robot base frame, with no commanded translation of the end effector.\n2. Keep the panda_fingertip orientation fixed at its current orientation in the robot base frame, with no commanded rotation of the end effector.\n3. Command the left and right gripper fingers to open symmetrically along the panda_fingertip tool +y finger axis and panda_fingertip tool -y opposite finger-axis direction until the gripper reaches the open release state.\n4. Release contact with top_drawer_handle_frame at the current top_drawer_handle_frame pose, corresponding to the already requested open state of top_drawer_center_frame after the prior 0.10 m translation along top_drawer_center_frame -y in the top_drawer_center_frame frame.\n5. Stop when the gripper is open and gripper effort feedback on both fingers drops toward free-space baseline, indicating top_drawer_handle_frame is no longer grasped while the panda_fingertip pose remains fixed in the robot base frame.\n6. Treat any commanded end-effector motion, unexpected increase in contact effort during opening, failure of the fingers to open, or detectable slip/motion away from the requested open drawer state as a failure condition."
+      ],
+      "constraints": {
+        "Reasoning": "This release stage keeps the end-effector fixed while opening the gripper. `freeze_position` enforces no commanded translation of `panda_fingertip`; `freeze_orientation` enforces no commanded rotation. `open_gripper` represents symmetric opening to the open release state. The current top drawer open state and current handle pose are preserved implicitly by commanding no end-effector motion during release, but object/drawer immobility cannot be separately encoded because only one position operator is allowed and the stage specifically requires freezing the fingertip. Finger effort dropping to free-space baseline, unexpected increase in contact effort during opening, failure of fingers to open, and detectable drawer slip/motion are not directly representable with the available operators/condition labels; success is represented by the gripper-opened condition together with fixed fingertip pose.",
+        "Constraints": [
+          {
+            "logic": "and",
+            "condition": [
+              "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip"
+            }
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip"
+            }
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+          }
+        ]
+      }
+    },
+    {
+      "task": "[Release] Retract the gripper away from top_drawer_handle_frame to a non-contact configuration with the gripper open, preserving continuity with the immediately preceding interaction.",
+      "atomic_actions": [
+        "[Release] Retract the open gripper from top_drawer_handle_frame to the prior same-side non-contact offset.\nConstraints:\n1. Keep the left and right gripper fingers open throughout this stage, with panda_fingertip tool +y as the finger axis and panda_fingertip tool -y as the opposite finger-axis direction, and command no gripper closing.\n2. Keep the current panda_fingertip orientation fixed in the robot base frame during the retract, preserving the immediately preceding tool +z and tool +y orientation continuity from the handle interaction.\n3. Move the panda_fingertip position away from the current top_drawer_handle_frame origin to the target point defined as the top_drawer_handle_frame origin translated along top_drawer_handle_frame -y by 0.10 m in the top_drawer_handle_frame frame.\n4. The final configuration must be non-contact with top_drawer_handle_frame, with approximately 0.10 m separation from the top_drawer_handle_frame origin along top_drawer_handle_frame -y in the top_drawer_handle_frame frame and gripper effort remaining near free-space baseline.\n5. Stop when panda_fingertip reaches the specified top_drawer_handle_frame -y axis-offset target while the gripper remains open and the top_drawer_center_frame remains at the requested opened state from the prior manipulation.\n6. Treat renewed contact-like gripper effort, unexpected end-effector resistance, failure to maintain the fixed panda_fingertip orientation in the robot base frame, or detectable motion of the released top drawer away from the requested open state as failure conditions."
+      ],
+      "constraints": {
+        "Reasoning": "Success is reaching the non-contact retract target for panda_fingertip at the top_drawer_handle_frame origin offset 0.10 m along the handle frame -y direction, while the gripper stays open, the fingertip orientation is held fixed, and interaction effort remains low/free-space-like. The reach_point encodes the specified same-side 0.10 m offset from the handle. freeze_orientation encodes preserving the current panda_fingertip orientation from the prior handle interaction. open_gripper encodes keeping/commanding the fingers open and no closing. The low-effort requirement is represented as a manipulator_low_effort condition on the retract motion. Unrepresented clauses: exact left/right finger-axis geometry about panda_fingertip +y/-y cannot be expressed beyond open_gripper; maintaining top_drawer_center_frame at the prior opened state and detecting drawer motion after release cannot be directly encoded because there is no non-gripped object freeze/monitor operator or numeric opened-state target; explicit failure conditions such as renewed gripper effort, high end-effector resistance, or orientation failure are represented only indirectly by the positive open/low-effort/frozen-orientation constraints.",
+        "Constraints": [
+          {
+            "logic": "and",
+            "condition": [
+              "geometry",
+              "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip",
+              "reference_basis": "object",
+              "reference_origin": "top_drawer_handle_frame",
+              "offset_from_origin_xyz": [
+                0.0,
+                -0.1,
+                0.0
+              ]
+            }
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+              "controlled_entity": "robot_frame",
+              "controlled_target": "panda_fingertip"
+            }
+          },
+          {
+            "logic": "and",
+            "condition": [
+              "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+          }
+        ]
+      }
+    }
+  ]
+}

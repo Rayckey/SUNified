@@ -1,0 +1,253 @@
+{
+  "bc_prior_rollout_stats": {
+    "false_complete_count": 0,
+    "stats_path": "/home/rocky/Kuafu/IsaacLab/logs/residual_rl/kinova_gen3/Kinova-Table-Gen3-EStop-Open-fff3/2026-06-25_02-28-53/bc_prior_rollout_stats.json",
+    "timeout_count": 1240,
+    "total_episodes": 9705,
+    "total_steps": 360,
+    "true_success_count": 8465
+  },
+  "kind": "initial_weight_sweep",
+  "prior_checkpoint": "/home/rocky/Kuafu/IsaacLab/Priors/kinova_gen3/estop_open/estop_open_2026-06-24_17-09-03_chunking_10_fff3_stride3/best.pth",
+  "stages": {
+    "0": {
+      "diagnosis": "{\"0\": {\"role\": \"Maintain fully open gripper during approach.\", \"main_blocker\": \"not a blocker\"}, \"1\": {\"role\": \"Set tool +z antiparallel to cap +z for top-down axial approach.\", \"main_blocker\": \"not a blocker\"}, \"2\": {\"role\": \"Keep tool +y orthogonal to cap +z, allowing free yaw around the cap axis.\", \"main_blocker\": \"not a blocker\"}, \"3\": {\"role\": \"Reach the pre-grasp point 0.12 m above the cap center and stop within tolerance.\", \"main_blocker\": \"poor progress / control\"}}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_rad": 0.5
+        },
+        "3": {
+          "tolerance_m": 0.03
+        }
+      },
+      "reasoning": "{\"0\": \"Component 0 is already satisfied in all timed-out stage-0 samples, so reducing it slightly is safe to free relative weight for the actual blocker while still preserving the semantic requirement to stay open.\", \"1\": \"Component 1 shows 100% satisfaction on timed-out samples, so it is not blocking stage completion. Its weighted reward being near zero is not evidence of failure because the constraint check is fully satisfied. Slightly lowering relative emphasis should not harm validity given the strong BC prior satisfaction.\", \"2\": \"Component 2 is also 100% satisfied on timed-out samples and therefore not the blocker. Keep meaningful but slightly reduced weight to preserve orientation semantics without overpaying for a condition the prior already reliably achieves.\", \"3\": \"Component 3 is the sole blocker: 100% of timed-out stage-0 samples fail the reach constraint while all others are satisfied. That indicates the BC prior can orient and open correctly but does not drive close enough to the pre-grasp point before timeout. The likely issue is poor progress/control or weight tradeoff, not threshold strictness alone, since this is an approach stage and meaningful completion requires actually arriving near the pre-grasp pose. Therefore increase the reach weight as much as allowed this pass and shift relative mass away from already-solved components.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 630,
+          "rate": 1.0,
+          "reward": 0.9988029358878968,
+          "total": 630
+        },
+        "1": {
+          "met": 630,
+          "rate": 1.0,
+          "reward": 6.192856253908267e-07,
+          "total": 630
+        },
+        "2": {
+          "met": 630,
+          "rate": 1.0,
+          "reward": 0.0025316268678695435,
+          "total": 630
+        },
+        "3": {
+          "met": 0,
+          "rate": 0.0,
+          "reward": 0.01077391609312996,
+          "total": 630
+        }
+      },
+      "weights": {
+        "0": 1.2,
+        "1": 0.7,
+        "2": 0.7,
+        "3": 3.0
+      }
+    },
+    "1": {
+      "diagnosis": "{\"0\": \"Primary blocker. The BC prior usually times out without satisfying the reach-to-cap-center condition, so position progress/contact approach is under-emphasized relative to easier orientation/open-gripper maintenance.\", \"1\": \"Not a main blocker. Orientation is already satisfied in most timeout cases, so this is not the limiting factor; current issue is more weight tradeoff than threshold.\", \"2\": \"Minor blocker. Gripper-open is satisfied in most timeout cases; some failures exist, but it is not the main cause of stage timeout. Slight support is useful, but over-weighting it can distract from approach progress.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.02
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"This stage is semantically about making meaningful contact approach to the estop cap center while preserving an already-established pose and open hand. Component 0 has 93.27% non-satisfaction among timed-out Stage 1 cases, overwhelmingly indicating that reaching/contact is what blocks completion. Since reward is normalized by sum of weights, increasing this weight is the main lever to bias policy improvement toward actual approach completion. The low weighted reward on this term is not used as closeness evidence, but it is consistent with poor progress toward the hard completion predicate. There may also be a threshold/representation mismatch because the original semantic tolerance is tighter than the current parameter context and contact-as-alternative-stop is not explicitly encoded; however parameters cannot be changed here, so the best available action is to substantially upweight this component.\", \"1\": \"Orientation maintenance is semantically a guardrail, not the goal. It is already satisfied for 91.11% of stuck cases, so it is generally not what prevents passing the stage. Keeping some weight remains important to preserve the fixed-orientation interaction and avoid degenerate reaching, but raising it would likely worsen the main blocker by spending normalized reward budget on a mostly-solved constraint. Slightly reducing it improves the tradeoff while preserving semantic validity.\", \"2\": \"Open gripper is also a guardrail. With 85.82% satisfaction in timeout cases, it is mostly maintained already. It should retain moderate weight because entering contact with a closed or partially closed gripper is semantically wrong for this stage, but it should not dominate over the actual approach objective. A small reduction helps reallocate budget to component 0 while still keeping this constraint salient.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 28,
+          "rate": 0.0673076923076923,
+          "reward": 0.005301668093754695,
+          "total": 416
+        },
+        "1": {
+          "met": 379,
+          "rate": 0.9110576923076923,
+          "reward": 0.292764975474431,
+          "total": 416
+        },
+        "2": {
+          "met": 357,
+          "rate": 0.8581730769230769,
+          "reward": 0.9371802990253155,
+          "total": 416
+        }
+      },
+      "weights": {
+        "0": 3.0,
+        "1": 0.8,
+        "2": 1.2
+      }
+    },
+    "2": {
+      "diagnosis": "{\"0\": \"Primary blocker. Freeze-position constraint is almost always the unsatisfied predicate in timed-out stage-2 cases, while grasp and orientation are usually achieved. This indicates poor pose invariance during finger closure and/or a stricter-than-behaviorally-easy hold requirement, not lack of grasp intent.\", \"1\": \"Not a blocker. Freeze-orientation is already satisfied in nearly all timed-out cases, so its current incentive appears sufficient and should not be emphasized further.\", \"2\": \"Secondary/non-blocking. Object grasp is satisfied in most timed-out cases, so grasp pressure/contact is generally reached. Slightly reducing its relative dominance can help the policy prioritize holding still once contact is made.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.02
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"Because reward is normalized by sum of weights, stage completion should be improved by increasing the relative importance of holding fingertip position fixed during closure. The timeout statistics strongly isolate component 0 as the gating condition (93.18% unsatisfied) whereas components 1 and 2 are mostly satisfied. Semantically, meaningful completion of this stage requires a stable grasp acquired without disturbing the established approach pose, so boosting freeze-position is aligned with the intended interaction rather than merely chasing predicates.\", \"1\": \"Orientation continuity is already preserved under the current policy. Since component 1 is satisfied in 97.73% of stuck cases, increasing it would spend capacity on a non-bottleneck. Keep it roughly stable or slightly lower relative to component 0 to free normalized reward mass for the real blocker without sacrificing semantic validity.\", \"2\": \"The BC prior already tends to achieve bilateral contact/effort rise. Its weighted reward is also the largest currently, suggesting the policy may already over-prioritize closing/contact relative to staying translationally fixed. A modest reduction is appropriate to rebalance toward the blocker, while keeping this component high enough that a real grasp remains central. If residual failure is actually due to the position tolerance/parameter being too strict, that cannot be fixed here, but reweighting toward component 0 is still the best available stage-only adjustment.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 3,
+          "rate": 0.06818181818181818,
+          "reward": 0.010936753316359087,
+          "total": 44
+        },
+        "1": {
+          "met": 43,
+          "rate": 0.9772727272727273,
+          "reward": 0.1143067099831321,
+          "total": 44
+        },
+        "2": {
+          "met": 41,
+          "rate": 0.9318181818181818,
+          "reward": 0.7080903486772017,
+          "total": 44
+        }
+      },
+      "weights": {
+        "0": 3.0,
+        "1": 0.9,
+        "2": 2.0
+      }
+    },
+    "3": {
+      "diagnosis": "{\"0\": \"Support/stability term for keeping fingertip position fixed during twist. It is a secondary blocker: many timed-out rollouts drift translationally, but less often than the rotation requirement. This looks mainly like a weight tradeoff against the rotate objective rather than a loose threshold.\", \"1\": \"Primary task-progress term for accumulating the unlock twist. This is the dominant blocker by far. Since many rollouts time out without satisfying rotation while still getting substantial shaped reward, the issue is more poor progress/control and likely an over-ambitious target/threshold mismatch in parameters; however parameters are not editable here, so weight should be increased to prioritize continued twist progress.\", \"2\": \"Grasp-maintenance term ensuring the cap stays held with the gripper closed. This is an important semantic validity constraint and moderate blocker. Failures likely come from the agent sacrificing grasp quality while trying to rotate, so this is a weight tradeoff issue.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.02
+        },
+        "1": {
+          "tolerance_rad": 0.4
+        }
+      },
+      "reasoning": "{\"0\": \"Position invariance matters because meaningful unlock twisting should happen in place rather than by translating off the cap. But it should not dominate the stage over actual twist completion. A modest increase helps reduce slipping/drifting that can undermine both rotation and grasp, without overpowering the main progress signal.\", \"1\": \"Stage semantics require unlocking by twist; component 1 is the core completion driver and has the highest timeout non-satisfaction rate (76.19%). Its weighted reward is already high, indicating the BC prior makes partial progress but often stalls before the constraint is met. That pattern suggests the blocker is not lack of any shaping, but insufficient relative emphasis to keep pushing rotation through detent/unlock versus preserving easier local behavior. Increase this weight the most. Note that the current target/constraint may also be stricter than the semantic unlock threshold, but only weights can be changed now.\", \"2\": \"A valid twist requires maintaining the grasp throughout. Component 2 fails in nearly half of timeout cases, so leaving it unchanged risks more aggressive rotation causing drop/slip. Increase it, but less than rotation, to preserve semantic validity while still prioritizing completion. This should help the policy hold the cap through the twist instead of trading grasp integrity for angular progress.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 25,
+          "rate": 0.5952380952380952,
+          "reward": 0.016440485204969133,
+          "total": 42
+        },
+        "1": {
+          "met": 10,
+          "rate": 0.23809523809523808,
+          "reward": 1.4480332874116444,
+          "total": 42
+        },
+        "2": {
+          "met": 22,
+          "rate": 0.5238095238095238,
+          "reward": 0.47123473031180246,
+          "total": 42
+        }
+      },
+      "weights": {
+        "0": 1.8,
+        "1": 3.4,
+        "2": 2.6
+      }
+    },
+    "4": {
+      "diagnosis": "{\"0\": \"Support term for semantic validity; low timeout failure rate suggests position freezing is not the main blocker. Keep meaningful weight so release happens without drifting off the unlocked pose.\", \"1\": \"Secondary blocker. Orientation freeze fails often, but this stage semantically prioritizes opening the gripper while maintaining pose; with current stats, some failures likely reflect control tradeoff and possibly overly strict threshold rather than missing incentive alone. Increase moderately, not aggressively.\", \"2\": \"Primary blocker. Gripper-open constraint is overwhelmingly unsatisfied in timed-out stage-4 cases, indicating poor progress on the main release action or weight tradeoff against pose freezing. This should receive the strongest increase.\"}",
+      "iter": 0,
+      "parameters": {
+        "0": {
+          "tolerance_m": 0.05
+        },
+        "1": {
+          "tolerance_rad": 0.5
+        }
+      },
+      "reasoning": "{\"0\": \"Component 0 enforces holding position fixed during release. Since most timed-out cases still satisfy it, raising it would likely further suppress finger opening without addressing the main failure. Slightly lower relative emphasis helps free policy capacity for the actual release while preserving stage semantics.\", \"1\": \"Component 1 is violated in about half of stuck cases, so it matters, but making it dominant would risk encouraging freezing over release completion. Because orientation continuity is important for a clean release at the unlocked pose, a moderate increase is appropriate. Also note the configured tolerance appears looser than the original semantic intent, so some residual failure may be parameter/threshold related rather than purely weight-related.\", \"2\": \"Component 2 directly encodes the required action: open both gripper fingers until release/open. Its very high non-satisfaction rate is the clearest evidence of the BC prior timing out because it does not sufficiently complete the opening action. Increase this weight substantially to prioritize meaningful stage completion. Reward normalization means the relative ratio versus freeze terms is what matters, so shifting mass toward component 2 is the correct intervention.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 89,
+          "rate": 0.8476190476190476,
+          "reward": 0.024926212855747767,
+          "total": 105
+        },
+        "1": {
+          "met": 50,
+          "rate": 0.47619047619047616,
+          "reward": 0.6689872378394717,
+          "total": 105
+        },
+        "2": {
+          "met": 5,
+          "rate": 0.047619047619047616,
+          "reward": 0.525792221795945,
+          "total": 105
+        }
+      },
+      "weights": {
+        "0": 0.9,
+        "1": 1.3,
+        "2": 3.0
+      }
+    },
+    "5": {
+      "diagnosis": "{\"0\": \"Not a blocker. Gripper-open constraint is consistently satisfied; current weight is sufficient and could be slightly reduced to free emphasis for the actual blocker without risking semantic invalidity.\", \"1\": \"Not a blocker. Orientation continuity is consistently satisfied. Low reward value likely reflects shaping scale rather than failure; this stage mainly needs orientation preserved, not re-optimized. Keep moderate weight so retract does not sacrifice pose stability.\", \"2\": \"Primary blocker. Reach-target constraint is unsatisfied in all timeout cases, indicating poor translational progress to the retract standoff rather than gripper/orientation failure. This could also reflect a strict target tolerance parameter, but parameters are not editable here, so increase this component's relative weight.\"}",
+      "iter": 0,
+      "parameters": {
+        "1": {
+          "tolerance_rad": 0.5
+        },
+        "2": {
+          "tolerance_m": 0.05
+        }
+      },
+      "reasoning": "{\"0\": \"Since component 0 is 100% satisfied in the timeout cases, the BC prior already keeps the gripper open during retract. The semantic requirement is important, so weight should not be dropped too far, but some capacity can be reallocated from this already-solved term.\", \"1\": \"Component 1 is also 100% satisfied in the timeout cases, so orientation continuity is not what blocks completion. Because the stage description requires invariant pose during retraction, this term should remain meaningful to prevent the policy from twisting to chase translation reward, but it does not need extra emphasis.\", \"2\": \"Component 2 is the only unsatisfied constraint in the timeout cases (100% not_satisfied), making it the decisive bottleneck for meaningful stage completion. The stage semantics are to retract along object +z to a clear non-contact standoff. Failing this means the robot remains too close to the cap, so completion is not meaningful. The best available adjustment is to substantially increase the reach-point weight relative to the already-satisfied gripper/orientation terms, while retaining enough weight on those terms to preserve open-gripper and fixed-orientation semantics during the retract.\"}",
+      "timeout_constraint_stats": {
+        "0": {
+          "met": 3,
+          "rate": 1.0,
+          "reward": 0.9793453216552734,
+          "total": 3
+        },
+        "1": {
+          "met": 3,
+          "rate": 1.0,
+          "reward": 0.09821014602979024,
+          "total": 3
+        },
+        "2": {
+          "met": 0,
+          "rate": 0.0,
+          "reward": 0.028978106876214344,
+          "total": 3
+        }
+      },
+      "weights": {
+        "0": 1.2,
+        "1": 1.0,
+        "2": 2.4
+      }
+    }
+  },
+  "task": "Kinova-Table-Gen3-EStop-Open-fff3"
+}

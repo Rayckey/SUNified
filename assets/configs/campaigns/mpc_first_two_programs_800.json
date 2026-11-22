@@ -1,0 +1,128 @@
+{
+  "campaign": "first_two_new_successful_programs_mpc800_mixed_robots_20260817",
+  "source_revision": "b9467f8",
+  "output_root": "/mnt/shared/rocky/kuafu_mpc_first2_mixed_20260817",
+  "collection": {
+    "successful_trajectories_per_task": 800,
+    "successful_trajectories_per_program": 400,
+    "gpus": [0, 1, 2, 3],
+    "workers_per_gpu_per_program": 1,
+    "simultaneous_workers_per_gpu": 2,
+    "trajectories_per_worker": 100,
+    "control_output_mode": "absolute_ee",
+    "action_noise_std": 0.003,
+    "record_failures": false,
+    "task_concurrency": 1
+  },
+  "tasks": [
+    {
+      "slug": "drawer",
+      "task_name": "Kinova-Table-Gen3-Drawer",
+      "robot_name": "kinova",
+      "programs": [
+        {
+          "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-07-02_20-31-54",
+          "base_seed": 110000
+        },
+        {
+          "path": "resources/learned_programs/manipulation-fr3-finray-drawer/2026-07-29_07-43-50",
+          "base_seed": 120000
+        }
+      ]
+    },
+    {
+      "slug": "drawer_stack",
+      "task_name": "Kinova-Table-Gen3-Drawer-Stack",
+      "robot_name": "kinova",
+      "programs": [
+        {
+          "path": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-07-29_11-07-54",
+          "base_seed": 210000
+        },
+        {
+          "path": "resources/learned_programs/manipulation-fr3-finray-drawer-stack/2026-07-29_16-22-49",
+          "base_seed": 220000
+        }
+      ]
+    },
+    {
+      "slug": "can",
+      "task_name": "Kinova-Table-Gen3-Can",
+      "robot_name": "kinova",
+      "programs": [
+        {
+          "path": "resources/learned_programs/manipulation-can/2026-07-29_09-16-00",
+          "base_seed": 310000
+        },
+        {
+          "path": "resources/learned_programs/manipulation-can/2026-07-29_09-44-00",
+          "base_seed": 320000
+        }
+      ]
+    },
+    {
+      "slug": "hang_cup",
+      "task_name": "Kinova-Table-Gen3-Hang-Cup",
+      "robot_name": "kinova",
+      "programs": [
+        {
+          "path": "resources/learned_programs/manipulation-hang-cup/2026-07-29_11-18-23",
+          "base_seed": 410000
+        },
+        {
+          "path": "resources/learned_programs/manipulation-hang-cup/2026-07-29_11-30-12",
+          "base_seed": 420000
+        }
+      ]
+    },
+    {
+      "slug": "pen_cup",
+      "task_name": "Kinova-Table-Gen3-Pen-Cup",
+      "robot_name": "kinova",
+      "programs": [
+        {
+          "path": "resources/learned_programs/manipulation-pen-cup/2026-07-29_09-55-27",
+          "base_seed": 510000
+        },
+        {
+          "path": "resources/learned_programs/manipulation-pen-cup/2026-07-29_10-09-44",
+          "base_seed": 520000
+        }
+      ]
+    },
+    {
+      "slug": "stack2",
+      "task_name": "FR3-FinRay-Table-Stack-2",
+      "robot_name": "fr3_finray",
+      "programs": [
+        {
+          "path": "resources/learned_programs/manipulation-stack2/2026-07-02_21-44-44",
+          "base_seed": 610000
+        },
+        {
+          "path": "resources/learned_programs/manipulation-stack2/2026-07-29_07-05-54",
+          "base_seed": 620000
+        }
+      ]
+    },
+    {
+      "slug": "stack3",
+      "task_name": "FR3-FinRay-Table-Stack-3",
+      "robot_name": "fr3_finray",
+      "programs": [
+        {
+          "path": "resources/learned_programs/manipulation-stack3/2026-07-29_10-21-59",
+          "base_seed": 710000
+        },
+        {
+          "path": "resources/learned_programs/manipulation-stack3/2026-07-29_10-36-50",
+          "base_seed": 720000
+        }
+      ]
+    }
+  ],
+  "skipped_stop_tasks": [
+    "manipulation-estop-open",
+    "manipulation-estop-close"
+  ]
+}

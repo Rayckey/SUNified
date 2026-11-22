@@ -1,0 +1,1 @@
+[Manipulate] Reorient the grasped can_center_frame so that its long axis is vertical, bringing it to an upright position with the gripper closed.

@@ -1,0 +1,38 @@
+{
+    "Reasoning": "The current subtask is to close the gripper fingers to grasp cube_1 while holding the tool pose fixed. \n\nSuccess conditions:\n1. Tool position fixed: keep panda_fingertip at cube_1 center - use freeze_position on panda_fingertip.\n2. Tool orientation fixed: maintain tool +z antiparallel to world +z - use freeze_orientation on panda_fingertip (the orientation is already set from prior approach; we just need to keep it fixed).\n3. Gripper action: close the gripper - use close_gripper.\n\nThe axis_align for tool +z antiparallel to world +z is already established from prior subtasks. The subtask says \"maintain\" and \"apply zero angular velocity\", so freeze_orientation is appropriate. Similarly, freeze_position captures \"keep tool frame origin at cube_1 center\" / \"apply zero translational velocity\".\n\nThe stop condition is when effort feedback rises (manipulator_high_effort on fingers), but this is a gripper effort (finger squeeze), not arm/TCP contact force. The TermAPI doesn't have a finger-effort condition separate from manipulator_high_effort. The condition field is metadata only, so I'll use \"gripper_closed\" as the condition for close_gripper since the goal is to establish a grasp.\n\nLogic: all three constraints must hold simultaneously \u2192 all \"and\".\n\nNote: freeze_position counts as the one positional constraint. freeze_orientation is the orientation constraint. close_gripper is the gripper state constraint. axis_align would be redundant with freeze_orientation since orientation is already set and we're freezing it - I'll use freeze_orientation only.\n\nThe subtask mentions \"stop when effort feedback rises\" - this is a termination condition for the close_gripper action, captured by the condition metadata \"manipulator_high_effort\" on the close_gripper constraint (though strictly this is finger effort, not arm effort). I'll note this in reasoning.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.02
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.4
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed",
+                "manipulator_high_effort"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}

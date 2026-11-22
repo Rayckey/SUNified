@@ -1,0 +1,1 @@
+[Manipulate] Move the grasped top_drawer_handle_frame away from cabinet until top_drawer_center_frame reaches the requested open state, with the gripper closed while keeping the gripper orientation fixed.

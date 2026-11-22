@@ -1,0 +1,46 @@
+{
+    "Diagnosis": "The runtime error explicitly reports that this controller stage cannot mix `freeze_orientation` with another orientation constraint: `axis_align`. The previous output had both `freeze_orientation` and `axis_align` on `panda_fingertip`, so the smallest valid repair is to remove the `axis_align` term and keep `freeze_orientation`, which best matches the requirement to preserve the current full tool orientation during the retract.",
+    "Reasoning": "The retract stage keeps the gripper open, moves the `panda_fingertip` frame origin to the non-contact offset point 0.12 m along `estop_cap_center` object +z with 0.01 m tolerance, and preserves the current end-effector orientation using `freeze_orientation`. Because the prior stage already established the required `panda_fingertip` +z antiparallel relationship to `estop_cap_center` +z, preserving the current orientation maintains that continuity without adding a separate orientation constraint that the runtime rejects. The `manipulator_low_effort` condition label is kept on the reaching term to represent free-space/dropping release effort and non-contact monitoring. Exact left/right finger joint values near 1.0, no intentional closing along tool +y, finger effort signals, detailed base-frame pose/orientation error monitoring, collision aborts, and unexpected-contact abort logic are not directly representable with the available terms; they are approximated by `open_gripper`, the geometric target, preserved orientation, and low-effort condition labeling.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_opened"
+            ],
+            "op": "open_gripper",
+            "args": {}
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry",
+                "manipulator_low_effort"
+            ],
+            "op": "reach_point",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "reference_basis": "object",
+                "reference_origin": "estop_cap_center",
+                "offset_from_origin_xyz": [
+                    0.0,
+                    0.0,
+                    0.12
+                ],
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        }
+    ]
+}

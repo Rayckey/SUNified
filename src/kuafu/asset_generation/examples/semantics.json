@@ -1,0 +1,511 @@
+{
+  "version": 1,
+  "status": "annotated",
+  "asset_type": "articulation",
+  "units": "meters",
+  "pose_convention": "body-local offsets; quaternion wxyz; axes local to each interaction frame",
+  "object": {
+    "name": "cabinet",
+    "description": "Wooden cabinet with one wide white-handled top drawer and two small lower drawers with ring pulls",
+    "size_m": [
+      0.4,
+      0.248,
+      0.26
+    ],
+    "axes": {
+      "up": {
+        "direction": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "description": "up"
+      },
+      "forward": {
+        "direction": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "description": "the front of the cabinet"
+      }
+    },
+    "language": "Wooden cabinet with one wide white-handled top drawer and two small lower drawers with ring pulls; local frame +z is up; local frame -y is the front of the cabinet; estimated size: (0.4, 0.248, 0.26) meters"
+  },
+  "frames": {
+    "top_drawer_handle_frame": {
+      "body": "upper_drawer",
+      "body_path": "upper_drawer",
+      "usd_path": "/Asset/upper_drawer/InteractionFrames/top_drawer_handle_frame",
+      "role": "grasp",
+      "description": "Grasp frame at the middle of the top drawer white handle bar",
+      "position_m": [
+        0.0,
+        -0.10899999999999999,
+        0.137
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size_m": null,
+      "part": "upper_drawer_white_pull",
+      "axes": {
+        "bar": {
+          "direction": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "description": "the handle bar direction"
+        },
+        "approach": {
+          "direction": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "description": "the approach direction toward the cabinet"
+        },
+        "joint_positive": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the positive joint direction",
+          "motion": "translation"
+        },
+        "open": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the opening direction",
+          "motion": "translation"
+        },
+        "close": {
+          "direction": [
+            -0.0,
+            1.0,
+            -0.0
+          ],
+          "description": "the closing direction",
+          "motion": "translation"
+        }
+      },
+      "motion": {
+        "joint": "upper_drawer_joint",
+        "kind": "prismatic",
+        "opening_direction": "positive",
+        "limits": [
+          0.0,
+          0.145
+        ],
+        "units": "meters"
+      },
+      "evidence": "Located from the video-derived handle geometry; grasp position and dimensions remain estimates.",
+      "language": "Grasp frame at the middle of the top drawer white handle bar; local frame +x is the handle bar direction; local frame +y is the approach direction toward the cabinet; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction"
+    },
+    "top_drawer_center_frame": {
+      "body": "upper_drawer",
+      "body_path": "upper_drawer",
+      "usd_path": "/Asset/upper_drawer/InteractionFrames/top_drawer_center_frame",
+      "role": "center",
+      "description": "Center frame of the top drawer usable interior",
+      "position_m": [
+        0.0,
+        0.008500000000000006,
+        0.1435
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size_m": [
+        0.36,
+        0.189,
+        0.067
+      ],
+      "part": null,
+      "axes": {
+        "up": {
+          "direction": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "description": "up from the drawer floor"
+        },
+        "insertion": {
+          "direction": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "description": "the insertion direction into the open drawer"
+        },
+        "joint_positive": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the positive joint direction",
+          "motion": "translation"
+        },
+        "open": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the opening direction",
+          "motion": "translation"
+        },
+        "close": {
+          "direction": [
+            -0.0,
+            1.0,
+            -0.0
+          ],
+          "description": "the closing direction",
+          "motion": "translation"
+        }
+      },
+      "motion": {
+        "joint": "upper_drawer_joint",
+        "kind": "prismatic",
+        "opening_direction": "positive",
+        "limits": [
+          0.0,
+          0.145
+        ],
+        "units": "meters"
+      },
+      "evidence": "Computed from reconstructed inner walls and floor; usable dimensions are estimates, not measurements.",
+      "language": "Center frame of the top drawer usable interior; local frame +z is up from the drawer floor; local frame -z is the insertion direction into the open drawer; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction; estimated size: (0.36, 0.189, 0.067) meters"
+    },
+    "lower_left_drawer_handle_frame": {
+      "body": "lower_left_drawer",
+      "body_path": "lower_left_drawer",
+      "usd_path": "/Asset/lower_left_drawer/InteractionFrames/lower_left_drawer_handle_frame",
+      "role": "grasp",
+      "description": "Grasp frame on the lower arc of the lower left drawer ring pull",
+      "position_m": [
+        -0.095,
+        -0.1008,
+        0.036
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size_m": null,
+      "part": "lower_left_ring_pull",
+      "axes": {
+        "bar": {
+          "direction": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "description": "the tangent of the ring at the grasp point"
+        },
+        "approach": {
+          "direction": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "description": "the approach direction toward the cabinet"
+        },
+        "joint_positive": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the positive joint direction",
+          "motion": "translation"
+        },
+        "open": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the opening direction",
+          "motion": "translation"
+        },
+        "close": {
+          "direction": [
+            -0.0,
+            1.0,
+            -0.0
+          ],
+          "description": "the closing direction",
+          "motion": "translation"
+        }
+      },
+      "motion": {
+        "joint": "lower_left_drawer_joint",
+        "kind": "prismatic",
+        "opening_direction": "positive",
+        "limits": [
+          0.0,
+          0.14
+        ],
+        "units": "meters"
+      },
+      "evidence": "Located from the video-derived handle geometry; grasp position and dimensions remain estimates.",
+      "language": "Grasp frame on the lower arc of the lower left drawer ring pull; local frame +x is the tangent of the ring at the grasp point; local frame +y is the approach direction toward the cabinet; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction"
+    },
+    "lower_left_drawer_center_frame": {
+      "body": "lower_left_drawer",
+      "body_path": "lower_left_drawer",
+      "usd_path": "/Asset/lower_left_drawer/InteractionFrames/lower_left_drawer_center_frame",
+      "role": "center",
+      "description": "Center frame of the lower left drawer usable interior",
+      "position_m": [
+        -0.097,
+        0.012000000000000005,
+        0.052
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size_m": [
+        0.168,
+        0.184,
+        0.07
+      ],
+      "part": null,
+      "axes": {
+        "up": {
+          "direction": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "description": "up from the drawer floor"
+        },
+        "insertion": {
+          "direction": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "description": "the insertion direction into the open drawer"
+        },
+        "joint_positive": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the positive joint direction",
+          "motion": "translation"
+        },
+        "open": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the opening direction",
+          "motion": "translation"
+        },
+        "close": {
+          "direction": [
+            -0.0,
+            1.0,
+            -0.0
+          ],
+          "description": "the closing direction",
+          "motion": "translation"
+        }
+      },
+      "motion": {
+        "joint": "lower_left_drawer_joint",
+        "kind": "prismatic",
+        "opening_direction": "positive",
+        "limits": [
+          0.0,
+          0.14
+        ],
+        "units": "meters"
+      },
+      "evidence": "Computed from reconstructed inner walls and floor; usable dimensions are estimates, not measurements.",
+      "language": "Center frame of the lower left drawer usable interior; local frame +z is up from the drawer floor; local frame -z is the insertion direction into the open drawer; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction; estimated size: (0.168, 0.184, 0.07) meters"
+    },
+    "lower_right_drawer_handle_frame": {
+      "body": "lower_right_drawer",
+      "body_path": "lower_right_drawer",
+      "usd_path": "/Asset/lower_right_drawer/InteractionFrames/lower_right_drawer_handle_frame",
+      "role": "grasp",
+      "description": "Grasp frame on the lower arc of the lower right drawer ring pull",
+      "position_m": [
+        0.095,
+        -0.1008,
+        0.036
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size_m": null,
+      "part": "lower_right_ring_pull",
+      "axes": {
+        "bar": {
+          "direction": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "description": "the tangent of the ring at the grasp point"
+        },
+        "approach": {
+          "direction": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "description": "the approach direction toward the cabinet"
+        },
+        "joint_positive": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the positive joint direction",
+          "motion": "translation"
+        },
+        "open": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the opening direction",
+          "motion": "translation"
+        },
+        "close": {
+          "direction": [
+            -0.0,
+            1.0,
+            -0.0
+          ],
+          "description": "the closing direction",
+          "motion": "translation"
+        }
+      },
+      "motion": {
+        "joint": "lower_right_drawer_joint",
+        "kind": "prismatic",
+        "opening_direction": "positive",
+        "limits": [
+          0.0,
+          0.14
+        ],
+        "units": "meters"
+      },
+      "evidence": "Located from the video-derived handle geometry; grasp position and dimensions remain estimates.",
+      "language": "Grasp frame on the lower arc of the lower right drawer ring pull; local frame +x is the tangent of the ring at the grasp point; local frame +y is the approach direction toward the cabinet; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction"
+    },
+    "lower_right_drawer_center_frame": {
+      "body": "lower_right_drawer",
+      "body_path": "lower_right_drawer",
+      "usd_path": "/Asset/lower_right_drawer/InteractionFrames/lower_right_drawer_center_frame",
+      "role": "center",
+      "description": "Center frame of the lower right drawer usable interior",
+      "position_m": [
+        0.097,
+        0.012000000000000005,
+        0.052
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size_m": [
+        0.168,
+        0.184,
+        0.07
+      ],
+      "part": null,
+      "axes": {
+        "up": {
+          "direction": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "description": "up from the drawer floor"
+        },
+        "insertion": {
+          "direction": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "description": "the insertion direction into the open drawer"
+        },
+        "joint_positive": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the positive joint direction",
+          "motion": "translation"
+        },
+        "open": {
+          "direction": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "description": "the opening direction",
+          "motion": "translation"
+        },
+        "close": {
+          "direction": [
+            -0.0,
+            1.0,
+            -0.0
+          ],
+          "description": "the closing direction",
+          "motion": "translation"
+        }
+      },
+      "motion": {
+        "joint": "lower_right_drawer_joint",
+        "kind": "prismatic",
+        "opening_direction": "positive",
+        "limits": [
+          0.0,
+          0.14
+        ],
+        "units": "meters"
+      },
+      "evidence": "Computed from reconstructed inner walls and floor; usable dimensions are estimates, not measurements.",
+      "language": "Center frame of the lower right drawer usable interior; local frame +z is up from the drawer floor; local frame -z is the insertion direction into the open drawer; local frame -y is the positive joint direction; local frame -y is the opening direction; local frame +y is the closing direction; estimated size: (0.168, 0.184, 0.07) meters"
+    }
+  }
+}

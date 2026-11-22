@@ -1,0 +1,1 @@
+[Manipulate] Raise mug_rim_frame_0 with the gripper closed to create clearance from table while keeping the gripper orientation fixed.

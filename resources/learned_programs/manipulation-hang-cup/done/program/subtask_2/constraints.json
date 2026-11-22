@@ -1,0 +1,37 @@
+{
+    "Reasoning": "Success for this subtask requires that the gripper closes around mug_rim_frame_0 (so that a stable grasp is achieved) while strictly maintaining the current position and orientation of the tool frame (panda_fingertip) relative to the agent frame (i.e., the robot base/world). The only motion during this operation is permitted in the gripper fingers for closing, not in the arm. Position and orientation are to be frozen. The action completes either when a secure grasp is detected by contact/effort threshold or when further closure is stopped. Therefore, the constraints must enforce position freeze, orientation freeze, and finger closure, with detection of stable grasp occurring via the close_gripper operator (which, in practice, summarizes the result of stable contact/effort, as specified in the subtask). 'and' is used to require all these simultaneously.",
+    "Constraints": [
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_position",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_m": 0.01
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "geometry"
+            ],
+            "op": "freeze_orientation",
+            "args": {
+                "controlled_entity": "robot_frame",
+                "controlled_target": "panda_fingertip",
+                "tolerance_rad": 0.2
+            }
+        },
+        {
+            "logic": "and",
+            "condition": [
+                "gripper_closed"
+            ],
+            "op": "object_grasped",
+            "args": {}
+        }
+    ]
+}
